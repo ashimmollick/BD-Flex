@@ -86,6 +86,7 @@ async function run() {
         const allUsers = client.db("bdFlix").collection("user");
         //user collection
         const usersCollection = client.db("bdFlix").collection("user");
+        const usersCollections = client.db("bdFlix").collection("userProfile");
 
         // Movie recomended system end*******************************************
 
@@ -104,7 +105,7 @@ async function run() {
                 console.log('CSV file successfully processed');
             });
 
-        app.get('/recommend/:movie',async (req, res) => {
+        app.get('/recommend/:movie', async (req, res) => {
             try {
                 let movie = req.params.movie;
                 let index;
@@ -164,7 +165,7 @@ async function run() {
             try {
                 const response = await axios.get('http://localhost:5000/allMovie');
                 const data = response.data;
-        
+
                 const randomData = [];
                 while (randomData.length < 6) {
                     const randomIndex = Math.floor(Math.random() * data.length);
@@ -173,7 +174,7 @@ async function run() {
                         randomData.push(randomItem);
                     }
                 }
-        
+
                 return randomData;
             } catch (error) {
                 console.error(error);
@@ -219,6 +220,16 @@ async function run() {
 
         app.get('/allUsers', async (req, res) => {
             const result = await allUsers.find({}).toArray();
+            res.send(result);
+        })
+        app.post('/userProfile', async (req, res) => {
+            const userProfile = req.body;
+            const result = await usersCollections.insertOne(userProfile)
+            res.send(result);
+        })
+
+        app.get('/userprofile', async (req, res) => {
+            const result = await usersCollections.find({}).toArray();
             res.send(result);
         })
 
@@ -267,6 +278,11 @@ async function run() {
         })
         app.get('/movies', async (req, res) => {
             const result = await allMoviesCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        app.get('/allsearch', async (req, res) => {
+            const result = await allMoviesCollection.find().toArray();
             res.send(result);
         })
 

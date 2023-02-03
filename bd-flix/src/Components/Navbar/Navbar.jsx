@@ -10,7 +10,26 @@ const Navbar = () => {
 
 
     const [active, setActive] = useState('home');
+
+    const [AllMoviesSearch, setData] = useState([]);
+    const [searchApiData, setSearchApiData] = useState([])
+    const [filterVal, setFilterVal] = useState('');
+
     const { user, logout, mode, Togglebutton } = useContext(AuthContext)
+
+
+
+
+    useEffect(() => {
+
+        fetch('http://localhost:5000/allsearch')
+            .then(res => res.json())
+            .then(res => {
+                setData(res)
+                setSearchApiData(res)
+
+            });
+    }, [])
 
     const handlelogout = () => {
         logout()
@@ -52,10 +71,22 @@ const Navbar = () => {
         >
             <FaEnvelope />
         </Link>
-        {
-            <li>  </li>
-        }
+
     </>
+
+
+
+    const handleFilter = (e) => {
+
+        if (e.target.value === '') {
+            setData(searchApiData)
+        } else {
+
+            const filterSearch = searchApiData.filter(it => it?.title?.toLowerCase().includes(e.target.value.toLowerCase()));
+            setData(filterSearch)
+        }
+        setFilterVal(e.target.value)
+    }
     return (
         <>
             <div className={`navbar bg-black`}>
@@ -72,7 +103,25 @@ const Navbar = () => {
 
                     <div className='flex gap-2'>
                         <div className='btn rounded font-mono uppercase bg-none shadow-inner text-xl font-bold text-white'><img src={logo} alt=''></img>-FLIX</div>
-                        <input type="text" placeholder="Search Movies" className="input lg:block hidden lg:w-full h-10 rounded-3xl bg-[#3a3b3c]" />
+                        <div className="dropdown">
+                            <label tabIndex={0} ><input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input lg:block hidden lg:w-full h-10 rounded-3xl bg-[#3a3b3c]" /></label>
+                            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>{
+                                    AllMoviesSearch?.slice(0, 3).map(it => {
+                                        return (
+
+                                            <Link to={`/allmovie/${it.id}` && `/clickedvideo/${it.id}` && `/moviesforyou/${it.id}`} key={it.id}>
+                                                {it.original_title.toLowerCase()}
+
+                                            </Link>
+
+                                        );
+                                    }
+                                    )
+                                }</li>
+
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
@@ -85,11 +134,25 @@ const Navbar = () => {
                     {user?.uid ?
                         <>
                             <li><Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link></li>
-                            <li className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handlelogout} ><Link to='/login'>Logout</Link></li>
-                            <div className="avatar ml-2">
-                                <div className="w-12 rounded-full">
-                                    <img src={user.photoURL} />
-                                </div>
+
+
+
+
+
+
+
+
+
+                            <div className="dropdown dropdown-end">
+                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                    <div className="w-10 rounded-full">
+                                        <img src={user?.photoURL} />
+                                    </div>
+                                </label>
+                                <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                                    <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" ><Link to='/profile'>Profile</Link></li>
+                                    <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
+                                </ul>
                             </div>
 
                         </>

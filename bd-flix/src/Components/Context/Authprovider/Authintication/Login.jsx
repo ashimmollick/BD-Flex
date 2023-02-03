@@ -47,6 +47,14 @@ const Login = () => {
         }).catch(error => {
             console.log(error)
             setError(error.message)
+            if (error === 'Firebase: Error (auth/user-not-found).') {
+                toast.error('WRONG EMAIL')
+            }
+
+
+            else if (error === 'Firebase: Error (auth/wrong-password).') {
+                toast.error('WRONG  Password')
+            }
 
         })
 
@@ -72,14 +80,7 @@ const Login = () => {
             .catch(error => console.error(error))
     }
 
-    if (error === 'Firebase: Error (auth/user-not-found).') {
-        toast.error('WRONG EMAIL')
-    }
 
-
-    else if (error === 'Firebase: Error (auth/wrong-password).') {
-        toast.error('WRONG  Password')
-    }
 
 
 
@@ -88,7 +89,7 @@ const Login = () => {
             <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">Login now!</h1>
-                    <p className="py-6">I know all about this. For years I have been continuously improving, accumulating knowledge and experience.</p>
+                    <p className="py-6 hidden lg:block">I know all about this. For years I have been continuously improving, accumulating knowledge and experience.</p>
                 </div>
                 <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <form onSubmit={handlelogin} className="card-body">
@@ -112,7 +113,7 @@ const Login = () => {
                             {/* Firebase: Error (auth/email-already-in-use) */}
                         </div>
                         <div className="form-control mt-6">
-                            <input type="submit" className="btn btn-primary text-green-700 hover:text-green-400 lg:text-2xl  focus:outline-none " value="login" />
+                            <input type="submit" className="btn btn-primary text-green-700 hover:text-green-400 lg:text-2xl  focus:outline-none " value={loading ? "loading..." : 'login'} />
 
                         </div>
                         <div className="form-control mt-6">

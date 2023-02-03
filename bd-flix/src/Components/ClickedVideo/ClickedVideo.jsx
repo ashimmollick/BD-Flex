@@ -6,8 +6,9 @@ import { MdPlaylistAdd } from 'react-icons/md';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
-import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import { useEffect } from 'react';
+import ClickedVideoReview from './ClickedVideoReview';
 
 
 
@@ -20,6 +21,7 @@ const ClickedVideo = () => {
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])
+
 
 
     const PopularMovies = [
@@ -58,8 +60,6 @@ const ClickedVideo = () => {
     const [like, setLike] = useState(0);
     const [isLike, setIsLike] = useState(false);
 
-    const [dislike, setDisLike] = useState(0);
-    const [isDisLike, setIsDisLike] = useState(false);
 
     const onLikeButtonClick = () => {
 
@@ -68,10 +68,7 @@ const ClickedVideo = () => {
 
     }
 
-    const onDisLikeButtonClick = () => {
-        setIsDisLike(!isDisLike);
-        setDisLike(dislike + (isDisLike ? -1 : 1));
-    }
+
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
     //Download-------------------------------------->
@@ -107,7 +104,7 @@ const ClickedVideo = () => {
                     </div>
                     <div className=''>
 
-                        <div className='my-5 flex justify-between'>
+                        <div className='my-5 lg:flex justify-between'>
 
                             <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
                             <div className='flex justify-center items-center gap-16 font-bold'>
@@ -118,12 +115,10 @@ const ClickedVideo = () => {
                                             className="text-2xl mx-auto cursor-pointer" />
                                         <p className="text-xs text-white">Likes {like}</p>
                                     </div>
+                                    <label htmlFor="reviewButton">
+                                        <FaCommentAlt className="text-2xl mx-auto cursor-pointer" />
+                                    </label>
 
-                                    <div className={"" + (dislike ? "text-blue-500" : "")}>
-                                        <FaThumbsDown onClick={onDisLikeButtonClick}
-                                            className="text-2xl mx-auto cursor-pointer" />
-                                        <p className="text-xs text-white">DisLikes {dislike}</p>
-                                    </div>
 
                                     <div className=''>
                                         <MdPlaylistAdd className='text-2xl mx-auto'></MdPlaylistAdd>
@@ -147,6 +142,9 @@ const ClickedVideo = () => {
                             <p className='text-xl my-2'>Description</p>
                             <p className='text-xs text-'>{data.overview}</p>
                         </div>
+                        <div>
+                            <ClickedVideoReview data={data} />
+                        </div>
                     </div>
 
 
@@ -160,9 +158,9 @@ const ClickedVideo = () => {
                             {
                                 recomended?.slice(0, 6).map(movies =>
                                     <Recommended
-                                    video={video}
-                                    setVideo={setVideo}
-                                    movies={movies}></Recommended>
+                                        video={video}
+                                        setVideo={setVideo}
+                                        movies={movies}></Recommended>
                                 )
                             }
                         </div>

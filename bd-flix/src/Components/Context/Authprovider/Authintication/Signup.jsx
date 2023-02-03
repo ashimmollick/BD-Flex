@@ -21,7 +21,7 @@ const Signup = () => {
 
 
 
-    const { createUser, updateUserProfile } = useContext(AuthContext)
+    const { createUser, updateUserProfile, verifyEmail } = useContext(AuthContext)
     const handlesignup = event => {
         event.preventDefault();
         const form = event.target;
@@ -46,30 +46,36 @@ const Signup = () => {
             .then(imageData => {
                 console.log(imageData.url)
                 createUser(email, password)
-
-
-
-
                     .then(result => {
-
-                        setAuthToken(result.user)
-
-
-                        toast.success('User Created Successfully')
-                        setloading(false)
-
-
+                        const user = result.user;
+                        console.log(user);
+                        setError('');
                         navigate('/')
+                        form.reset();
+
+                        handleUpdateUserProfile(name, imageData.url);
+                        handleEmailVerification();
+                        toast.success('Please verify your email address.')
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        setError(error.message);
 
 
-
-                        updateUserProfile(name, imageData.data.display_url)
-
-                            .then(() => {
-                                navigate(from, { replace: true })
-                            }).catch(error => console.log(error))
-
-                    }).catch(error => console.log(error))
+                        if (error.code == "auth/email-already-in-use") {
+                            toast("The email address is already in use");
+                            setloading(false)
+                        } else if (error.code == "auth/invalid-email") {
+                            toast.error("The email address is not valid.");
+                            setloading(false)
+                        } else if (error.code == "auth/operation-not-allowed") {
+                            toast.error("Operation not allowed.");
+                            setloading(false)
+                        } else if (error.code == "auth/weak-password") {
+                            toast.error("The password is too weak.");
+                            setloading(false)
+                        }
+                    });
 
             }).catch(error => console.log(error))
 
@@ -89,37 +95,34 @@ const Signup = () => {
         //         })
         // }
 
-        createUser(email, password).then(result => {
-            const user = result.user;
-            console.log(user);
-            navigate('/')
-            setError('')
-            form.reset()
-            // handleupdateprofile(name)
-        })
-            .catch(err => {
-                console.error(err)
-                setError(err.message)
-
-                if (error === 'Firebase: Error (auth/email-already-in-use).') {
-                    toast.error('Already have an account')
-                    setloading(false)
-
-                }
-            })
 
 
 
     }
 
 
-    // const handleupdateprofile = (name, photoURL) => {
-    //     const profile = {
-    //         displayName: name,
-    //         photoURL: photoURL
-    //     }
-    //     updateUserProfile(profile).then(() => { }).catch(error => console.error(error))
-    // }
+
+
+    const handleUpdateUserProfile = (name, photoURL) => {
+        const profile = {
+            displayName: name,
+            photoURL: photoURL
+        }
+
+        updateUserProfile(profile)
+            .then(() => { })
+            .catch(error => console.error(error));
+    }
+
+    const handleEmailVerification = () => {
+        verifyEmail()
+            .then(() => { })
+            .catch(error => console.error(error));
+    }
+
+
+
+
 
 
 

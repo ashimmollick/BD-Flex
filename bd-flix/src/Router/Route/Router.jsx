@@ -7,10 +7,13 @@ import AllUsers from "../../Components/Banner/admin/Layout/AllUsers";
 import MovieUpdate from "../../Components/Banner/admin/Layout/MovieUpdate";
 import UploadMovies from "../../Components/Banner/admin/Layout/UploadMovies";
 import ClickedVideo from "../../Components/ClickedVideo/ClickedVideo";
+import EditProfile from "../../Components/Context/Authprovider/Authintication/EditProfile";
 import Forget from "../../Components/Context/Authprovider/Authintication/Forget";
 import Login from "../../Components/Context/Authprovider/Authintication/Login";
+import Profile from "../../Components/Context/Authprovider/Authintication/Profile";
 import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
 import Signup from "../../Components/Context/Authprovider/Authintication/Signup";
+import Error from "../../Components/Error/Error";
 import HomePage from "../../Components/Home/IndexPage/HomePage";
 import Movies from "../../Components/Movies/Movies";
 import Premium from "../../Components/Premium/Premium";
@@ -66,6 +69,15 @@ const router = createBrowserRouter([
                 path: '/movies',
                 element: <Movies></Movies>
 
+            }, {
+                path: '/profile',
+                element: <Private><Profile></Profile></Private>
+
+            },
+            {
+                path: '/editprofile',
+                element: <Private><EditProfile></EditProfile></Private>
+
             },
             {
                 path: '/tvshows',
@@ -76,6 +88,9 @@ const router = createBrowserRouter([
                 path: '/premium',
                 element: <Private><Premium></Premium></Private>
 
+            }, {
+                path: '*',
+                element: <Error></Error>
             },
 
 

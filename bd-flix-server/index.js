@@ -86,6 +86,9 @@ async function run() {
         const allUsers = client.db("bdFlix").collection("user");
         //user collection
         const usersCollection = client.db("bdFlix").collection("user");
+
+        //Reviw collection
+        const reviewCollection = client.db("bdFlix").collection("review");
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
         // Movie recomended system end*******************************************
@@ -228,6 +231,8 @@ async function run() {
             res.send(result);
         })
 
+
+
         app.get('/userprofile', async (req, res) => {
             const result = await usersCollections.find({}).toArray();
             res.send(result);
@@ -305,6 +310,14 @@ async function run() {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
+
+
+        // reviews collection of users
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.send(result);
+        });
 
         //save user email and generate JWT token
         app.put('/user/:email', async (req, res) => {

@@ -73,6 +73,9 @@ async function run() {
         const reviewCollection = client.db("bdFlix").collection("review");
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
+        //Category collection
+        const categoryCollection = client.db("bdFlix").collection("category");     
+
 
         app.get('/mostPopularMovies', async (req, res) => {
             const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
@@ -105,6 +108,20 @@ async function run() {
             const result = await allMoviesCollection.insertOne(upLoaded)
             res.send(result);
         });
+
+
+        //  add categories
+        app.post('/category', async (req, res) => {
+            const category = req.body;
+            const result = await categoryCollection.insertOne(category);
+            res.send(result);
+        })
+
+        //  get categories
+        app.get('/category', async (req, res) => {
+            const result = await categoryCollection.find({}).toArray();
+            res.send(result);
+        })
 
         //   all users get 
 

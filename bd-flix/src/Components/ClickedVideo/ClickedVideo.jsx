@@ -98,7 +98,7 @@ const ClickedVideo = () => {
                                     <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
                                     <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
                                 </div> :
-                                <video ref={videoRef} className='border h-full w-full' controls={play} autoPlay src={video}>
+                                <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
                                 </video>
                             }
                             <button onClick={() => setPlay(!play)}>{play ? '' :

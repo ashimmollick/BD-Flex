@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => {
       setShowFlash(false);
-    }, 8000);
+    }, 2000);
   }, []);
 
   return showFlash ? <SplashScreen></SplashScreen> : <MainContent />;
@@ -21,7 +21,7 @@ function App() {
 const MainContent = () => {
   const { mode, Togglebutton } = useContext(AuthContext)
   return (
-    <div className={`App ${mode}`}>
+    <div>
       <RouterProvider router={router} />
       <ToastContainer
         position="top-center"

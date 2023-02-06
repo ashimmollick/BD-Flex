@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import img1 from '../../../SlideImages/img2.png';
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
-import MovieCategoryCard from './MoviesCategory/MovieCategoryCard';
 
 const Slider = () => {
-
     const [currentSlide, setCurrentSlide] = useState(0);
-
     const slider = [
         { sliderImage: img1, moviesName: "panthar", publishedDate: "", },
         { sliderImage: 'https://cdn.bioscopelive.com/upload/slide/topBannerDesktop/9vz5k067H1o.jpg', moviesName: "panthar", publishedDate: "", },
         { sliderImage: 'https://cdn.bioscopelive.com/upload/slide/topBannerDesktop/3kMUBFGj6xZ.jpg', moviesName: "panthar", publishedDate: "", },
-        { sliderImage: 'https://cdn.bioscopelive.com/upload/slide/topBannerDesktop/j0UCJSQdxgu.jpg', moviesName: "panthar", publishedDate: "", },]
-
-    // handle nextslide slide
-    const handleNextSlide = () => {
-        setCurrentSlide(currentSlide === slider.length - 1 ? 0 : currentSlide + 1);
-    }
-
-    // handle previousSlide slide
-    const handlePrevSlide = () => {
-        setCurrentSlide(currentSlide === 0 ? slider.length - 1 : currentSlide - 1);
-    }
+        { sliderImage: 'https://cdn.bioscopelive.com/upload/slide/topBannerDesktop/j0UCJSQdxgu.jpg', moviesName: "panthar", publishedDate: "", },
+    ]
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -31,33 +18,26 @@ const Slider = () => {
     }, [currentSlide]);
 
     return (
-        <div className='relative lg:h-[850px] h-[430px]'>
+        <div className='' style={{}}>
             <div className='relative'>
-                <div className='absolute inset-0'>
-                    <div className='relative'>
+                <div className=' inset-0'>
+                    <div className='border-b-4 border-indigo-500'>
                         <img
-                            className='h-[100%] lg:lg:w-screen transition transform duration-300 ease-in'
+                            className='lg:h-[550px] w-full object-cover transition transform duration-300 ease-in'
                             src={slider[currentSlide].sliderImage} alt="" />
-                        <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
+                        <div className='lg:inset-0 lg:bg-black lg:opacity-50'></div>
                     </div>
                 </div>
-                <button className='absolute top-14 lg:top-56 text-white text-2xl rounded-full left-0 p-4' onClick={handlePrevSlide}>
-                    <FaAngleLeft />
-                </button>
-                <button className='absolute top-14 lg:top-56 rounded-full right-0 text-white text-2xl p-4' onClick={handleNextSlide}>
-                    <FaAngleRight />
-                </button>
-            </div>
 
-            {/* category cart */}
-            <div className='absolute lg:top-[450px] top-56'>
-                <div className='flex'>
-                    <p className='pl-8 font-bold text-white text-md'>Movies Category</p>
-                    <p className='pl-7 font-bold cursor-pointer text-green-700'>See All</p>
+                <div className='absolute bottom-0 left-0 right-0 flex justify-center'>
+                    {slider.map((_, index) => (
+                        <div 
+                            key={index}
+                            className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`} 
+                        />
+                    ))}
                 </div>
-                <MovieCategoryCard></MovieCategoryCard>
             </div>
-
         </div>
     );
 };

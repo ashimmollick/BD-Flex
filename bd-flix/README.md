@@ -11,7 +11,7 @@
 #### create pull request (press)
 
 # Use the github as a Employee (clone from github)
-#### a. git pull origin developer
+#### a. git pull origin main
 #### b. git checkout developer (go to developer branch)
 #### c. git checkout -b avi/home (to create a new branch)
 #### d. git add .

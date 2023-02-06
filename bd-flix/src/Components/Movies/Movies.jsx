@@ -6,7 +6,7 @@ import AllmoviesCard from './AllmoviesCard';
 const Movies = () => {
     const [allMovies, loading] = Allmovies();
     return (
-        <>
+        <div className='relative top-16' style={{clear:"both"}}>
             <h2 className='p-3 font-semibold text-white'> All Movies </h2>
 
             {
@@ -23,7 +23,7 @@ const Movies = () => {
             }
 
 
-        </>
+        </div>
     );
 };
 

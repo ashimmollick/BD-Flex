@@ -82,7 +82,7 @@ const MoviesForYou = () => {
     }
 
     return (
-        <div className='relative ml-8'>
+        <div className='relative my-8 p-4'>
             <div className='flex justify-between mb-3'>
                 <h1 className='text-md font-bold text-white'>Movies For You</h1>
                 <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
@@ -104,11 +104,11 @@ const MoviesForYou = () => {
                                             transition: 'transform 0.3s ease-in-out',
                                         }}>
 
-                                        <div className="relative w-full lg:h-[190px] h-[200px] overflow-hidden mr-5 cursor-pointer carousel-item">
+                                        <div className="relative w-full overflow-hidden mr-5 cursor-pointer carousel-item">
                                             <div className='relative transition-transform duration-300 ease-in-out transform hover-zoom'>
 
                                                 <img
-                                                    className='rounded-md object-cover lg:w-full w-full lg:h-[190px] h-[200px]'
+                                                    className='rounded-md object-cover w-full h-full'
                                                     src={images.poster_path} alt=''
                                                 ></img>
                                                 <div className="movie-for-you-gradient absolute bottom-0 left-0 w-full h-2/6"></div>
@@ -122,7 +122,7 @@ const MoviesForYou = () => {
                                 ))
                             }
 
-                            <button
+                            {/* <button
                                 className={`lg:block hidden absolute top-[40%] bg-white text-red-700 rounded-full left-0 p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
                                 onClick={handlePrevSlide}
                             >
@@ -135,7 +135,7 @@ const MoviesForYou = () => {
                                 onClick={handleNextSlide}
                             >
                                 <FaAngleRight />
-                            </button>
+                            </button> */}
                         </div>
                     </div>
                 }

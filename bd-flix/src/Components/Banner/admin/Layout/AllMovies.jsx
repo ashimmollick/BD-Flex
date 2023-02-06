@@ -54,24 +54,52 @@ const AllMovies = () => {
     };
 
     return (
-        <div className='bg-[#3a3b3c] w-full rounded-lg  grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1' >
+        
+             <div className="overflow-x-auto w-full">
+            <table className="table w-full">
+                {/* <!-- head --> */}
+                <thead>
+                    <tr>
+                        <th>Poster</th>
+                        <th>Name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
             {
-                allMovie.map((singleMovie, i) => <div key={singleMovie._id} className=" cursor-pointer p-1 rounded-md shadow-md dark:text-gray-50">
-                    <img src={singleMovie.poster_path} alt="" className="object-cover w-[100%] rounded-md h-72" />
-                    <div className="mt-6 mb-2 ">
-                        <span className="block text-xs  font-semibold tracking-widest uppercase dark:text-green-600">{singleMovie.original_title}</span>
-
-                        <div className='flex justify-between mt-3'>
-                            <button onClick={() => handleDelete(singleMovie._id)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Delete</button>
-                            <button onClick={() => updateButton(singleMovie)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Update </button>
-
+                allMovie.map((singleMovie, i) =>
+                    <tr>
+                        <div className="avatar">
+                            <div className="mask mask-squircle w-12 h-12">
+                                <img src={singleMovie.poster_path} alt="" />
+                            </div>
                         </div>
+                        <td>{singleMovie.original_title}</td>
+                        <td><button onClick={() => handleDelete(singleMovie._id)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Delete</button></td>
+                        <td> <button onClick={() => updateButton(singleMovie)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Update </button></td>
+                    </tr>
+                    // <div key={singleMovie._id} className=" cursor-pointer p-1 rounded-md shadow-md dark:text-gray-50">
+                    //     <img src={singleMovie.poster_path} alt="" className="object-cover w-[100%] rounded-md h-72" />
+                    //     <div className="mt-6 mb-2 ">
+                    //         <span className="block text-xs  font-semibold tracking-widest uppercase dark:text-green-600">{singleMovie.original_title}</span>
 
-                    </div>
+                    //         <div className='flex justify-between mt-3'>
+                    //             <button onClick={() => handleDelete(singleMovie._id)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Delete</button>
+                    //             <button onClick={() => updateButton(singleMovie)} className='bg-emerald-600 mb-6 text-center hover:bg-teal-500 px-5 py-2 rounded-full font-bold'>Update </button>
 
-                </div>)
+                    //         </div>
+
+                    //     </div>
+
+                    // </div>
+
+                )
             }
+             </tbody>
+            </table>
         </div>
+       
     );
 };
 

@@ -29,25 +29,7 @@ firebase.initializeApp(firebaseConfig);
 const storage = getStorage()
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.post('/uploadVideo', upload.single("filename"), (req, res) => {
-    const storageRef = ref(storage, req.file.originalname);
-    const metadata = {
-        contentType: 'video/mp4'
-    };
-    uploadBytes(storageRef, req.file.buffer, metadata)
-        .then(() => {
-            // console.log("file uploaded");
-            getDownloadURL(storageRef).then(url => {
-                // console.log(`Download URL: ${url}`);
 
-                res.send({ url });
-            });
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).send(error);
-        });
-});
 
 // upload image------------------------------------------------------------------------
 
@@ -90,101 +72,6 @@ async function run() {
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
         const usersCollections = client.db("bdFlix").collection("userProfile");
-
-        // Movie recomended system end*******************************************
-
-        const Natural = require('natural');
-        const fs = require('fs');
-        const csv = require('csv-parser');
-
-        let newData = [];
-
-        fs.createReadStream('new.csv')
-            .pipe(csv())
-            .on('data', (row) => {
-                newData.push(row);
-            })
-            .on('end', () => {
-                console.log('CSV file successfully processed');
-            });
-
-        app.get('/recommend/:movie', async (req, res) => {
-            try {
-                let movie = req.params.movie;
-                let index;
-                for (let i = 0; i < newData.length; i++) {
-                    const lowercaseMovie = newData[i].title.toLowerCase();
-
-                    if (newData[i].title === movie || lowercaseMovie == movie) {
-                        index = i;
-                        break;
-                    }
-                }
-                let allTags = newData.map(data => data.tags);
-                let TfIdf = new Natural.TfIdf();
-                TfIdf.addDocument(allTags);
-                let similarity = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    similarity.push(TfIdf.tfidf(allTags[i], index));
-                }
-                let distances = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    if (i === index) {
-                        continue;
-                    }
-                    distances.push({ index: i, distance: similarity[i] });
-                }
-                distances.sort((a, b) => b.distance - a.distance);
-                let recommendedMovies = [];
-                for (let i = 0; i < 10; i++) {
-                    recommendedMovies.push(newData[distances[i].index].title);
-                }
-                const words = [];
-                for (const movie of recommendedMovies) {
-                    const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
-                    for (const word of movieWords) {
-                        words.push(word);
-                    }
-                    words.push(req.params.movie);
-                }
-
-                let wordsLowerCase = words.map(word => word.toLowerCase());
-                allMoviesCollection.createIndex({ original_title: "text" });
-
-                allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    res.send(result);
-                });
-            } catch (error) {
-                if (error instanceof TypeError || Object.keys(result).length === 0) {
-                    res.send(await generateRandomData());
-                }
-            }
-        });
-        const axios = require('axios');
-        async function generateRandomData() {
-            try {
-                const response = await axios.get('http://localhost:5000/allMovie');
-                const data = response.data;
-
-                const randomData = [];
-                while (randomData.length < 6) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const randomItem = data[randomIndex];
-                    if (!randomData.includes(randomItem)) {
-                        randomData.push(randomItem);
-                    }
-                }
-
-                return randomData;
-            } catch (error) {
-                console.error(error);
-                return [];
-            }
-        }
-        // Movie recomended system end*******************************************
 
 
         app.get('/mostPopularMovies', async (req, res) => {
@@ -239,9 +126,26 @@ async function run() {
         })
 
 
+        // update user
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const UserUpdate = req.body;
+            const option = { upset: true }
+            const updateUser = {
+                $set: {
+                    name: UserUpdate.name,
+                    address: UserUpdate.address,
+                    gender: UserUpdate.gender,
+                    genre: UserUpdate.genre
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateUser, option)
+            res.send(result)
+        })
+
 
         // all movies get 
-
         app.get('/allMovie', async (req, res) => {
             const result = await allMoviesCollection.find({}).toArray();
             res.send(result)
@@ -336,6 +240,123 @@ async function run() {
             console.log(token);
             res.send({ result, token })
         })
+
+        app.post('/uploadVideo', upload.single("filename"), (req, res) => {
+            const storageRef = ref(storage, req.file.originalname);
+            const metadata = {
+                contentType: 'video/mp4'
+            };
+            uploadBytes(storageRef, req.file.buffer, metadata)
+                .then(() => {
+                    // console.log("file uploaded");
+                    getDownloadURL(storageRef).then(url => {
+                        // console.log(`Download URL: ${url}`);
+
+                        res.send({ url });
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    res.status(500).send(error);
+                });
+        });
+
+        // Movie recomended system end*******************************************
+
+        const Natural = require('natural');
+        const fs = require('fs');
+        const csv = require('csv-parser');
+
+        let newData = [];
+
+        fs.createReadStream('./new.csv')
+            .pipe(csv())
+            .on('data', (row) => {
+                newData.push(row);
+            })
+            .on('end', () => {
+                console.log('CSV file successfully processed');
+            });
+
+        app.get('/recommend/:movie', async (req, res) => {
+            try {
+                let movie = req.params.movie;
+                let index;
+                for (let i = 0; i < newData.length; i++) {
+                    const lowercaseMovie = newData[i].title.toLowerCase();
+
+                    if (newData[i].title === movie || lowercaseMovie == movie) {
+                        index = i;
+                        break;
+                    }
+                }
+                let allTags = newData.map(data => data.tags);
+                let TfIdf = new Natural.TfIdf();
+                TfIdf.addDocument(allTags);
+                let similarity = [];
+                for (let i = 0; i < allTags.length; i++) {
+                    similarity.push(TfIdf.tfidf(allTags[i], index));
+                }
+                let distances = [];
+                for (let i = 0; i < allTags.length; i++) {
+                    if (i === index) {
+                        continue;
+                    }
+                    distances.push({ index: i, distance: similarity[i] });
+                }
+                distances.sort((a, b) => b.distance - a.distance);
+                let recommendedMovies = [];
+                for (let i = 0; i < 10; i++) {
+                    recommendedMovies.push(newData[distances[i].index].title);
+                }
+                const words = [];
+                for (const movie of recommendedMovies) {
+                    const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
+                    for (const word of movieWords) {
+                        words.push(word);
+                    }
+                    words.push(req.params.movie);
+                }
+
+                let wordsLowerCase = words.map(word => word.toLowerCase());
+                allMoviesCollection.createIndex({ original_title: "text" });
+
+                allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    res.send(result);
+                });
+            } catch (error) {
+                if (error instanceof TypeError || Object.keys(result).length === 0) {
+                    res.send(await generateRandomData());
+                }
+            }
+        });
+        const axios = require('axios');
+        async function generateRandomData() {
+            try {
+                const response = await axios.get('http://localhost:5000/allMovie');
+                const data = response.data;
+
+                const randomData = [];
+                while (randomData.length < 6) {
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const randomItem = data[randomIndex];
+                    if (!randomData.includes(randomItem)) {
+                        randomData.push(randomItem);
+                    }
+                }
+
+                return randomData;
+            } catch (error) {
+                console.error(error);
+                return [];
+            }
+        }
+        // Movie recomended system end*******************************************
+
+
 
     }
 

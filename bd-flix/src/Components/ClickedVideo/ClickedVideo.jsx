@@ -113,7 +113,7 @@ const ClickedVideo = () => {
                                     <div className={"" + (isLike ? "text-blue-500" : "")}>
                                         <FaThumbsUp onClick={onLikeButtonClick}
                                             className="text-2xl mx-auto cursor-pointer" />
-                                        <p className="text-xs text-white">Likes {like}</p>
+                                        <p className="text-xs">Likes {like}</p>
                                     </div>
                                     <label htmlFor="reviewButton">
                                         <FaCommentAlt className="text-2xl mx-auto cursor-pointer" />

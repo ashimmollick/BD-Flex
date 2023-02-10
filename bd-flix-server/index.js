@@ -221,10 +221,21 @@ async function run() {
 
         //   all users get 
 
+
+
+
+        app.post('/allUsers', async (req, res) => {
+            const user = req.body;
+            const result = await allUsers.insertOne(user)
+            res.send(result);
+        })
+
         app.get('/allUsers', async (req, res) => {
             const result = await allUsers.find({}).toArray();
             res.send(result);
         })
+
+
         app.post('/userProfile', async (req, res) => {
             const userProfile = req.body;
             const result = await usersCollections.insertOne(userProfile)
@@ -237,7 +248,23 @@ async function run() {
             const result = await usersCollections.find({}).toArray();
             res.send(result);
         })
-
+        app.put('/userprofile/:id', async (req, res) => {
+            const email = req.params.id;
+            const query = { email: email };
+            const user = req.body;
+            const options = { upsert: true }
+            const updatedUser = {
+                $set: {
+                    name: user.name,
+                    email: user.email,
+                    photoURL: user.photoURL
+                }
+            }
+            if (user.email) {
+                const result = await usersCollections.updateOne(query, updatedUser, options)
+                res.send(result)
+            }
+        })
 
 
         // all movies get 

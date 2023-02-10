@@ -66,6 +66,8 @@ const Login = () => {
     const reset = () => {
         Resetpass()
     }
+
+
     const googleProvider = new GoogleAuthProvider()
 
     const handlegoogle = () => {

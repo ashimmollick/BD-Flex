@@ -53,7 +53,7 @@ const Signup = () => {
                         navigate('/')
                         form.reset();
 
-                        handleUpdateUserProfile(name, imageData.url);
+                        handleUpdateUserProfile(name, email, imageData.url);
                         handleEmailVerification();
                         toast.success('Please verify your email address.')
                     })
@@ -79,21 +79,6 @@ const Signup = () => {
 
             }).catch(error => console.log(error))
 
-        // const saveUser = (name, email) => {
-        //     const user = { name, email };
-        //     fetch('http://localhost:5000/allUsers', {
-        //         method: "POST",
-        //         headers: {
-        //             'content-type': 'application/json',
-
-        //         },
-        //         body: JSON.stringify(user)
-        //     })
-        //         .then(res => res.json())
-        //         .then(data => {
-        //             console.log(data)
-        //         })
-        // }
 
 
 
@@ -103,14 +88,18 @@ const Signup = () => {
 
 
 
-    const handleUpdateUserProfile = (name, photoURL) => {
+    const handleUpdateUserProfile = (name, email, photoURL) => {
         const profile = {
             displayName: name,
             photoURL: photoURL
         }
 
         updateUserProfile(profile)
-            .then(() => { })
+            .then(() => {
+
+                saveUser(name, email, photoURL)
+
+            })
             .catch(error => console.error(error));
     }
 
@@ -120,6 +109,24 @@ const Signup = () => {
             .catch(error => console.error(error));
     }
 
+
+
+    const saveUser = (name, email, photoURL) => {
+        const user = { name, email, photoURL };
+        fetch('http://localhost:5000/allUsers', {
+
+            method: "POST",
+            headers: {
+                'content-type': 'application/json',
+
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
+    }
 
 
 

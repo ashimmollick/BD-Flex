@@ -40,7 +40,9 @@ const Navbar = () => {
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
 
 
+
         {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
+
     </>
 
     const bottomNav = <>
@@ -94,68 +96,7 @@ const Navbar = () => {
     }
     return (
         <>
-            {/* <div className={`navbar bg-transparent absolute`} style={{ zIndex: 1 }}>
 
-                <div className="navbar-start">
-
-                    <div className='flex gap-2'>
-                        <div className='btn rounded font-mono uppercase bg-none shadow-inner bg-transparent border-none text-xl font-bold text-white'><img src={logo} alt=''></img>-FLIX</div>
-                         <div className='font-serif text-xl font-bold text-white'>BD-<span  className="text-green-600">FL</span>IX</div> 
-                    </div>
-
-                </div>
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal flex justify-between px-1">
-                        {nav}
-                    </ul>
-                </div>
-
-                <div className="navbar-end">
-                    
-                    <div className="dropdown">
-                        <label tabIndex={0} ><input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input block w-40 lg:w-full h-10 rounded-xl border-white bg-transparent" /></label>
-                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>{
-                                AllMoviesSearch?.slice(0, 3).map(it => {
-                                    return (
-                                        <Link to={`/allmovie/${it.id}` && `/clickedvideo/${it.id}` && `/moviesforyou/${it.id}`} key={it.id}>
-                                            {it.original_title.toLowerCase()}
-                                        </Link>
-                                    );
-                                }
-                                )
-                            }</li>
-
-                        </ul>
-                    </div>
-                   
-                    {user?.uid ?
-                        <>
-
-                            <Link to="/admin" className="hidden lg:block text-white font-bold mx-2 hover:text-green-400 focus:outline-none focus:shadow-outline border-white">Admin</Link>
-
-                            <div className="dropdown dropdown-end">
-                                <label tabIndex={0}
-                                    className="hidden lg:block btn btn-ghost btn-circle avatar">
-                                    <div className="w-10 rounded-full">
-                                        <img src={user?.photoURL} alt='' />
-                                    </div>
-                                </label>
-                                <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" ><Link to='/profile'>Profile</Link></li>
-                                    <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
-                                </ul>
-                            </div>
-
-                        </>
-                        :
-                        <ul>
-                            <li><Link to='/login' className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"> Login</Link></li>
-                        </ul>
-
-                    }
-                </div>
-            </div>  */}
 
             <div
                 className="navbar bg-transparent absolute" style={{ zIndex: 1 }}>
@@ -246,9 +187,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* ****************************************************************** */}
-            {/* bottom navigation bar */}
-            {/* ****************************************************************** */}
+
 
             <div className="lg:hidden md:hidden fixed bottom-0 z-50 w-full">
                 <div className="bg-black shadow-lg px-6">

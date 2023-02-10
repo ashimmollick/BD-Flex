@@ -5,6 +5,7 @@ import { FaEnvelope } from 'react-icons/fa';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
 import logo from '../../images/brand.png'
 import { useEffect } from 'react';
+import useAdmin from '../../Hooks/Admin/useAdmin';
 const Navbar = () => {
 
     const [active, setActive] = useState('home');
@@ -12,6 +13,7 @@ const Navbar = () => {
     const [searchApiData, setSearchApiData] = useState([])
     const [filterVal, setFilterVal] = useState('');
     const { user, logout, mode, Togglebutton } = useContext(AuthContext)
+    const [isAdmin] = useAdmin(user?.email)
 
     useEffect(() => {
         fetch('http://localhost:5000/allsearch')
@@ -36,6 +38,10 @@ const Navbar = () => {
         <li><Link to='/premium' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Premium</Link></li>
         <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li>
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
+
+
+
+        {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
 
     </>
 
@@ -105,9 +111,9 @@ const Navbar = () => {
                             {
                                 user?.uid ?
                                     <>
-                                        <li>
-                                            <Link to="/admin" className="text-white font-bold mx-2 hover:text-green-400 focus:outline-none focus:shadow-outline border-white">Admin</Link>
-                                        </li>
+
+
+
 
                                         <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
                                     </>
@@ -149,8 +155,14 @@ const Navbar = () => {
 
                     {user?.uid ?
                         <>
+                            {
+                                isAdmin && <>
+                                    <li><Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link></li>
 
-                            <Link to="/admin" className="hidden lg:block text-white font-bold mx-2 hover:text-green-400 focus:outline-none focus:shadow-outline border-white">Admin</Link>
+                                </>
+                            }
+
+
 
                             <div className="dropdown dropdown-end">
                                 <label tabIndex={0}

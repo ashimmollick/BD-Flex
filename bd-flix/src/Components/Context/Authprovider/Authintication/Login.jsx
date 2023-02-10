@@ -43,6 +43,7 @@ const Login = () => {
 
             form.reset();
             setError('')
+            getUserToken(email)
             navigate(form, { replace: true })
         }).catch(error => {
             console.log(error)
@@ -66,20 +67,53 @@ const Login = () => {
     const reset = () => {
         Resetpass()
     }
-
-
     const googleProvider = new GoogleAuthProvider()
 
     const handlegoogle = () => {
 
         providerLogin(googleProvider)
             .then(result => {
-                const user = result.user;
+                const user = result?.user;
+                saveUser(user?.displayName, user?.photoURL, user?.email)
 
 
                 navigate('/')
             })
             .catch(error => console.error(error))
+    }
+
+    const saveUser = (name, photoURL, email) => {
+
+
+
+        const user = { name, photoURL, email };
+        fetch(`http://localhost:5000/allUsers/${email}`, {
+            method: "PUT",
+            headers: {
+                'content-type': 'application/json'
+
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('saveuser', data)
+                getUserToken(email)
+
+
+            })
+    }
+
+    const getUserToken = email => {
+        console.log(email, 'getuser')
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.ACCESS_TOKEN) {
+                    localStorage.setItem('accessToken', data.ACCESS_TOKEN);
+                    navigate('/')
+                }
+            });
     }
 
 
@@ -90,9 +124,10 @@ const Login = () => {
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">Login now!</h1>
-                    <p className="py-6 hidden lg:block">I know all about this. For years I have been continuously improving, accumulating knowledge and experience.</p>
+                    <h1 className="text-5xl font-bold">login now!</h1>
+                    <p className="py-6">I know all about this. For years I have been continuously improving, accumulating knowledge and experience.</p>
                 </div>
+
                 <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                     <form onSubmit={handlelogin} className="card-body">
                         <div className="form-control">
@@ -105,11 +140,12 @@ const Login = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="text" name="password" placeholder="password" className="input input-bordered" />
+                            <input type="password" name="password" placeholder="password" className="input input-bordered" />
                             <label className="label">
                                 <Link to='/forget' className="label-text-alt link  text-green-700 hover:text-green-400">Forgot password?</Link>
                             </label>
                         </div>
+
                         <div>
                             {/* <h1 className='text-red-400 font-bold'>{error}</h1> */}
                             {/* Firebase: Error (auth/email-already-in-use) */}

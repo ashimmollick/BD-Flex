@@ -29,25 +29,7 @@ firebase.initializeApp(firebaseConfig);
 const storage = getStorage()
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.post('/uploadVideo', upload.single("filename"), (req, res) => {
-    const storageRef = ref(storage, req.file.originalname);
-    const metadata = {
-        contentType: 'video/mp4'
-    };
-    uploadBytes(storageRef, req.file.buffer, metadata)
-        .then(() => {
-            // console.log("file uploaded");
-            getDownloadURL(storageRef).then(url => {
-                // console.log(`Download URL: ${url}`);
 
-                res.send({ url });
-            });
-        })
-        .catch(error => {
-            console.error(error);
-            res.status(500).send(error);
-        });
-});
 
 // upload image------------------------------------------------------------------------
 
@@ -89,7 +71,220 @@ async function run() {
 
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
+        const likeCollection = client.db("bdFlix").collection("like");
         const usersCollections = client.db("bdFlix").collection("userProfile");
+
+        //Category collection
+        const categoryCollection = client.db("bdFlix").collection("category");
+
+
+        app.get('/mostPopularMovies', async (req, res) => {
+            const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        app.post('/allmovies', async (req, res) => {
+            const allmovies = req.body;
+
+            // Get the highest ID from the existing movie documents
+            const highestId = await allMoviesCollection.find({}).sort({ id: -1 }).limit(1).toArray();
+
+            // Set the new ID for the movie document to be inserted
+            allmovies.id = highestId.length === 0 ? 0 : highestId[0].id + 1;
+
+            const result = await allMoviesCollection.insertOne(allmovies);
+            res.send(result);
+        });
+
+        // app.post('/allmovies', async (req, res) => {
+        //     const allmovies = req.body;
+        //     const result = await allMoviesCollection.insertOne(allmovies);
+        //     res.send(result);
+        // })
+
+        //  movie upload in mongodb 
+
+        app.post('/addMovie', async (req, res) => {
+            const upLoaded = req.body;
+            const result = await allMoviesCollection.insertOne(upLoaded)
+            res.send(result);
+        });
+
+
+        //  add categories
+        app.post('/category', async (req, res) => {
+            const category = req.body;
+            const result = await categoryCollection.insertOne(category);
+            res.send(result);
+        })
+
+        //  get categories
+        app.get('/category', async (req, res) => {
+            const result = await categoryCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        //   all users get 
+
+        app.get('/allUsers', async (req, res) => {
+            const result = await allUsers.find({}).toArray();
+            res.send(result);
+        })
+        app.post('/userProfile', async (req, res) => {
+            const userProfile = req.body;
+            const result = await usersCollections.insertOne(userProfile)
+            res.send(result);
+        })
+
+
+
+        app.get('/userprofile', async (req, res) => {
+            const result = await usersCollections.find({}).toArray();
+            res.send(result);
+        })
+
+
+        // update user
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const UserUpdate = req.body;
+            const option = { upset: true }
+            const updateUser = {
+                $set: {
+                    name: UserUpdate.name,
+                    address: UserUpdate.address,
+                    gender: UserUpdate.gender,
+                    genre: UserUpdate.genre
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateUser, option)
+            res.send(result)
+        })
+
+
+        // all movies get 
+        app.get('/allMovie', async (req, res) => {
+            const result = await allMoviesCollection.find({}).toArray();
+            res.send(result)
+        })
+
+
+        // delete button  
+
+        app.delete('/allMovie/:id', async (req, res) => {
+            const { id } = req.params;
+
+            const deleteId = { _id: ObjectId(id) };
+            
+            const result = await allMoviesCollection.deleteOne(deleteId);
+
+            res.send(result);
+        });
+        //   update movie ---------------------
+
+        app.put('/updateMovie/:updateId', async (req, res) => {
+            const id = req.params.updateId;
+
+
+            const filter = { _id: ObjectId(id) };
+            const user = req.body;
+
+            const option = { upsert: true };
+            const updatedMovie = {
+                $set: user,
+            }
+
+            const result = await allMoviesCollection.updateOne(filter, updatedMovie, option);
+
+            res.send(result);
+        })
+
+        app.get('/MoviesForYou', async (req, res) => {
+            const result = await MoviesForYouCategoriCollection.find({}).toArray();
+        })
+        app.get('/movies', async (req, res) => {
+            const result = await allMoviesCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        app.get('/allsearch', async (req, res) => {
+            const result = await allMoviesCollection.find().toArray();
+            res.send(result);
+        })
+
+        // get movie by category
+        app.get('/allmovie/:category', async (req, res) => {
+            const allmovies = req.params.category;
+            const getmovies = await allMoviesCollection.find({}).toArray();
+            const result = await getmovies.filter(getmovie => getmovie.category == allmovies);
+            res.send(result);
+        })
+
+        app.get('/movie/:id', async (req, res) => {
+            const allmovies = req.params.id;
+            const getmovies = await allMoviesCollection.find({}).toArray();
+            const result = await getmovies.find(getmovie => getmovie.id == allmovies);
+            res.send(result);
+        })
+
+        app.get('/comedies', async (req, res) => {
+            const comedies = await ComediesCollection.find({}).toArray();
+            res.send(comedies);
+        })
+
+
+        // reviews collection of users
+        app.post('/review', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.send(result);
+        });
+        // app.post('/like', async (req, res) => {
+        //     const review = req.body;
+        //     const result = await likeCollection.insertOne(review);
+        //     res.send(result);
+        // });
+       
+       
+
+        //save user email and generate JWT token
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email
+            const user = req.body
+            const filter = { email: email }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: user,
+            }
+            const result = await usersCollection.updateOne(filter, updateDoc, options)
+            console.log(result)
+
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN,
+                { expiresIn: '1d' })
+            console.log(token);
+            res.send({ result, token })
+        })
+
+        app.post('/uploadVideo', upload.single("filename"), (req, res) => {
+            const storageRef = ref(storage, req.file.originalname);
+            const metadata = {
+                contentType: 'video/mp4'
+            };
+            uploadBytes(storageRef, req.file.buffer, metadata)
+                .then(() => {
+                    // console.log("file uploaded");
+                    getDownloadURL(storageRef).then(url => {
+                        // console.log(`Download URL: ${url}`);
+
+                        res.send({ url });
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    res.status(500).send(error);
+                });
+        });
 
         // Movie recomended system end*******************************************
 
@@ -99,7 +294,7 @@ async function run() {
 
         let newData = [];
 
-        fs.createReadStream('new.csv')
+        fs.createReadStream('./new.csv')
             .pipe(csv())
             .on('data', (row) => {
                 newData.push(row);
@@ -187,155 +382,6 @@ async function run() {
         // Movie recomended system end*******************************************
 
 
-        app.get('/mostPopularMovies', async (req, res) => {
-            const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
-            res.send(result);
-        })
-
-        app.post('/allmovies', async (req, res) => {
-            const allmovies = req.body;
-
-            // Get the highest ID from the existing movie documents
-            const highestId = await allMoviesCollection.find({}).sort({ id: -1 }).limit(1).toArray();
-
-            // Set the new ID for the movie document to be inserted
-            allmovies.id = highestId.length === 0 ? 0 : highestId[0].id + 1;
-
-            const result = await allMoviesCollection.insertOne(allmovies);
-            res.send(result);
-        });
-
-        // app.post('/allmovies', async (req, res) => {
-        //     const allmovies = req.body;
-        //     const result = await allMoviesCollection.insertOne(allmovies);
-        //     res.send(result);
-        // })
-
-        //  movie upload in mongodb 
-
-        app.post('/addMovie', async (req, res) => {
-            const upLoaded = req.body;
-            const result = await allMoviesCollection.insertOne(upLoaded)
-            res.send(result);
-        });
-
-        //   all users get 
-
-        app.get('/allUsers', async (req, res) => {
-            const result = await allUsers.find({}).toArray();
-            res.send(result);
-        })
-        app.post('/userProfile', async (req, res) => {
-            const userProfile = req.body;
-            const result = await usersCollections.insertOne(userProfile)
-            res.send(result);
-        })
-
-
-
-        app.get('/userprofile', async (req, res) => {
-            const result = await usersCollections.find({}).toArray();
-            res.send(result);
-        })
-
-
-
-        // all movies get 
-
-        app.get('/allMovie', async (req, res) => {
-            const result = await allMoviesCollection.find({}).toArray();
-            res.send(result)
-        })
-
-
-        // delete button  
-
-        app.delete('/allMovie/:id', async (req, res) => {
-            const { id } = req.params;
-
-            const deleteId = { _id: ObjectId(id) };
-
-            const result = await allMoviesCollection.deleteOne(deleteId);
-
-            res.send(result);
-        });
-        //   update movie ---------------------
-
-        app.put('/updateMovie/:updateId', async (req, res) => {
-            const id = req.params.updateId;
-
-
-            const filter = { _id: ObjectId(id) };
-            const user = req.body;
-
-            const option = { upsert: true };
-            const updatedMovie = {
-                $set: user,
-            }
-
-            const result = await allMoviesCollection.updateOne(filter, updatedMovie, option);
-
-            res.send(result);
-        })
-
-        app.get('/MoviesForYou', async (req, res) => {
-            const result = await MoviesForYouCategoriCollection.find({}).toArray();
-        })
-        app.get('/movies', async (req, res) => {
-            const result = await allMoviesCollection.find({}).toArray();
-            res.send(result);
-        })
-
-        app.get('/allsearch', async (req, res) => {
-            const result = await allMoviesCollection.find().toArray();
-            res.send(result);
-        })
-
-        // get movie by category
-        app.get('/allmovie/:category', async (req, res) => {
-            const allmovies = req.params.category;
-            const getmovies = await allMoviesCollection.find({}).toArray();
-            const result = await getmovies.filter(getmovie => getmovie.category == allmovies);
-            res.send(result);
-        })
-
-        app.get('/movie/:id', async (req, res) => {
-            const allmovies = req.params.id;
-            const getmovies = await allMoviesCollection.find({}).toArray();
-            const result = await getmovies.find(getmovie => getmovie.id == allmovies);
-            res.send(result);
-        })
-
-        app.get('/comedies', async (req, res) => {
-            const comedies = await ComediesCollection.find({}).toArray();
-            res.send(comedies);
-        })
-
-
-        // reviews collection of users
-        app.post('/review', async (req, res) => {
-            const review = req.body;
-            const result = await reviewCollection.insertOne(review);
-            res.send(result);
-        });
-
-        //save user email and generate JWT token
-        app.put('/user/:email', async (req, res) => {
-            const email = req.params.email
-            const user = req.body
-            const filter = { email: email }
-            const options = { upsert: true }
-            const updateDoc = {
-                $set: user,
-            }
-            const result = await usersCollection.updateOne(filter, updateDoc, options)
-            console.log(result)
-
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN,
-                { expiresIn: '1d' })
-            console.log(token);
-            res.send({ result, token })
-        })
 
     }
 

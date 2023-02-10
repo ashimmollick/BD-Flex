@@ -6,11 +6,11 @@ const Recommended = ({ movies, video, setVideo }) => {
         console.log("click");
     }
     return (
-        <div className=" carousel-item w-full md:w-40 lg:w-40 m-1 md:m-2 image-full cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-110 ">
-            <div className='relative'>
+        <div style={{clear:"both"}} className="w-full cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-110">
+            <div className=''>
                 <figure onClick={
-                        () => handleVideo(movies.video)} className='poster-img'>
-                    <img
+                        () => handleVideo(movies.video)}>
+                    <img className='h-60 w-full object-cover rounded-md'
                         src={movies.poster_path} alt="Shoes" />
                 </figure>
                 {/* <h2 className=" absolute bottom-2 text-center md:text-xl  font-bold text-white  mx-2 ">{movies.original_title}</h2> */}

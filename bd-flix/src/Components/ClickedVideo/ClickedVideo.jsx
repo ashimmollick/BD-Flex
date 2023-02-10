@@ -9,6 +9,7 @@ import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
 import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
+import Main from '../../Main/Main';
 
 
 
@@ -84,104 +85,108 @@ const ClickedVideo = () => {
     };
     //End of Download-------------------------------------->
     return (
-        <div className='mx-2 md:mx-4'>
-            <div className='lg:grid grid-cols-3 gap-1'>
-                <div className='col-span-2'>
+        <>
+            <div className='mx-2 md:mx-4 relative top-20'>
 
-                    <div className='relative h-[500px] my-8'>
+                <div className=''>
+                    <div className='col-span-2'>
 
-                        {!play ?
-                            <div className='relative'>
-                                <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
-                                <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
+                        <div className='relative h-[500px]'>
 
-                            </div> :
-                            <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
-                            </video>}
-                        <button onClick={() => setPlay(!play)}>{play ? '' :
-                            <AiFillPlayCircle className='text-4xl md:text-6xl text-green-700 absolute top-2/4 left-2/4'></AiFillPlayCircle>}</button>
+                            {!play ?
+                                <div className='relative border'>
+                                    <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
+                                    <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
+                                </div> :
+                                <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
+                                </video>
+                            }
+                            <button onClick={() => setPlay(!play)}>{play ? '' :
+                                <AiFillPlayCircle className='text-4xl md:text-6xl text-green-700 absolute top-2/4 left-2/4'></AiFillPlayCircle>}</button>
 
-                    </div>
-                    <div className=''>
+                        </div>
+                        <div className=''>
 
-                        <div className='my-5 lg:flex justify-between'>
+                            <div className='my-5 lg:flex justify-between'>
 
-                            <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
-                            <div className='flex justify-center items-center gap-16 font-bold'>
-                                <div className='flex justify-center items-center gap-10'>
+                                <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
+                                <div className='flex justify-center items-center gap-16 font-bold'>
+                                    <div className='flex justify-center items-center gap-10'>
 
-                                    <div className={"" + (isLike ? "text-blue-500" : "")}>
-                                        <FaThumbsUp onClick={onLikeButtonClick}
-                                            className="text-2xl mx-auto cursor-pointer" />
-                                        <p className="text-xs">Likes {like}</p>
+                                        <div className={"" + (isLike ? "text-blue-500" : "")}>
+                                            <FaThumbsUp onClick={onLikeButtonClick}
+                                                className="text-xl cursor-pointer" />
+                                            <p className='text-xs -mt-1'>{like}</p>
+                                        </div>
+
+                                        <label htmlFor="reviewButton">
+                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
+                                        </label>
+
+
+                                        <div className=''>
+                                            <MdPlaylistAdd className='text-2xl mx-auto'></MdPlaylistAdd>
+                                            <p className='text-xs -mt-1'>WatchList</p>
+                                        </div>
+                                        <div>
+                                            <BiShareAlt className='text-xl mx-auto'></BiShareAlt>
+                                            <p className='text-xs'>Share</p>
+                                        </div>
+                                        <button onClick={handleDownload} className='cursor-pointer'>
+                                            <FiDownload className='text-xl mx-auto'></FiDownload>
+                                            <p className='text-xs'>Download</p>
+                                        </button>
                                     </div>
-                                    <label htmlFor="reviewButton">
-                                        <FaCommentAlt className="text-2xl mx-auto cursor-pointer" />
-                                    </label>
-
-
-                                    <div className=''>
-                                        <MdPlaylistAdd className='text-2xl mx-auto'></MdPlaylistAdd>
-                                        <p className='text-xs -mt-1'>WatchList</p>
-                                    </div>
-                                    <div>
-                                        <BiShareAlt className='text-xl mx-auto'></BiShareAlt>
-                                        <p className='text-xs'>Share</p>
-                                    </div>
-                                    <button onClick={handleDownload} className='cursor-pointer'>
-                                        <FiDownload className='text-xl mx-auto'></FiDownload>
-                                        <p className='text-xs'>Download</p>
-                                    </button>
                                 </div>
+                            </div>
+
+
+                            <div className='bg-[#0c0620] my-5 p-5 rounded'>
+                                <p className='font-bold'>{data.title ? data.title : data.original_title}</p>
+                                <p className='text-xl my-2 font-bold'>Description</p>
+                                <p className='text-md'>{data.overview}</p>
+                            </div>
+                            <div>
+                                <ClickedVideoReview data={data} />
                             </div>
                         </div>
 
 
-                        <div className='bg-slate-900 my-5 p-5 rounded'>
-                            <p className='font-bold'>{data.title ? data.title : data.original_title}</p>
-                            <p className='text-xl my-2'>Description</p>
-                            <p className='text-xs text-'>{data.overview}</p>
-                        </div>
-                        <div>
-                            <ClickedVideoReview data={data} />
+
+                    </div>
+                    {/* Recomendation------------------------------------------------------------------------ */}
+                    <div className=''>
+                        <p className='text-md font-bold mb-3'>Recommended</p>
+                        <div className='mx-auto'>
+                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
+                                {
+                                    recomended?.slice(0, 6).map(movies =>
+                                        <Recommended
+                                            video={video}
+                                            setVideo={setVideo}
+                                            movies={movies}></Recommended>
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
 
-
-
+                    {/* Recomendation------------------------------------------------------------------------ */}
                 </div>
-                {/* Recomendation------------------------------------------------------------------------ */}
-                <div className='mx-auto my-5'>
-                    <p className='text-xl font-bold mb-3 text-center'>Recommended</p>
+                <div className='my-5 mb-20' style={{ clear: "both" }} >
+                    <p className='text-md font-bold mb-3'>More from this category</p>
                     <div className='mx-auto'>
-                        <div className="grid lg:grid-cols-2 grid-cols-3 gap-5">
+                        <div className="grid lg:grid-cols-7 md:grid-cols-4 grid-cols-2 gap-5">
                             {
-                                recomended?.slice(0, 6).map(movies =>
-                                    <Recommended
-                                        video={video}
-                                        setVideo={setVideo}
-                                        movies={movies}></Recommended>
-                                )
-                            }
+                                PopularMovies?.map(movies =>
+                                    <MoreFromThisCategory movies={movies}></MoreFromThisCategory>
+                                )}
                         </div>
                     </div>
-                </div>
 
-                {/* Recomendation------------------------------------------------------------------------ */}
-            </div>
-            <div className='my-5'>
-                <p className='text-xl font-bold mb-3 text-center'>More from this category</p>
-                <div className='mx-auto'>
-                    <div className="grid lg:grid-cols-7 md:grid-cols-4 grid-cols-3 gap-4">
-                        {
-                            PopularMovies?.map(movies =>
-                                <MoreFromThisCategory movies={movies}></MoreFromThisCategory>
-                            )}
-                    </div>
                 </div>
-
             </div>
-        </div>
+        </>
     );
 };
 

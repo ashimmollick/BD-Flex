@@ -17,6 +17,7 @@ const ClickedVideoReview = ({ data }) => {
         const comments = form.comments.value;
         const rating = form.rating.value;
         const postId = data._id;
+        const likes=[]
 
         const review = {
             email,
@@ -24,7 +25,9 @@ const ClickedVideoReview = ({ data }) => {
             image,
             comments,
             rating,
-            postId
+            postId,
+            likes
+            
         }
 
         console.log(review)

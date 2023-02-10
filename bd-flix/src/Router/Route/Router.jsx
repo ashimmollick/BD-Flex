@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Admin from "../../Components/Banner/admin/Admin";
+import AllCategories from "../../Components/Banner/admin/Layout/AllCategories";
 import AllMovies from "../../Components/Banner/admin/Layout/AllMovies";
 
 import AllUsers from "../../Components/Banner/admin/Layout/AllUsers";
@@ -130,6 +131,11 @@ const router = createBrowserRouter([
             {
                 path: '/admin/updatemovie',
                 element: <MovieUpdate />
+
+            },
+            {
+                path: '/admin/allCategories',
+                element: <AllCategories></AllCategories>
 
             },
         ]

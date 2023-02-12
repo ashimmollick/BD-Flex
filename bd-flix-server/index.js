@@ -56,6 +56,24 @@ app.get('/', (req, res) => {
     res.send('hello');
 })
 
+//verifying jwt token
+function verifyfyJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send('unauthorized access')
+    }
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
+        if (err) {
+            return res.status(403).send({ message: 'forbidden access' })
+        }
+        req.decoded = decoded;
+        next();
+
+    })
+
+
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ac1kfa5.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -72,6 +90,9 @@ async function run() {
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
         const usersCollections = client.db("bdFlix").collection("userProfile");
+
+        //Category collection
+        const categoryCollection = client.db("bdFlix").collection("category");
 
 
         app.get('/mostPopularMovies', async (req, res) => {
@@ -106,12 +127,157 @@ async function run() {
             res.send(result);
         });
 
+
+        //  add categories
+        app.post('/category', async (req, res) => {
+            const category = req.body;
+            const result = await categoryCollection.insertOne(category);
+            res.send(result);
+        })
+
+        //  get categories
+        app.get('/category', async (req, res) => {
+            const result = await categoryCollection.find({}).toArray();
+            res.send(result);
+        })
+
+        //   all users get 
+
+
+
+
         //   all users get 
 
         app.get('/allUsers', async (req, res) => {
+
+
+
             const result = await allUsers.find({}).toArray();
             res.send(result);
         })
+        // normal log in save data
+
+        app.post('/allUsers', async (req, res) => {
+            const users = req.body;
+            const result = await allUsers.insertOne(users)
+            res.send(result);
+        })
+
+
+
+
+
+
+        //delete user
+
+        app.delete('/allUsers/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await allUsers.deleteOne(filter);
+            res.send(result);
+        })
+
+
+
+        // provider log in save data
+
+        app.put('/allUsers/:id', async (req, res) => {
+            const email = req.params.id;
+            const query = { email: email };
+            console.log(email)
+            const user = req.body;
+            const options = { upsert: true }
+            const updatedUser = {
+                $set: {
+                    name: user.name,
+                    email: user.email,
+                    photoURL: user.photoURL
+                }
+
+
+            }
+            if (user.email) {
+                const result = await allUsers.updateOne(query, updatedUser, options)
+                res.send(result)
+            }
+        })
+
+
+        //generate token for users
+        app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const user = await allUsers.findOne(query);
+            if (user) {
+                const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
+                return res.send({ ACCESS_TOKEN: token })
+            }
+            console.log(user);
+            res.status(403).send({ ACCESS_TOKEN: '' })
+
+        })
+
+
+        // app.get('/users/:email', async (req, res) => {
+        //     const query = {};
+        //     console.log(query)
+        //     const users = await usersCollection.find(query);
+        //     const newusers = await users.toArray();
+        //     const user = newusers.find(newuser => newuser.email === req.params.email)
+        //     res.send(user);
+        // })
+        //make admin
+
+        app.put('/allUsers/admin/:id', verifyfyJWT, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const query = { email: decodedEmail }
+            const user = await allUsers.findOne(query);
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ message: 'forbidden accces' })
+            }
+
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    role: 'admin'
+                }
+            }
+            const result = await allUsers.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+        //make admin to member
+        app.put('/allUsers/deleteAdmin/:id', verifyfyJWT, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const query = { email: decodedEmail }
+            const user = await allUsers.findOne(query);
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ message: 'forbidden accces' })
+            }
+
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    role: ''
+                }
+            }
+            const result = await allUsers.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+
+        //get admin
+        app.get('/allUsers/admin/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email }
+            const user = await allUsers.findOne(query);
+            res.send({ isAdmin: user?.role === 'admin' });
+        })
+
+        //user profile post
         app.post('/userProfile', async (req, res) => {
             const userProfile = req.body;
             const result = await usersCollections.insertOne(userProfile)
@@ -119,12 +285,29 @@ async function run() {
         })
 
 
-
+        //userprofile get
         app.get('/userprofile', async (req, res) => {
             const result = await usersCollections.find({}).toArray();
             res.send(result);
         })
-
+        //update userprofile
+        app.put('/userprofile/:id', async (req, res) => {
+            const email = req.params.id;
+            const query = { email: email };
+            const user = req.body;
+            const options = { upsert: true }
+            const updatedUser = {
+                $set: {
+                    name: user.name,
+                    email: user.email,
+                    photoURL: user.photoURL
+                }
+            }
+            if (user.email) {
+                const result = await usersCollections.updateOne(query, updatedUser, options)
+                res.send(result)
+            }
+        })
 
         // update user
         app.put('/user/:id', async (req, res) => {

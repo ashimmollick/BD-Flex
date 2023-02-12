@@ -20,8 +20,11 @@ const Daiyer = () => {
             <li  className="bg-green-600 mb-6 text-center hover:bg-teal-500 p-2 rounded-md font-bold">
               <Link to="/admin/allmovies">All Movies</Link>
             </li>
-            <li  className="bg-green-600  text-center hover:bg-teal-500 p-2 rounded-md font-bold">
+            <li  className="bg-green-600 mb-6 text-center hover:bg-teal-500 p-2 rounded-md font-bold">
               <Link to="/admin/allusers">All Users</Link>
+            </li>
+            <li  className="bg-green-600  text-center hover:bg-teal-500 p-2 rounded-md font-bold">
+              <Link to="/admin/allCategories">All Categories</Link>
             </li>
           </ul>
         </div>

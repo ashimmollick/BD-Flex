@@ -1,5 +1,6 @@
 import React from 'react';
 import useTitle from '../../../Hooks/UseTitle/UseTitle';
+import Brand from '../Brand';
 import Slider from '../IndexSlider/Slider';
 import MostPopular from '../MostPopular/MostPopular';
 import MoviesForYou from '../MoviesForYou/MoviesForYou';
@@ -12,9 +13,9 @@ const HomePage = () => {
         <div>
             <Slider></Slider>
             <Filter></Filter>
+            <Brand></Brand>
             <MostPopular></MostPopular>
             <MoviesForYou></MoviesForYou><br /><br />
-            {/* <SeriesIndex></SeriesIndex> */}
         </div>
     );
 };

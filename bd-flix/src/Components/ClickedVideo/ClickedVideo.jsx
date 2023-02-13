@@ -80,7 +80,6 @@ const ClickedVideo = () => {
                 console.log(data);
                 if (user?.email === data.userEmail) {
                     setIsLiked(true)
-                    toast('refetch')
                 }
                 setDoFetch(false)
             })
@@ -118,7 +117,6 @@ const ClickedVideo = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
-                    toast("Liked")
                     // setDoFetch(false)
                     setIsLiked(true)
                 }
@@ -182,7 +180,6 @@ const ClickedVideo = () => {
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
-                    toast("unliked")
                     setDoFetch(true)
                     // setIsLiked(true)
                 }

@@ -9,7 +9,8 @@ import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
 import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
-import Main from '../../Main/Main';
+import Share from './Share/Share';
+
 
 
 
@@ -129,9 +130,20 @@ const ClickedVideo = () => {
                                             <p className='text-xs -mt-1'>WatchList</p>
                                         </div>
                                         <div>
-                                            <BiShareAlt className='text-xl mx-auto'></BiShareAlt>
-                                            <p className='text-xs'>Share</p>
+                                            <label htmlFor="my-modal-3" ><BiShareAlt className='text-xl mx-auto'></BiShareAlt>
+                                                <p className='text-xs'>Share</p></label>
+                                            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+                                            <div className="modal">
+                                                <div className="modal-box relative">
+                                                    <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                                                    <Share data={data}></Share>
+                                                </div>
+                                            </div>
                                         </div>
+
+
+
+
                                         <button onClick={handleDownload} className='cursor-pointer'>
                                             <FiDownload className='text-xl mx-auto'></FiDownload>
                                             <p className='text-xs'>Download</p>

@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const UploadMovies = () => {
+
+
+
+  
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+
+    fetch('http://localhost:5000/category')
+        .then(res => res.json())
+        .then(data => {
+            setCategories(data)
+           
+        })
+
+}, [] )
+
+
+
   const [loading, setLoading] = useState(false);
   function getRandomInt() {
     let min = Math.ceil(1);
@@ -21,6 +40,9 @@ const UploadMovies = () => {
     const original_title = event.target.original_title.value
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
+
+
+
 
 
 

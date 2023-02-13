@@ -16,6 +16,7 @@ const UploadMovies = () => {
     const poster_path = event.target.poster_path.files[0];
     const video = event.target.video.files[0];
     const vote_average = "";
+    const likeCount = 0
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
     let catagoriesWithOutSpace = catagories
@@ -55,6 +56,7 @@ const UploadMovies = () => {
               original_title,
               overview,
               vote_average,
+              likeCount,
               // video
             }
             fetch('https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/addMovie', {

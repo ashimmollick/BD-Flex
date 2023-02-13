@@ -12,9 +12,14 @@ const Reg = () => {
 
   const [loading, setloading] = useState(false)
   const [deviceId, setDeviceId] = useState("");
-
+  const [deviceName, setDeviceName] = useState("");
   useEffect(() => {
-    setDeviceId(window.navigator.userAgent);
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setDeviceId(data.ip);
+        setDeviceName(navigator.userAgent)
+      });
   }, []);
 
   useTitle('Signup')
@@ -112,7 +117,7 @@ const Reg = () => {
 
 
   const saveUser = (name, email, photoURL) => {
-    const user = { name, email, photoURL, deviceId };
+    const user = { name, email, photoURL, deviceId, deviceName };
     fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers', {
 
       method: "POST",

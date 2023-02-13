@@ -92,7 +92,11 @@ async function run() {
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
         //Category collection
-        const categoryCollection = client.db("bdFlix").collection("category");
+        const categoryCollection = client.db("bdFlix").collection("category");  
+        
+        // Like collection
+        const likesCollection = client.db("bdFlix").collection('likes');
+
 
 
         app.get('/mostPopularMovies', async (req, res) => {
@@ -397,6 +401,52 @@ async function run() {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
+
+
+        //----------- check isLiked or not-----
+
+        app.get('/isLiked', async (req, res) => {
+            const email = req.query.email;
+            const postId = req.query.postId;
+   
+            const query = { userEmail: email, videoId: postId }
+
+            
+            const cursor = await likesCollection.findOne(query);
+            
+            // console.log(cursor);
+            res.send(cursor);
+         })
+
+
+        //----------- LIKE -------------
+
+        app.post('/likes', async (req, res) => {
+            const likes = req.body;
+            const result = await likesCollection.insertOne(likes);
+            res.send(result);
+         })
+
+         app.put('/videoLike', async (req, res) => {
+            const postId = req.body.id;
+            const increase = req.body.increase;
+            const query = {_id: postId};
+            const options = { upsert: true };
+               const result = await allMoviesCollection.updateOne( query,{ $inc: {likeCount: increase }},);
+               res.send(result);
+         })
+
+        //----------- UNLIKE -------------
+        app.delete('/likes', async (req, res) => {
+            const email = req.body.userEmail;
+            const videoId = req.body.videoId;
+            const query = { userEmail: email, videoId: videoId }
+            const result = await likesCollection.deleteOne(query);
+            if (result.deletedCount === 1) {
+               res.send(true);
+            }
+         })
+
 
 
         // reviews collection of users

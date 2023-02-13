@@ -445,99 +445,96 @@ async function run() {
         });
 
         // Movie recomended system end*******************************************
+        // const Natural = require('natural');
+        // const fs = require('fs');
+        // const csv = require('csv-parser');
+        // let newData = [];
+        // fs.createReadStream('./new.csv')
+        //     .pipe(csv())
+        //     .on('data', (row) => {
+        //         newData.push(row);
+        //     })
+        //     .on('end', () => {
+        //         console.log('CSV file successfully processed');
+        //     });
 
-        const Natural = require('natural');
-        const fs = require('fs');
-        const csv = require('csv-parser');
+        // app.get('/recommend/:movie', async (req, res) => {
+        //     try {
+        //         let movie = req.params.movie;
+        //         let index;
+        //         for (let i = 0; i < newData.length; i++) {
+        //             const lowercaseMovie = newData[i].title.toLowerCase();
 
-        let newData = [];
+        //             if (newData[i].title === movie || lowercaseMovie == movie) {
+        //                 index = i;
+        //                 break;
+        //             }
+        //         }
+        //         let allTags = newData.map(data => data.tags);
+        //         let TfIdf = new Natural.TfIdf();
+        //         TfIdf.addDocument(allTags);
+        //         let similarity = [];
+        //         for (let i = 0; i < allTags.length; i++) {
+        //             similarity.push(TfIdf.tfidf(allTags[i], index));
+        //         }
+        //         let distances = [];
+        //         for (let i = 0; i < allTags.length; i++) {
+        //             if (i === index) {
+        //                 continue;
+        //             }
+        //             distances.push({ index: i, distance: similarity[i] });
+        //         }
+        //         distances.sort((a, b) => b.distance - a.distance);
+        //         let recommendedMovies = [];
+        //         for (let i = 0; i < 10; i++) {
+        //             recommendedMovies.push(newData[distances[i].index].title);
+        //         }
+        //         const words = [];
+        //         for (const movie of recommendedMovies) {
+        //             const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
+        //             for (const word of movieWords) {
+        //                 words.push(word);
+        //             }
+        //             words.push(req.params.movie);
+        //         }
 
-        fs.createReadStream('./new.csv')
-            .pipe(csv())
-            .on('data', (row) => {
-                newData.push(row);
-            })
-            .on('end', () => {
-                console.log('CSV file successfully processed');
-            });
+        //         let wordsLowerCase = words.map(word => word.toLowerCase());
+        //         allMoviesCollection.createIndex({ original_title: "text" });
 
-        app.get('/recommend/:movie', async (req, res) => {
-            try {
-                let movie = req.params.movie;
-                let index;
-                for (let i = 0; i < newData.length; i++) {
-                    const lowercaseMovie = newData[i].title.toLowerCase();
+        //         allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
+        //             if (error) {
+        //                 return console.log(error);
+        //             }
+        //             res.send(result);
+        //         });
+        //     } catch (error) {
+        //         if (error instanceof TypeError || Object.keys(result).length === 0) {
+        //             res.send(await generateRandomData());
+        //         }
+        //     }
+        // });
+        // const axios = require('axios');
+        // async function generateRandomData() {
+        //     try {
+        //         const response = await axios.get('http://localhost:5000/allMovie');
+        //         const data = response.data;
 
-                    if (newData[i].title === movie || lowercaseMovie == movie) {
-                        index = i;
-                        break;
-                    }
-                }
-                let allTags = newData.map(data => data.tags);
-                let TfIdf = new Natural.TfIdf();
-                TfIdf.addDocument(allTags);
-                let similarity = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    similarity.push(TfIdf.tfidf(allTags[i], index));
-                }
-                let distances = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    if (i === index) {
-                        continue;
-                    }
-                    distances.push({ index: i, distance: similarity[i] });
-                }
-                distances.sort((a, b) => b.distance - a.distance);
-                let recommendedMovies = [];
-                for (let i = 0; i < 10; i++) {
-                    recommendedMovies.push(newData[distances[i].index].title);
-                }
-                const words = [];
-                for (const movie of recommendedMovies) {
-                    const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
-                    for (const word of movieWords) {
-                        words.push(word);
-                    }
-                    words.push(req.params.movie);
-                }
+        //         const randomData = [];
+        //         while (randomData.length < 6) {
+        //             const randomIndex = Math.floor(Math.random() * data.length);
+        //             const randomItem = data[randomIndex];
+        //             if (!randomData.includes(randomItem)) {
+        //                 randomData.push(randomItem);
+        //             }
+        //         }
 
-                let wordsLowerCase = words.map(word => word.toLowerCase());
-                allMoviesCollection.createIndex({ original_title: "text" });
-
-                allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    res.send(result);
-                });
-            } catch (error) {
-                if (error instanceof TypeError || Object.keys(result).length === 0) {
-                    res.send(await generateRandomData());
-                }
-            }
-        });
-        const axios = require('axios');
-        async function generateRandomData() {
-            try {
-                const response = await axios.get('http://localhost:5000/allMovie');
-                const data = response.data;
-
-                const randomData = [];
-                while (randomData.length < 6) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const randomItem = data[randomIndex];
-                    if (!randomData.includes(randomItem)) {
-                        randomData.push(randomItem);
-                    }
-                }
-
-                return randomData;
-            } catch (error) {
-                console.error(error);
-                return [];
-            }
-        }
-        // Movie recomended system end*******************************************
+        //         return randomData;
+        //     } catch (error) {
+        //         console.error(error);
+        //         return [];
+        //     }
+        // }
+        // // Movie recomended system end*******************************************
 
 
 

@@ -122,8 +122,8 @@ const Navbar = () => {
                             }
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-xs btn-ghost normal-case text-xl mx-20">
-                        <div className='btn btn-xs rounded font-mono uppercase bg-none shadow-inner bg-transparent border-none text-sm lg:text-xl font-bold text-white'>
+                    <Link to="/" className="normal-case text-xl">
+                        <div className='btn rounded font-mono uppercase shadow-inner bg-transparent border-none text-sm lg:text-xl font-bold text-white'>
                             <img className='w-4 lg:w-12' src={logo} alt='' />-FLIX
                         </div>
                     </Link>
@@ -135,8 +135,9 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
 
-                    <div className="dropdown">
-                        <label tabIndex={0} ><input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-xl border-white bg-transparent" /></label>
+                    <div className="dropdown mx-8">
+                        <label tabIndex={0} >
+                            <input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-lg border-white bg-transparent" /></label>
                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li>{
                                 AllMoviesSearch?.slice(0, 3).map(it => {

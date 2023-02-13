@@ -2,31 +2,17 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../Authprovider';
-
 import { toast } from 'react-toastify';
 import useTitle from '../../../../Hooks/UseTitle/UseTitle';
 import { setAuthToken } from '../../../../Token/AuthToken';
-
-
-
-
-
-
-
+import jugle from '../../../../images/jugle.jpg';
 const Login = () => {
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
 
     useTitle('Login')
 
-
-
-
-
-
-
     const { signIn, user } = useContext(AuthContext)
-
     const navigate = useNavigate()
     const location = useLocation();
     const form = location?.state?.from?.pathname || '/';
@@ -121,49 +107,42 @@ const Login = () => {
 
 
     return (
-        <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse">
-                <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold">login now!</h1>
-                    <p className="py-6">I know all about this. For years I have been continuously improving, accumulating knowledge and experience.</p>
-                </div>
-
-                <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                    <form onSubmit={handlelogin} className="card-body">
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Email</span>
-                            </label>
-                            <input type="text" name="email" placeholder="email" className="input input-bordered" />
-                        </div>
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Password</span>
-                            </label>
-                            <input type="password" name="password" placeholder="password" className="input input-bordered" />
-                            <label className="label">
-                                <Link to='/forget' className="label-text-alt link  text-green-700 hover:text-green-400">Forgot password?</Link>
-                            </label>
-                        </div>
-
-                        <div>
-                            {/* <h1 className='text-red-400 font-bold'>{error}</h1> */}
-                            {/* Firebase: Error (auth/email-already-in-use) */}
-                        </div>
-                        <div className="form-control mt-6">
-                            <input type="submit" className="btn btn-primary text-green-700 hover:text-green-400 lg:text-2xl  focus:outline-none " value={loading ? "loading..." : 'login'} />
-
-                        </div>
-                        <div className="form-control mt-6">
-                            <input onClick={handlegoogle} type="submit" className="btn bg-green-700 text-white hover:text-green-400 lg:text-lg  focus:outline-none " value="Google login" />
-
-                        </div>
-
-                    </form>
-                    <p className='text-center my-5'>new to BDFLIX? <Link className="label-text-alt link link-hover text-green-600 font-bold py-10 " to='/signup'>Sign Up</Link></p>
-                </div>
-            </div>
+        <div className="hero min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${jugle})` }}>
+  <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse">
+    <div className="hidden lg:block w-1/2 h-full bg-black opacity-25"></div>
+    <div className="card flex-shrink-0 w-full max-w-sm">
+      <form onSubmit={handlelogin} className="card-body bg-[#040714] p-12">
+        <h2 className="text-3xl font-bold mb-6">Login to BDFLIX</h2>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Email</span>
+          </label>
+          <input type="text" name="email" placeholder="email" className="input input-bordered bg-transparent border-2 border-green-400 focus:outline-none focus:border-green-600" />
         </div>
+        <div className="form-control mt-6">
+          <label className="label">
+            <span className="label-text">Password</span>
+          </label>
+          <input type="password" name="password" placeholder="password" className="input input-bordered border-2 bg-transparent border-green-400 focus:outline-none focus:border-green-600" />
+        </div>
+        <div className="form-control mt-6">
+          <input type="submit" className="btn bg-transparent text-white hover:bg-green-800 focus:outline-none" value={loading ? "loading..." : 'Login'} />
+        </div>
+        <div className="form-control mt-6">
+          <input onClick={handlegoogle} type="submit" className="btn bg-transparent text-white hover:bg-green-800 focus:outline-none" value="🌐 Google Login" />
+        </div>
+        <p className='text-center mt-6 text-sm'>
+          New to BDFLIX? <Link className="link-hover text-green-600 font-bold" to='/signup'>Sign Up</Link>
+        </p>
+        <div>
+          {/* <h1 className='text-red-400 font-bold'>{error}</h1> */}
+          {/* Firebase: Error (auth/email-already-in-use) */}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
     );
 };
 

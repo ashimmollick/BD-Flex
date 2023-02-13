@@ -19,7 +19,7 @@ function App() {
 const MainContent = () => {
 
   return (
-    <div>
+    <div className='bg-[#040714]'>
       <RouterProvider router={router} />
       <ToastContainer
         position="top-center"

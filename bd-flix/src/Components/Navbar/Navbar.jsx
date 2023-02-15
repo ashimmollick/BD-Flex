@@ -29,7 +29,8 @@ const Navbar = () => {
         logout()
             .then(() => {
 
-                Navigate('/')
+                // Navigate('/Welcome')
+                window.location.replace("http://localhost:3000/Welcome")
             }).catch(error => console.error(error))
     }
 
@@ -138,7 +139,7 @@ const Navbar = () => {
                     <div className="dropdown mx-8">
                         <label tabIndex={0} >
                             <input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-lg border-white bg-transparent" /></label>
-                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 ">
                             <li>{
                                 AllMoviesSearch?.slice(0, 3).map(it => {
                                     return (
@@ -158,7 +159,7 @@ const Navbar = () => {
                         <>
                             {
                                 isAdmin && <>
-                                    <li><Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link></li>
+                                   <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
 
                                 </>
                             }

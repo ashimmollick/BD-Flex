@@ -419,6 +419,15 @@ async function run() {
          })
 
 
+        app.get('/numoflike', async (req, res) => {
+            const postId = req.query.postId;
+            const query = {_id: postId }
+            const cursor = await allMoviesCollection.findOne(query);
+            
+            res.send(cursor);
+         })
+
+
         //----------- LIKE -------------
 
         app.post('/likes', async (req, res) => {

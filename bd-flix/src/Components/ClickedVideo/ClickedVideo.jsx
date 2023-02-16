@@ -25,12 +25,18 @@ const ClickedVideo = () => {
 
     const [isLiked, setIsLiked] = useState(false);
     const [doFetch, setDoFetch] = useState(false);
+    const [newData, setNewData] = useState(data);
 
     useEffect(() => {
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])
+
+
+
+    console.log(data);
+
 
     const PopularMovies = [
 
@@ -75,11 +81,21 @@ const ClickedVideo = () => {
                 if (user?.email === data.userEmail) {
                     setIsLiked(true)
                 }
-                setDoFetch(false)
             })
-    }, [doFetch, user?.email, data._id])
+    }, [ user?.email, data._id])
 
-    // doFetch, user?.email, data._id
+
+
+    const showLike = ()=> {
+
+        fetch(`http://localhost:5000/numoflike/?postId=${data._id}`)
+            .then(res => res.json())
+            .then(data => {
+                setNewData(data)
+            })
+            .catch(er => console.error("notun error",er));
+
+    }
 
 
     // fetch like information /\
@@ -88,11 +104,6 @@ const ClickedVideo = () => {
 
 
     // Start Like and dislike post---------------------------------------->
-
-
-
-
-
 
     const handleLike = () => {
 
@@ -129,11 +140,11 @@ const ClickedVideo = () => {
             .then(data => {
                 if (data.acknowledged) {
                     setDoFetch(true)
+                    showLike()
                     // setIsLiked(true)
                 }
             })
             .catch(er => console.error(er));
-
 
 
     }
@@ -175,15 +186,12 @@ const ClickedVideo = () => {
             .then(data => {
                 if (data.acknowledged) {
                     setDoFetch(true)
-                    // setIsLiked(true)
+                    showLike()
                 }
             })
             .catch(er => console.error(er));
 
-
     }
-
-
 
 
 
@@ -258,12 +266,12 @@ const ClickedVideo = () => {
                                             isLiked ?
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleDisLike} className='' > <RiThumbUpFill className='text-xl text-green-500 -mb-1'></RiThumbUpFill> </button>
-                                                    <p className='text-[13px]'>{data.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount}</p>
                                                 </div>
                                                 :
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleLike} className='' > <RiThumbUpLine className='text-xl  -mb-1'></RiThumbUpLine> </button>
-                                                    <p className='text-[13px]'>{data.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount}</p>
                                                 </div>
                                         }
 

@@ -12,7 +12,7 @@ const AllMovies = () => {
     const [refresh, setRefresh] = useState(true)
 
     useEffect(() => {
-        fetch("https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allMovie")
+        fetch("http://localhost:5000/allMovie")
             .then(res => res.json())
             .then(data => {
                 setAllMovie(data)

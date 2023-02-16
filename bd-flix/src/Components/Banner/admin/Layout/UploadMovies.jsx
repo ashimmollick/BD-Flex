@@ -11,7 +11,7 @@ const UploadMovies = () => {
 
   useEffect(() => {
 
-    fetch('http://localhost:5000/category')
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
         .then(res => res.json())
         .then(data => {
             setCategories(data)
@@ -52,11 +52,11 @@ const UploadMovies = () => {
     const formvideo = new FormData();
     formvideo.append('filename', video);
     setLoading(true)
-    const url = "http://localhost:5000/uploadPhoto"
+    const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
 
     // video upload firebase-------------------------
-    fetch('http://localhost:5000/uploadVideo', {
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/uploadVideo', {
       method: 'POST',
       body: formvideo,
 
@@ -89,7 +89,6 @@ const UploadMovies = () => {
               .then(res => res.json())
               .then(data => {
                 // addMovie.reload()
-                console.log(data);
                 setLoading(false)
                 toast.success('Your Product is added successfully');
               })

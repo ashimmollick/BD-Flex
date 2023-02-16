@@ -14,7 +14,7 @@ const MovieUpdate = (singleMovie) => {
 
   useEffect(() => {
 
-    fetch('http://localhost:5000/category')
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
         .then(res => res.json())
         .then(data => {
           setNewCategories(data)
@@ -68,8 +68,6 @@ const MovieUpdate = (singleMovie) => {
       .then(ImageData => {
 
 
-console.log(ImageData)
-
         const updateMovie = {
           image: ImageData.data.url,
           category: movieWithoutSpaces,
@@ -80,7 +78,6 @@ console.log(ImageData)
           video
         }
 
-        console.log(updateMovie)
 
 
         fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/updateMovie/${updateMovie}`, {

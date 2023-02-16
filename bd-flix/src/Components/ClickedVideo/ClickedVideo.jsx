@@ -27,15 +27,10 @@ const ClickedVideo = () => {
     const [doFetch, setDoFetch] = useState(false);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/recommend/${data.original_title}`)
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])
-
-
-
-    console.log(data);
-
 
     const PopularMovies = [
 
@@ -74,10 +69,9 @@ const ClickedVideo = () => {
     // fetch isliked information \/
 
     useEffect(() => {
-        fetch(`http://localhost:5000/isLiked/?email=${user?.email}&postId=${data._id}`)
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (user?.email === data.userEmail) {
                     setIsLiked(true)
                 }
@@ -107,7 +101,7 @@ const ClickedVideo = () => {
             videoId: data._id
         }
 
-        fetch('http://localhost:5000/likes', {
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -124,7 +118,7 @@ const ClickedVideo = () => {
             .catch(er => console.error(er));
 
 
-        fetch('http://localhost:5000/videoLike', {
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -154,7 +148,7 @@ const ClickedVideo = () => {
             videoId: data._id
         }
 
-        fetch('http://localhost:5000/likes', {
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json'
@@ -170,7 +164,7 @@ const ClickedVideo = () => {
             .catch(er => console.error(er));
 
 
-        fetch('http://localhost:5000/videoLike', {
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'

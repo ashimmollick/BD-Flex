@@ -12,13 +12,12 @@ const Reg = () => {
 
   const [loading, setloading] = useState(false)
   const [deviceId, setDeviceId] = useState("");
-  const [deviceName, setDeviceName] = useState("");
+
   useEffect(() => {
     fetch('https://api.ipify.org?format=json')
       .then(response => response.json())
       .then(data => {
         setDeviceId(data.ip);
-        setDeviceName(navigator.userAgent)
       });
   }, []);
 
@@ -58,7 +57,7 @@ const Reg = () => {
         createUser(email, password)
           .then(result => {
             const user = result.user;
-            console.log(user);
+            
             setError('');
             navigate('/')
             form.reset();
@@ -114,10 +113,8 @@ const Reg = () => {
       .catch(error => console.error(error));
   }
 
-
-
   const saveUser = (name, email, photoURL) => {
-    const user = { name, email, photoURL, deviceId, deviceName };
+    const user = { name, email, photoURL, deviceId };
     fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers', {
 
       method: "POST",
@@ -129,7 +126,7 @@ const Reg = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        
         getUserToken(email)
       })
   }
@@ -137,7 +134,7 @@ const Reg = () => {
 
 
   const getUserToken = email => {
-    console.log(email, 'getuser')
+   
     fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
       .then(res => res.json())
       .then(data => {

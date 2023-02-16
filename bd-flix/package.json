@@ -29,6 +29,7 @@
     "react-toastify": "^9.1.1",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
+    "three": "^0.149.0",
     "use-query": "^1.0.2",
     "web-vitals": "^2.1.4"
   },

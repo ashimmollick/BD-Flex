@@ -92,8 +92,8 @@ async function run() {
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
         //Category collection
-        const categoryCollection = client.db("bdFlix").collection("category");  
-        
+        const categoryCollection = client.db("bdFlix").collection("category");
+
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
 
@@ -188,7 +188,7 @@ async function run() {
         app.put('/allUsers/:id', async (req, res) => {
             const email = req.params.id;
             const query = { email: email };
-            console.log(email)
+
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
@@ -216,7 +216,7 @@ async function run() {
                 const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
                 return res.send({ ACCESS_TOKEN: token })
             }
-            console.log(user);
+
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
@@ -408,15 +408,15 @@ async function run() {
         app.get('/isLiked', async (req, res) => {
             const email = req.query.email;
             const postId = req.query.postId;
-   
+
             const query = { userEmail: email, videoId: postId }
 
-            
+
             const cursor = await likesCollection.findOne(query);
-            
+
             // console.log(cursor);
             res.send(cursor);
-         })
+        })
 
 
         //----------- LIKE -------------
@@ -425,16 +425,16 @@ async function run() {
             const likes = req.body;
             const result = await likesCollection.insertOne(likes);
             res.send(result);
-         })
+        })
 
-         app.put('/videoLike', async (req, res) => {
+        app.put('/videoLike', async (req, res) => {
             const postId = req.body.id;
             const increase = req.body.increase;
-            const query = {_id: postId};
+            const query = { _id: postId };
             const options = { upsert: true };
-               const result = await allMoviesCollection.updateOne( query,{ $inc: {likeCount: increase }},);
-               res.send(result);
-         })
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
 
         //----------- UNLIKE -------------
         app.delete('/likes', async (req, res) => {
@@ -443,9 +443,9 @@ async function run() {
             const query = { userEmail: email, videoId: videoId }
             const result = await likesCollection.deleteOne(query);
             if (result.deletedCount === 1) {
-               res.send(true);
+                res.send(true);
             }
-         })
+        })
 
 
 
@@ -493,6 +493,15 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
+        //   get device ip user--------------------------------------------
+        app.get('/check-user', async (req, res) => {
+            const { email, deviceId } = req.query;
+            const user = await usersCollection.findOne({ email: email, deviceId: deviceId });
+            const userExists = Boolean(user);
+            res.send({ userExists });
+        });
+        //   get device ip user-------------------------------------
+
 
         // Movie recomended system end*******************************************
         // const Natural = require('natural');
@@ -566,7 +575,7 @@ async function run() {
         // const axios = require('axios');
         // async function generateRandomData() {
         //     try {
-        //         const response = await axios.get('http://localhost:5000/allMovie');
+        //         const response = await axios.get('https://bd-flix-server-emonkumardas.vercel.app/allMovie');
         //         const data = response.data;
 
         //         const randomData = [];
@@ -584,7 +593,7 @@ async function run() {
         //         return [];
         //     }
         // }
-        // // Movie recomended system end*******************************************
+        // Movie recomended system end*******************************************
 
 
 

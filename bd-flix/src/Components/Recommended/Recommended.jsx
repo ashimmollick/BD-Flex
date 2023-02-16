@@ -3,7 +3,7 @@ import React from 'react';
 const Recommended = ({ movies, video, setVideo }) => {
     const handleVideo = (newVideo) => {
         setVideo(newVideo);
-        console.log("click");
+       
     }
     return (
         <div style={{clear:"both"}} className="w-full cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-110">

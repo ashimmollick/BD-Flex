@@ -11,7 +11,7 @@ const AllCategories = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/category')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
             .then(res => res.json())
             .then(data => {
                 setCategories(data)
@@ -37,7 +37,7 @@ const AllCategories = () => {
                 'categoryName' : catName
             }
     
-            fetch('http://localhost:5000/category', {
+            fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

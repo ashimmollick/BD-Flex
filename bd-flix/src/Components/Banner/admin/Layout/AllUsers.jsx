@@ -10,7 +10,7 @@ const AllUsers = () => {
 
   // const [users, setAllUsers] = useState([])
   // useEffect(() => {
-  //   fetch('http://localhost:5000/allUsers')
+  //   fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers')
   //     .then(res => res.json())
   //     .then(data => {
   //       console.log(data)
@@ -24,7 +24,7 @@ const AllUsers = () => {
   const { data: user = [], refetch } = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
-      const res = await fetch('http://localhost:5000/allusers/');
+      const res = await fetch('https://bd-flix-server-emonkumardas.vercel.app/allusers/');
       const data = await res.json();
       return data;
     }
@@ -32,7 +32,7 @@ const AllUsers = () => {
 
 
   const MakeAdmin = id => {
-    fetch(`http://localhost:5000/allUsers/admin/${id}`, {
+    fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/admin/${id}`, {
       method: 'PUT',
       headers: {
         authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -55,7 +55,7 @@ const AllUsers = () => {
 
 
   const MakeMember = id => {
-    fetch(`http://localhost:5000/allUsers/deleteAdmin/${id}`, {
+    fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/deleteAdmin/${id}`, {
       method: 'PUT',
       headers: {
         authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -73,7 +73,7 @@ const AllUsers = () => {
   }
 
   const Deleteuser = id => {
-    fetch(`http://localhost:5000/allUsers/${id}`, {
+    fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/${id}`, {
       method: 'DELETE',
       authorization: `bearer ${localStorage.getItem('accessToken')}`
 
@@ -82,7 +82,7 @@ const AllUsers = () => {
         res => res.json()
       )
       .then(data => {
-        console.log(data)
+     
 
         if (data.deletedCount > 0) {
           toast.success(' successfully deleted')

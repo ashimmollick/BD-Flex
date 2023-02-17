@@ -33,7 +33,11 @@ const ClickedVideoReview = ({ data }) => {
 
 
 
+
         fetch('http://localhost:5000/review', {
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/review', {
+
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -42,6 +46,8 @@ const ClickedVideoReview = ({ data }) => {
         })
             .then(res => res.json())
             .then(data => {
+
+
 
 
                 if (data.acknowledge) {

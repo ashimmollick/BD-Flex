@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
+
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
+
 import { useEffect } from 'react';
+import Original from '../IndexPage/Original/Original';
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
@@ -46,9 +49,9 @@ const MostPopular = () => {
     return (
         <>
 
-            <div className='relative my-12 lg:my-2 p-4'>
+            <div className='lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
-                    <h1 className='text-md   font-bold text-white'>Most Popular</h1>
+                    <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>
 
@@ -60,6 +63,7 @@ const MostPopular = () => {
                             <div className="carousel-item">
                                 {
                                     MostPopular.map((images, index) => (
+
                                         <div
                                             key={index}
                                             className={`carousel-item cursor-pointer ${index === currentIndex ? 'active' : ''}`}
@@ -83,22 +87,14 @@ const MostPopular = () => {
 
                                             </Link>
                                         </div>
+
+                                        <Original images={images}></Original>
+                                       
+
                                     ))
                                 }
 
-                                {/* <button
-                                    className={`lg:block hidden absolute bottom-[50%] text-2xl text-white rounded-full left-0 p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
-                                    onClick={handlePrevSlide}
-                                >
-                                    <FaAngleLeft />
-                                </button>
-
-                                <button
-                                    className={`lg:block hidden absolute bottom-[50%] text-2xl rounded-full right-0 text-white p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
-                                    onClick={handleNextSlide}
-                                >
-                                    <FaAngleRight />
-                                </button> */}
+                               
                             </div>
                         </div>
                     }

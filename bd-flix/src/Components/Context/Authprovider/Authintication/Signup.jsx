@@ -36,7 +36,7 @@ const Signup = () => {
         formData.append('imageFile', image)
         setloading(true)
 
-        const url = "http://localhost:5000/uploadPhoto"
+        const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
         fetch(url, {
             method: 'POST',
@@ -44,6 +44,8 @@ const Signup = () => {
         })
             .then(res => res.json())
             .then(imageData => {
+
+                
 
                 createUser(email, password)
 
@@ -75,7 +77,7 @@ const Signup = () => {
 
         // const saveUser = (name, email) => {
         //     const user = { name, email };
-        //     fetch('http://localhost:5000/allUsers', {
+        //     fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers', {
         //         method: "POST",
         //         headers: {
         //             'content-type': 'application/json',

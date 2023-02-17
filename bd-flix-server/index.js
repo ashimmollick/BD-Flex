@@ -98,6 +98,10 @@ async function run() {
         const Historys = client.db("bdFlix").collection("History");
 
 
+        // Like collection
+        const likesCollection = client.db("bdFlix").collection('likes');
+
+
 
         app.get('/mostPopularMovies', async (req, res) => {
             const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
@@ -188,7 +192,7 @@ async function run() {
         app.put('/allUsers/:id', async (req, res) => {
             const email = req.params.id;
             const query = { email: email };
-            console.log(email)
+
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
@@ -216,7 +220,7 @@ async function run() {
                 const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
                 return res.send({ ACCESS_TOKEN: token })
             }
-            console.log(user);
+
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
@@ -492,6 +496,61 @@ async function run() {
 
 
 
+        //----------- check isLiked or not-----
+
+        app.get('/isLiked', async (req, res) => {
+            const email = req.query.email;
+            const postId = req.query.postId;
+
+            const query = { userEmail: email, videoId: postId }
+
+
+            const cursor = await likesCollection.findOne(query);
+
+            // console.log(cursor);
+            res.send(cursor);
+        })
+
+
+        app.get('/numoflike', async (req, res) => {
+            const postId = req.query.postId;
+            const query = {_id: postId }
+            const cursor = await allMoviesCollection.findOne(query);
+            
+            res.send(cursor);
+         })
+
+
+        //----------- LIKE -------------
+
+        app.post('/likes', async (req, res) => {
+            const likes = req.body;
+            const result = await likesCollection.insertOne(likes);
+            res.send(result);
+        })
+
+        app.put('/videoLike', async (req, res) => {
+            const postId = req.body.id;
+            const increase = req.body.increase;
+            const query = { _id: postId };
+            const options = { upsert: true };
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
+
+        //----------- UNLIKE -------------
+        app.delete('/likes', async (req, res) => {
+            const email = req.body.userEmail;
+            const videoId = req.body.videoId;
+            const query = { userEmail: email, videoId: videoId }
+            const result = await likesCollection.deleteOne(query);
+            if (result.deletedCount === 1) {
+                res.send(true);
+            }
+        })
+
+
+
         // reviews collection of users
         app.post('/review', async (req, res) => {
             const review = req.body;
@@ -536,100 +595,106 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
+        //   get device ip user--------------------------------------------
+        app.get('/check-user', async (req, res) => {
+            const { email, deviceId } = req.query;
+            const user = await usersCollection.findOne({ email: email, deviceId: deviceId });
+            const userExists = Boolean(user);
+            res.send({ userExists });
+        });
+        //   get device ip user-------------------------------------
+
 
         // Movie recomended system end*******************************************
+        // const Natural = require('natural');
+        // const fs = require('fs');
+        // const csv = require('csv-parser');
+        // let newData = [];
+        // fs.createReadStream('./new.csv')
+        //     .pipe(csv())
+        //     .on('data', (row) => {
+        //         newData.push(row);
+        //     })
+        //     .on('end', () => {
+        //         console.log('CSV file successfully processed');
+        //     });
 
-        const Natural = require('natural');
-        const fs = require('fs');
-        const csv = require('csv-parser');
+        // app.get('/recommend/:movie', async (req, res) => {
+        //     try {
+        //         let movie = req.params.movie;
+        //         let index;
+        //         for (let i = 0; i < newData.length; i++) {
+        //             const lowercaseMovie = newData[i].title.toLowerCase();
 
-        let newData = [];
+        //             if (newData[i].title === movie || lowercaseMovie == movie) {
+        //                 index = i;
+        //                 break;
+        //             }
+        //         }
+        //         let allTags = newData.map(data => data.tags);
+        //         let TfIdf = new Natural.TfIdf();
+        //         TfIdf.addDocument(allTags);
+        //         let similarity = [];
+        //         for (let i = 0; i < allTags.length; i++) {
+        //             similarity.push(TfIdf.tfidf(allTags[i], index));
+        //         }
+        //         let distances = [];
+        //         for (let i = 0; i < allTags.length; i++) {
+        //             if (i === index) {
+        //                 continue;
+        //             }
+        //             distances.push({ index: i, distance: similarity[i] });
+        //         }
+        //         distances.sort((a, b) => b.distance - a.distance);
+        //         let recommendedMovies = [];
+        //         for (let i = 0; i < 10; i++) {
+        //             recommendedMovies.push(newData[distances[i].index].title);
+        //         }
+        //         const words = [];
+        //         for (const movie of recommendedMovies) {
+        //             const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
+        //             for (const word of movieWords) {
+        //                 words.push(word);
+        //             }
+        //             words.push(req.params.movie);
+        //         }
 
-        fs.createReadStream('./new.csv')
-            .pipe(csv())
-            .on('data', (row) => {
-                newData.push(row);
-            })
-            .on('end', () => {
-                console.log('CSV file successfully processed');
-            });
+        //         let wordsLowerCase = words.map(word => word.toLowerCase());
+        //         allMoviesCollection.createIndex({ original_title: "text" });
 
-        app.get('/recommend/:movie', async (req, res) => {
-            try {
-                let movie = req.params.movie;
-                let index;
-                for (let i = 0; i < newData.length; i++) {
-                    const lowercaseMovie = newData[i].title.toLowerCase();
+        //         allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
+        //             if (error) {
+        //                 return console.log(error);
+        //             }
+        //             res.send(result);
+        //         });
+        //     } catch (error) {
+        //         if (error instanceof TypeError || Object.keys(result).length === 0) {
+        //             res.send(await generateRandomData());
+        //         }
+        //     }
+        // });
+        // const axios = require('axios');
+        // async function generateRandomData() {
+        //     try {
+        //         const response = await axios.get('https://bd-flix-server-emonkumardas.vercel.app/allMovie');
+        //         const data = response.data;
 
-                    if (newData[i].title === movie || lowercaseMovie == movie) {
-                        index = i;
-                        break;
-                    }
-                }
-                let allTags = newData.map(data => data.tags);
-                let TfIdf = new Natural.TfIdf();
-                TfIdf.addDocument(allTags);
-                let similarity = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    similarity.push(TfIdf.tfidf(allTags[i], index));
-                }
-                let distances = [];
-                for (let i = 0; i < allTags.length; i++) {
-                    if (i === index) {
-                        continue;
-                    }
-                    distances.push({ index: i, distance: similarity[i] });
-                }
-                distances.sort((a, b) => b.distance - a.distance);
-                let recommendedMovies = [];
-                for (let i = 0; i < 10; i++) {
-                    recommendedMovies.push(newData[distances[i].index].title);
-                }
-                const words = [];
-                for (const movie of recommendedMovies) {
-                    const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
-                    for (const word of movieWords) {
-                        words.push(word);
-                    }
-                    words.push(req.params.movie);
-                }
+        //         const randomData = [];
+        //         while (randomData.length < 6) {
+        //             const randomIndex = Math.floor(Math.random() * data.length);
+        //             const randomItem = data[randomIndex];
+        //             if (!randomData.includes(randomItem)) {
+        //                 randomData.push(randomItem);
+        //             }
+        //         }
 
-                let wordsLowerCase = words.map(word => word.toLowerCase());
-                allMoviesCollection.createIndex({ original_title: "text" });
-
-                allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                    res.send(result);
-                });
-            } catch (error) {
-                if (error instanceof TypeError || Object.keys(result).length === 0) {
-                    res.send(await generateRandomData());
-                }
-            }
-        });
-        const axios = require('axios');
-        async function generateRandomData() {
-            try {
-                const response = await axios.get('http://localhost:5000/allMovie');
-                const data = response.data;
-
-                const randomData = [];
-                while (randomData.length < 6) {
-                    const randomIndex = Math.floor(Math.random() * data.length);
-                    const randomItem = data[randomIndex];
-                    if (!randomData.includes(randomItem)) {
-                        randomData.push(randomItem);
-                    }
-                }
-
-                return randomData;
-            } catch (error) {
-                console.error(error);
-                return [];
-            }
-        }
+        //         return randomData;
+        //     } catch (error) {
+        //         console.error(error);
+        //         return [];
+        //     }
+        // }
         // Movie recomended system end*******************************************
 
 

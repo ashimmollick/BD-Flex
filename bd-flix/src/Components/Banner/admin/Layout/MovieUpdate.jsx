@@ -23,6 +23,16 @@ const MovieUpdate = (singleMovie) => {
 
   }, [])
 
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
+        .then(res => res.json())
+        .then(data => {
+          setNewCategories(data)
+           
+        })
+
+}, [] )
+
+
   const navigate = useNavigate()
 
 
@@ -66,7 +76,6 @@ const MovieUpdate = (singleMovie) => {
       body: formData
     }).then(res => res.json())
       .then(ImageData => {
-
 
 
 
@@ -167,9 +176,15 @@ const MovieUpdate = (singleMovie) => {
                   <label className="label">
                     <span className="label-text">Video Upload</span>
                   </label>
+
                   <div className="flex">
                     <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
                   </div>
+
+               <div className="flex">
+                    <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
+                  </div> 
+
                   {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
                 </div>
 
@@ -178,6 +193,7 @@ const MovieUpdate = (singleMovie) => {
                     <span className="label-text">Catagories: {updateData.category} </span>
                   </label>
                   <select name='productCatagories' className="input rounded-md bg-transparent input-bordered" >
+
 
                     {
                       newCategories.map(category =>
@@ -188,6 +204,19 @@ const MovieUpdate = (singleMovie) => {
 
 
                     {/* 
+                   <option className='bg-slate-900'>Movies For You</option>
+                    <option className='bg-slate-900'>Post Popular Movie</option> */}
+
+
+                  {
+                    newCategories.map(category =>
+                      <option className='bg-slate-900'>{category.categoryName}</option>
+                    )
+                  }
+                    
+
+
+{/* 
                    <option className='bg-slate-900'>Movies For You</option>
                     <option className='bg-slate-900'>Post Popular Movie</option> */}
 

@@ -14,7 +14,7 @@ const Navbar = () => {
     const { user, logout, mode, Togglebutton } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
     useEffect(() => {
-        fetch('http://localhost:5000/allsearch')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/allsearch')
             .then(res => res.json())
             .then(res => {
                 setData(res)
@@ -24,7 +24,13 @@ const Navbar = () => {
     const handlelogout = () => {
         logout()
             .then(() => {
+
                 Navigate('/')
+
+
+                // Navigate('/Welcome')
+                window.location.replace("http://localhost:3000/Welcome")
+
             }).catch(error => console.error(error))
     }
     const nav = <>
@@ -34,7 +40,9 @@ const Navbar = () => {
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
 
 
+
         {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
+
     </>
 
     const bottomNav = <>
@@ -82,6 +90,7 @@ const Navbar = () => {
     }
     return (
         <>
+
             <div
                 className="navbar bg-transparent absolute" style={{ zIndex: 1 }}>
                 <div className="navbar-start">
@@ -101,8 +110,8 @@ const Navbar = () => {
                             }
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-xs btn-ghost normal-case text-xl mx-20">
-                        <div className='btn btn-xs rounded font-mono uppercase bg-none shadow-inner bg-transparent border-none text-sm lg:text-xl font-bold text-white'>
+                    <Link to="/" className="normal-case text-xl">
+                        <div className='btn rounded font-mono uppercase shadow-inner bg-transparent border-none text-sm lg:text-xl font-bold text-white'>
                             <img className='w-4 lg:w-12' src={logo} alt='' />-FLIX
                         </div>
                     </Link>
@@ -113,9 +122,17 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+
                     <div className="dropdown">
                         <label tabIndex={0} ><input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-xl border-white bg-transparent" /></label>
                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+
+
+                    <div className="dropdown mx-8">
+                        <label tabIndex={0} >
+                            <input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-lg border-white bg-transparent" /></label>
+                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 ">
+
                             <li>{
                                 AllMoviesSearch?.slice(0, 3).map(it => {
                                     return (
@@ -132,7 +149,12 @@ const Navbar = () => {
                         <>
                             {
                                 isAdmin && <>
+
                                     <li><Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link></li>
+
+                                   <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
+
+
                                 </>
                             }
                             <div className="dropdown dropdown-end">
@@ -155,6 +177,7 @@ const Navbar = () => {
                     }
                 </div>
             </div>
+
             <div className="lg:hidden md:hidden fixed bottom-0 z-50 w-full">
                 <div className="bg-black shadow-lg px-6">
                     <div className="flex items-center justify-between">

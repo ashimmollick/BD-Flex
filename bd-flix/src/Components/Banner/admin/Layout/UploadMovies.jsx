@@ -12,6 +12,9 @@ const UploadMovies = () => {
   useEffect(() => {
 
     fetch('http://localhost:5000/category')
+
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
+
         .then(res => res.json())
         .then(data => {
             setCategories(data)
@@ -35,6 +38,7 @@ const UploadMovies = () => {
     const poster_path = event.target.poster_path.files[0];
     const video = event.target.video.files[0];
     const vote_average = "";
+    const likeCount = 0
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
     let catagoriesWithOutSpace = catagories
@@ -51,11 +55,11 @@ const UploadMovies = () => {
     const formvideo = new FormData();
     formvideo.append('filename', video);
     setLoading(true)
-    const url = "http://localhost:5000/uploadPhoto"
+    const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
 
     // video upload firebase-------------------------
-    fetch('http://localhost:5000/uploadVideo', {
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/uploadVideo', {
       method: 'POST',
       body: formvideo,
 
@@ -77,6 +81,7 @@ const UploadMovies = () => {
               original_title,
               overview,
               vote_average,
+              likeCount,
               // video
             }
             fetch('https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/addMovie', {
@@ -87,7 +92,6 @@ const UploadMovies = () => {
               .then(res => res.json())
               .then(data => {
                 // addMovie.reload()
-                console.log(data);
                 setLoading(false)
                 toast.success('Your Product is added successfully');
               })

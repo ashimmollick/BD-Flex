@@ -19,7 +19,7 @@ function App() {
   return showFlash ? <SplashScreen></SplashScreen> : <MainContent />;
 };
 const MainContent = () => {
-  const { mode, Togglebutton } = useContext(AuthContext)
+  // const { mode, Togglebutton } = useContext(AuthContext)
   return (
     <div>
       <RouterProvider router={router} />

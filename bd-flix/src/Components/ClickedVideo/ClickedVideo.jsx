@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { BiShareAlt } from 'react-icons/bi';
 import { FiDownload } from 'react-icons/fi';
@@ -8,29 +8,51 @@ import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
 import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
+import { RiThumbUpFill, RiThumbUpLine } from 'react-icons/ri';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
 import Main from '../../Main/Main';
+
 import { useContext } from 'react';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
 import { toast } from 'react-toastify';
 
+import { toast } from 'react-toastify';
+import { AuthContext } from '../Context/Authprovider/Authprovider';
+
+
 import date from 'date-and-time';
 
 const ClickedVideo = () => {
+
     const { user } = useContext(AuthContext)
+
+    const { user, } = useContext(AuthContext)
+
 
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [doFetch, setDoFetch] = useState(false);
+    const [newData, setNewData] = useState(data);
+
     useEffect(() => {
-        fetch(`http://localhost:5000/recommend/${data.original_title}`)
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])
 
+
     const location = useLocation()
     const form = location?.state?.from?.pathname
+
+
+
+    console.log(data);
+
+
     const PopularMovies = [
 
         {
@@ -63,17 +85,85 @@ const ClickedVideo = () => {
         }
     ]
 
-    // Start Like and dislike post---------------------------------------->
-    const [like, setLike] = useState(0);
-    const [isLike, setIsLike] = useState(false);
 
 
-    const onLikeButtonClick = () => {
+    // fetch isliked information \/
 
-        setIsLike(!isLike);
-        setLike(like + (isLike ? -1 : 1));
+    useEffect(() => {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (user?.email === data.userEmail) {
+                    setIsLiked(true)
+                }
+            })
+    }, [ user?.email, data._id])
+
+
+
+    const showLike = ()=> {
+
+        fetch(`http://localhost:5000/numoflike/?postId=${data._id}`)
+            .then(res => res.json())
+            .then(data => {
+                setNewData(data)
+            })
+            .catch(er => console.error("notun error",er));
 
     }
+
+
+    // fetch like information /\
+
+
+
+
+    // Start Like and dislike post---------------------------------------->
+
+    const handleLike = () => {
+
+        const likeInfo = {
+            userEmail: user?.email,
+            videoId: data._id
+        }
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(likeInfo)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    // setDoFetch(false)
+                    setIsLiked(true)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ id: data._id, increase: 1 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    setDoFetch(true)
+                    showLike()
+                    // setIsLiked(true)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+    }
+
 
 
 
@@ -277,9 +367,72 @@ const ClickedVideo = () => {
 
 
 
+    // handle dislike \/
+
+    const handleDisLike = () => {
+
+        const likeInfo = {
+            userEmail: user?.email,
+            videoId: data._id
+        }
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(likeInfo)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    setIsLiked(false)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ id: data._id, increase: -1 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    setDoFetch(true)
+                    showLike()
+                }
+            })
+            .catch(er => console.error(er));
+
+    }
+
+
+
+    // handle dislike /\
+
+
+
+
+    // const [like, setLike] = useState(0);
+    // const [isLike, setIsLike] = useState(false);
+
+
+    // const onLikeButtonClick = () => {
+
+    //     setIsLike(!isLike);
+    //     setLike(like + (isLike ? -1 : 1));
+
+    // }
+
+
 
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
+
     //Download-------------------------------------->
 
     const videoRef = useRef(null);
@@ -322,15 +475,28 @@ const ClickedVideo = () => {
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
-                                        <div className={"" + (isLike ? "text-blue-500" : "")}>
+                                        {/* <div className={"" + (isLike ? "text-blue-500" : "")}>
                                             <FaThumbsUp onClick={onLikeButtonClick}
                                                 className="text-xl cursor-pointer" />
                                             <p className='text-xs -mt-1'>{like}</p>
-                                        </div>
+                                        </div> */}
 
-                                        <label htmlFor="reviewButton">
+                                        {
+                                            isLiked ?
+                                                <div className='flex flex-col justify-center items-center mt-2'>
+                                                    <button onClick={handleDisLike} className='' > <RiThumbUpFill className='text-xl text-green-500 -mb-1'></RiThumbUpFill> </button>
+                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                </div>
+                                                :
+                                                <div className='flex flex-col justify-center items-center mt-2'>
+                                                    <button onClick={handleLike} className='' > <RiThumbUpLine className='text-xl  -mb-1'></RiThumbUpLine> </button>
+                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                </div>
+                                        }
+
+                                        {/* <label htmlFor="reviewButton">
                                             <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
-                                        </label>
+                                        </label> */}
 
                                         <div className=''>
                                             <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>

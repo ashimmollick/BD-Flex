@@ -6,7 +6,7 @@ const useAdmin = email => {
 
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/allUsers/admin/${email}`)
+            fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/admin/${email}`)
                 .then(res => res.json())
                 .then(data => {
 

@@ -35,9 +35,13 @@ const EditProfile = () => {
             genre: genre
         }
 
+
         // console.log(editProfile)
 
         fetch('http://localhost:5000/userProfile', {
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
+
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

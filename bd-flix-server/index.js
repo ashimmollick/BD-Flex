@@ -154,8 +154,6 @@ async function run() {
 
         app.get('/allUsers', async (req, res) => {
 
-
-
             const result = await allUsers.find({}).toArray();
             res.send(result);
         })
@@ -164,6 +162,14 @@ async function run() {
         app.post('/allUsers', async (req, res) => {
             const users = req.body;
             const result = await allUsers.insertOne(users)
+            res.send(result);
+        })
+
+        //get current user
+        app.get('/allUsers/:id', async (req, res) => {
+            const email = req.params.id;
+            const query = { email: email };
+            const result = await allUsers.findOne(query);
             res.send(result);
         })
 
@@ -251,6 +257,10 @@ async function run() {
             const result = await allUsers.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
+
+
+
+
         //make admin to member
         app.put('/allUsers/deleteAdmin/:id', verifyfyJWT, async (req, res) => {
             const decodedEmail = req.decoded.email;
@@ -330,6 +340,21 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateUser, option)
             res.send(result)
         })
+
+        // subscribe---------------------------------
+        app.put('/subscribe/:id', async (req, res) => {
+            const email = req.params.id;
+            const filter = { email: email  }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isSubscribe: true
+                }
+            }
+            const result = await allUsers.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
 
 
         // all movies get 

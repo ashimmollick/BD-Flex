@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Admin from "../../Components/Banner/admin/Admin";
 import AllCategories from "../../Components/Banner/admin/Layout/AllCategories";
 import AllMovies from "../../Components/Banner/admin/Layout/AllMovies";
-
 import AllUsers from "../../Components/Banner/admin/Layout/AllUsers";
 import MovieUpdate from "../../Components/Banner/admin/Layout/MovieUpdate";
 import UploadMovies from "../../Components/Banner/admin/Layout/UploadMovies";
@@ -17,6 +16,7 @@ import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
 import Signup from "../../Components/Context/Authprovider/Authintication/Signup";
 import Error from "../../Components/Error/Error";
 import HomePage from "../../Components/Home/IndexPage/HomePage";
+import LogInScreen from "../../Components/LogInScreen/LogInScreen";
 import Movies from "../../Components/Movies/Movies";
 import Premium from "../../Components/Premium/Premium";
 import TvShows from "../../Components/Tvshows/Tvshows";
@@ -32,21 +32,22 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <HomePage></HomePage>
+                element: <Private><HomePage></HomePage></Private>
             },
             {
                 path: '/clickedvideo/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
-                element: <ClickedVideo></ClickedVideo>
+                element: <Private><ClickedVideo></ClickedVideo></Private>
             },
             {
                 path: '/moviesforyou/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
-                element: <ClickedVideo></ClickedVideo>
+                element: <Private><ClickedVideo></ClickedVideo></Private>
             },
             {
                 path: '/allmovie/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
+
                 element: <ClickedVideo></ClickedVideo>
             },
             {
@@ -55,8 +56,19 @@ const router = createBrowserRouter([
             },
             {
                 path: '/signup',
-                element: <Reg></Reg>
+                element: <Reg></Reg>,
+
+                element: <Private><ClickedVideo></ClickedVideo></Private>
+
             },
+            // {
+            //     path: '/login',
+            //     element: <Login></Login>
+            // },
+            // {
+            //     path: '/signup',
+            //     element: <Reg></Reg>
+            // },
             {
                 path: '/forget',
                 element: <Forget></Forget>
@@ -70,7 +82,7 @@ const router = createBrowserRouter([
 
             {
                 path: '/movies',
-                element: <Movies></Movies>
+                element: <Private><Movies></Movies></Private>
 
             }, {
                 path: '/profile',
@@ -141,6 +153,18 @@ const router = createBrowserRouter([
                 </PrivateAdmin>
             },
         ]
+    },
+    {
+        path: '/Welcome',
+        element: <LogInScreen />
+    },
+    {
+        path: '/login',
+        element: <Login></Login>
+    },
+    {
+        path: '/signup',
+        element: <Reg></Reg>
     }
 ]);
 export default router;

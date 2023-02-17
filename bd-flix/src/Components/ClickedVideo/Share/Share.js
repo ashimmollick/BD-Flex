@@ -15,13 +15,7 @@ const Share = ({ data }) => {
     const shareUrl = `https://bd-flix-e2343.web.app/allmovie/${data.id}`;
 
     return (
-        <div
-            style={{
-                background: '#0000',
-
-            }}
-
-        >
+        <div>
             <h1 className="text-center text-xl text-white mb-2">Share Your Post</h1>
 
             <div className="flex  gap-3 ">
@@ -29,8 +23,8 @@ const Share = ({ data }) => {
                     url={shareUrl}
                     quote={`${data.backdrop_path}`}
                     hashtag={`${data.title}`}
-                   
-                    
+
+
                 >
                     <FacebookIcon size={40} round={true} />
                 </FacebookShareButton>

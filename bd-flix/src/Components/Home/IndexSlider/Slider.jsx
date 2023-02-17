@@ -18,7 +18,7 @@ const Slider = () => {
     }, [currentSlide]);
 
     return (
-        <div className='' style={{}}>
+        < >
             <div className='relative'>
                 <div className=' inset-0'>
                     <div className='border-b-4 border-indigo-500'>
@@ -31,14 +31,14 @@ const Slider = () => {
 
                 <div className='absolute bottom-0 left-0 right-0 flex justify-center'>
                     {slider.map((_, index) => (
-                        <div 
+                        <div
                             key={index}
-                            className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`} 
+                            className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`}
                         />
                     ))}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

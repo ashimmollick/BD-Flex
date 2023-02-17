@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import Original from '../IndexPage/Original/Original';
 

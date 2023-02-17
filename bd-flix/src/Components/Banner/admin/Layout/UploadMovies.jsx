@@ -29,11 +29,11 @@ const UploadMovies = () => {
     const formvideo = new FormData();
     formvideo.append('filename', video);
     setLoading(true)
-    const url = "http://localhost:5000/uploadPhoto"
+    const url = "https://student-management-server-emonkumardas.vercel.app/uploadPhoto"
 
 
     // video upload firebase-------------------------
-    fetch('http://localhost:5000/uploadVideo', {
+    fetch('https://student-management-server-emonkumardas.vercel.app/uploadVideo', {
       method: 'POST',
       body: formvideo,
 

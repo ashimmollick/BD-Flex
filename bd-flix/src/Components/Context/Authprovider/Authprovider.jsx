@@ -74,9 +74,9 @@ const AuthProvider = ({ children }) => {
     })
 
 
-    const [mode, setMode] = useState("light")
+    const [mode, setMode] = useState("dark")
     const Togglebutton = () => {
-        setMode(mode === "light" ? "dark" : "light")
+        setMode(mode === "dark" ? "dark" : "dark")
 
     }
     const authInfo = {

@@ -7,7 +7,6 @@ import Daiyer from './Layout/Daiyer';
 const Admin = () => {
     return (
         <div>
-            <Navbar />
             <div className='lg:flex md:flex md:m-20'>
                 <Daiyer />
                 <Outlet />

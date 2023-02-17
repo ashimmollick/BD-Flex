@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const MovieUpdate = (singleMovie) => {
+const MovieUpdate = ({singleMovie}) => {
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
 
   const updateData = state.singleMovie
+
+
+
 
   const [newCategories, setNewCategories] = useState([])
 
@@ -34,12 +37,12 @@ const MovieUpdate = (singleMovie) => {
 
 
 
-    const image = event.target.poster_path.files[0]
+    const poster_path = event.target.poster_path.files[0]
 
 
     const catagories = event.target.productCatagories.value
     const overview = event.target.overview.value
-    const poster_path = event.target.poster_path.value
+    // const poster_path = event.target.poster_path.value
     const vote_average = ""
     const video = event.target.video.files[0]
     // const video = event.target.video.value
@@ -53,58 +56,88 @@ const MovieUpdate = (singleMovie) => {
 
 
     const formData = new FormData()
-    formData.append('image', image)
+    formData.append('imageFile', poster_path)
+
+ 
 
     const formvideo = new FormData();
     formvideo.append('filename', video);
+    setLoading(true)
+   
 
-    const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
+
+    const url = "http://localhost:5000/uploadPhoto"
 
 
-    fetch(url, {
+
+    fetch('http://localhost:5000/uploadVideo', {
       method: 'POST',
-      body: formData
-    }).then(res => res.json())
-      .then(ImageData => {
+      body: formvideo,
 
+    })
+    .then(res => res.json())
+    .then(result =>{
+      
+     
 
-console.log(ImageData)
+      fetch(url, {
+        method: 'POST',
+        body: formData
+      }).then(res => res.json())
+        .then(ImageData => {
+  
 
-        const updateMovie = {
-          image: ImageData.data.url,
-          category: movieWithoutSpaces,
-          original_title,
-          overview,
-          poster_path,
-          vote_average,
-          video
-        }
+  
+  const image  = ImageData.url
 
-        console.log(updateMovie)
+          const updateMovie = {
+      
+            category: movieWithoutSpaces,
+            original_title,
+            overview,
+            poster_path,
+            vote_average,
+            video:result.url
+          }
+       
+  
+  
+          fetch(`http://localhost:5000/updateMovie/${updateData._id}`, {
+            method: "PUT",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify(updateMovie)
+          })
+            .then(res => res.json())
 
+  
+            .then(data => {
+  
+console.log(data)
 
-        fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/updateMovie/${updateMovie}`, {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: JSON.stringify(updateMovie)
+              if (data.success) {
+                toast.success(data.message);
+              } else {
+                toast.error(data.error);
+              }
+  
+              navigate('/admin/allmovies')
+  
+  
+            }).catch(err => toast.error(err.message))
+  
         })
-          .then(res => res.json())
-          .then(data => {
-
-            if (data.success) {
-              toast.success(data.message);
-            } else {
-              toast.error(data.error);
-            }
-
-            navigate('/admin/allmovies')
 
 
-          }).catch(err => toast.error(err.message))
 
-      })
+    })
+
+
+
+    // const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
+
+   
 
 
   }
@@ -131,17 +164,17 @@ console.log(ImageData)
 
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-bold text-xl">Title: {updateData.original_title}</span>
+                    <span className="label-text font-bold text-xl"></span>
                   </label>
-                  <input type="text" required name='original_title' placeholder="Change Title Type Here" className="input bg-transparent rounded-md input-bordered" />
+                  <input type="text" required name='original_title' placeholder= {updateData.original_title} className="input bg-transparent rounded-md input-bordered" />
                 </div>
 
 
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text font-bold text-xl">Overview: {updateData.overview.slice(0, 30) + "..."}</span>
+                    <span className="label-text font-bold text-xl"></span>
                   </label>
-                  <input type="text" required name='overview' placeholder=" Change overview type here" className="input bg-transparent rounded-md input-bordered" />
+                  <input type="text" required name='overview' placeholder={updateData.overview.slice(0, 30) + "..."} className="input bg-transparent rounded-md input-bordered" />
                 </div>
 
 
@@ -150,7 +183,7 @@ console.log(ImageData)
                 <label className="label">
                   <span className="label-text text-xl font-bold">Banner</span>
                 </label>
-                <img className='w-[200px] h-[200px]' src={updateData.poster_path} alt=" Banner"/>
+                <img className='w-[200px] h-[200px]' src={updateData.image} alt=" Banner"/>
   
                 {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
               </div>

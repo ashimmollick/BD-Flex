@@ -7,27 +7,25 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
-import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
+
 import { RiThumbUpFill, RiThumbUpLine } from 'react-icons/ri';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
-import Main from '../../Main/Main';
+import Download from './Download/Download';
 
-import { useContext } from 'react';
+
 import { AuthContext } from '../Context/Authprovider/Authprovider';
 import { toast } from 'react-toastify';
-
-import { toast } from 'react-toastify';
-import { AuthContext } from '../Context/Authprovider/Authprovider';
-
 
 import date from 'date-and-time';
+import Share from './Share/Share';
 
 const ClickedVideo = () => {
 
     const { user } = useContext(AuthContext)
 
-    const { user, } = useContext(AuthContext)
+   
+    
 
 
     const data = useLoaderData();
@@ -185,7 +183,8 @@ const ClickedVideo = () => {
 
     ///watchlist
 
-    const [doFetch, setDoFetch] = useState(false);
+    
+    
 
     const [watchlist, setwatchlists] = useState([])
 
@@ -503,13 +502,19 @@ const ClickedVideo = () => {
                                             <p className='text-xs -mt-1'>WatchList</p>
                                         </div>
                                         <div>
-                                            <BiShareAlt className='text-xl mx-auto'></BiShareAlt>
-                                            <p className='text-xs'>Share</p>
+                                            <label htmlFor="my-modal-3" ><BiShareAlt className='text-xl mx-auto'></BiShareAlt>
+                                                <p className='text-xs'>Share</p></label>
+                                            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+                                            <div className="modal">
+                                                <div className="modal-box bg-slate-800 relative flex justify-center">
+                                                    <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                                                    <Share data={data}></Share>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <button onClick={handleDownload} className='cursor-pointer'>
-                                            <FiDownload className='text-xl mx-auto'></FiDownload>
-                                            <p className='text-xs'>Download</p>
-                                        </button>
+                                        <Download data={data}>
+
+</Download>
                                     </div>
                                 </div>
                             </div>

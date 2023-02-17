@@ -4,11 +4,19 @@ const useAdmin = email => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isAdminLoading, setIsAdminLoading] = useState(true);
 
+
+
+
+
     useEffect(() => {
         if (email) {
             fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/admin/${email}`)
                 .then(res => res.json())
                 .then(data => {
+
+
+
+
 
                     setIsAdmin(data.isAdmin);
                     setIsAdminLoading(false);

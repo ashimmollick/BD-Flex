@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
-
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import { Link, useLocation } from 'react-router-dom';
-
 import { useEffect } from 'react';
 import Original from '../IndexPage/Original/Original';
 
@@ -35,17 +31,6 @@ const MostPopular = () => {
         setCurrentIndex(currentIndex + 1);
     };
 
-    const location = useLocation()
-    const route = location
-
-    const most = MostPopular.map(most => most.title)
-
-
-
-
-
-
-
     return (
         <>
 
@@ -63,34 +48,8 @@ const MostPopular = () => {
                             <div className="carousel-item">
                                 {
                                     MostPopular.map((images, index) => (
-
-                                        <div
-                                            key={index}
-                                            className={`carousel-item cursor-pointer ${index === currentIndex ? 'active' : ''}`}
-                                            style={{
-                                                transform: `translateX(${-100 * currentIndex}%)`,
-                                                transition: 'transform 0.3s ease-in-out',
-                                            }}>
-
-
-                                            <Link to={`/clickedvideo/${images.id}`} className="carousel-item mr-3 overflow-hidden">
-                                                <div className='relative transition-transform duration-300 ease-in-out transform hover-zoom'>
-
-                                                    <img
-                                                        className='object-cover rounded-sm lg:h-full h-[300px] w-full'
-                                                        src={images.poster_path} alt=''
-                                                    ></img>
-
-                                                    {/* <h2 className=" absolute bottom-[8%] left-0 md:text-md text-md font-semibold text-white mx-2 ">{images.name}</h2> */}
-                                                    <div className="most-popular-gradient absolute bottom-0 left-0 w-full h-2/6"></div>
-                                                </div>
-
-                                            </Link>
-                                        </div>
-
                                         <Original images={images}></Original>
                                        
-
                                     ))
                                 }
 

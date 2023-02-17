@@ -44,9 +44,7 @@ const Signup = () => {
         })
             .then(res => res.json())
             .then(imageData => {
-
                 
-
                 createUser(email, password)
 
 
@@ -69,11 +67,11 @@ const Signup = () => {
 
                             .then(() => {
                                 navigate(from, { replace: true })
-                            }).catch(error => console.error(error))
+                            }).catch(error => console.log(error))
 
-                    }).catch(error => console.error(error))
+                    }).catch(error => console.log(error))
 
-            }).catch(error => console.error(error))
+            }).catch(error => console.log(error))
 
         // const saveUser = (name, email) => {
         //     const user = { name, email };

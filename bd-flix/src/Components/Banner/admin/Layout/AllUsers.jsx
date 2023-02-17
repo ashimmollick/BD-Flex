@@ -84,6 +84,10 @@ const AllUsers = () => {
       .then(data => {
 
 
+
+
+
+
         if (data.deletedCount > 0) {
           toast.success(' successfully deleted')
           refetch();

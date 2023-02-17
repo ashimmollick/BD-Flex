@@ -38,17 +38,22 @@ const AllCategories = () => {
             }
 
 
-            fetch('http://localhost:5000/category', {
+            // fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
 
-    
-            fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
 
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(newCategory)
-            })
+
+                // fetch('http://localhost:5000/category', {
+
+
+                    fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
+
+
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(newCategory)
+                    })
                 .then(res => res.json())
                 .then(data => {
                     if (data.acknowledged) {

@@ -66,7 +66,11 @@ function verifyfyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
         if (err) {
+
+            return res.status(403).send({ message: 'forbidden access' })
+
             return res.status(403).send({ message: 'forbidden accessssssss' })
+
         }
         req.decoded = decoded;
         next();
@@ -90,16 +94,25 @@ async function run() {
 
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
+        const likeCollection = client.db("bdFlix").collection("like");
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
         //Category collection
         const categoryCollection = client.db("bdFlix").collection("category");
+
+
+
         const Watchlist = client.db("bdFlix").collection("watchlist");
         const Historys = client.db("bdFlix").collection("History");
 
 
+
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
+
+
+
+
 
 
 
@@ -110,13 +123,10 @@ async function run() {
 
         app.post('/allmovies', async (req, res) => {
             const allmovies = req.body;
-
             // Get the highest ID from the existing movie documents
             const highestId = await allMoviesCollection.find({}).sort({ id: -1 }).limit(1).toArray();
-
             // Set the new ID for the movie document to be inserted
             allmovies.id = highestId.length === 0 ? 0 : highestId[0].id + 1;
-
             const result = await allMoviesCollection.insertOne(allmovies);
             res.send(result);
         });
@@ -193,6 +203,12 @@ async function run() {
             const email = req.params.id;
             const query = { email: email };
 
+
+            console.log(email)
+
+
+
+
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
@@ -221,9 +237,19 @@ async function run() {
                 return res.send({ ACCESS_TOKEN: token })
             }
 
+
+            console.log(user);
+
+
+
+
+
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
+
+
+
 
 
 
@@ -514,11 +540,66 @@ async function run() {
 
         app.get('/numoflike', async (req, res) => {
             const postId = req.query.postId;
-            const query = {_id: postId }
+            const query = { _id: postId }
             const cursor = await allMoviesCollection.findOne(query);
-            
+
             res.send(cursor);
-         })
+        })
+
+
+        //----------- LIKE -------------
+
+        app.post('/likes', async (req, res) => {
+            const likes = req.body;
+            const result = await likesCollection.insertOne(likes);
+            res.send(result);
+        })
+
+        app.put('/videoLike', async (req, res) => {
+            const postId = req.body.id;
+            const increase = req.body.increase;
+            const query = { _id: postId };
+            const options = { upsert: true };
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
+
+        //----------- UNLIKE -------------
+        app.delete('/likes', async (req, res) => {
+            const email = req.body.userEmail;
+            const videoId = req.body.videoId;
+            const query = { userEmail: email, videoId: videoId }
+            const result = await likesCollection.deleteOne(query);
+            if (result.deletedCount === 1) {
+                res.send(true);
+            }
+        })
+
+
+
+        //----------- check isLiked or not-----
+
+        app.get('/isLiked', async (req, res) => {
+            const email = req.query.email;
+            const postId = req.query.postId;
+
+            const query = { userEmail: email, videoId: postId }
+
+
+            const cursor = await likesCollection.findOne(query);
+
+            // console.log(cursor);
+            res.send(cursor);
+        })
+
+
+        app.get('/numoflike', async (req, res) => {
+            const postId = req.query.postId;
+            const query = { _id: postId }
+            const cursor = await allMoviesCollection.findOne(query);
+
+            res.send(cursor);
+        })
 
 
         //----------- LIKE -------------
@@ -557,6 +638,13 @@ async function run() {
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
+        // app.post('/like', async (req, res) => {
+        //     const review = req.body;
+        //     const result = await likeCollection.insertOne(review);
+        //     res.send(result);
+        // });
+
+
 
         //save user email and generate JWT token
         app.put('/user/:email', async (req, res) => {
@@ -585,7 +673,7 @@ async function run() {
                 .then(() => {
                     // console.log("file uploaded");
                     getDownloadURL(storageRef).then(url => {
-                        // console.log(`Download URL: ${url}`);
+                        console.log(`Download URL: ${url}`);
 
                         res.send({ url });
                     });

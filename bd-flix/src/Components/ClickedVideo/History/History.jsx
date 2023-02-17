@@ -53,7 +53,7 @@ const History = () => {
                 res => res.json()
             )
             .then(data => {
-                console.lo(data)
+                console.log(data)
 
                 if (data.acknowledged) {
                     // console.log(data)

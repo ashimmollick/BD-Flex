@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { BiShareAlt } from 'react-icons/bi';
-import { FiDownload } from 'react-icons/fi';
+
 import { MdPlaylistAdd } from 'react-icons/md';
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
@@ -10,6 +10,7 @@ import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
 import Share from './Share/Share';
+import Download from './Download/Download';
 
 
 
@@ -76,14 +77,15 @@ const ClickedVideo = () => {
     //Download-------------------------------------->
 
     const videoRef = useRef(null);
+    console.log("video play", play)
+    // const handleDownload = () => {
+    //     const videoSrc = videoRef.current.src;
+    //     const a = document.createElement("a");
+    //     a.href = videoSrc;
+    //     a.download = data?.video;
+    //     a.click();
 
-    const handleDownload = () => {
-        const videoSrc = videoRef.current.src;
-        const a = document.createElement("a");
-        a.href = videoSrc;
-        a.download = data?.video;
-        a.click();
-    };
+    // };
     //End of Download-------------------------------------->
     return (
         <>
@@ -99,7 +101,7 @@ const ClickedVideo = () => {
                                     <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
                                     <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
                                 </div> :
-                                <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
+                                <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video} >
                                 </video>
                             }
                             <button onClick={() => setPlay(!play)}>{play ? '' :
@@ -134,7 +136,7 @@ const ClickedVideo = () => {
                                                 <p className='text-xs'>Share</p></label>
                                             <input type="checkbox" id="my-modal-3" className="modal-toggle" />
                                             <div className="modal">
-                                                <div className="modal-box relative">
+                                                <div className="modal-box relative flex justify-center">
                                                     <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
                                                     <Share data={data}></Share>
                                                 </div>
@@ -144,10 +146,9 @@ const ClickedVideo = () => {
 
 
 
-                                        <button onClick={handleDownload} className='cursor-pointer'>
-                                            <FiDownload className='text-xl mx-auto'></FiDownload>
-                                            <p className='text-xs'>Download</p>
-                                        </button>
+                                        <Download data={data}>
+
+                                        </Download>
                                     </div>
                                 </div>
                             </div>

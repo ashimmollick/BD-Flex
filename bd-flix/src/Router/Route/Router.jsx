@@ -12,6 +12,7 @@ import EditProfile from "../../Components/Context/Authprovider/Authintication/Ed
 import Forget from "../../Components/Context/Authprovider/Authintication/Forget";
 import Login from "../../Components/Context/Authprovider/Authintication/Login";
 import Profile from "../../Components/Context/Authprovider/Authintication/Profile";
+import Reg from "../../Components/Context/Authprovider/Authintication/Reg";
 import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
 import Signup from "../../Components/Context/Authprovider/Authintication/Signup";
 import Error from "../../Components/Error/Error";
@@ -21,6 +22,7 @@ import Premium from "../../Components/Premium/Premium";
 import TvShows from "../../Components/Tvshows/Tvshows";
 import Main from "../../Main/Main";
 import Private from "../Private";
+import PrivateAdmin from "../PrivateAdmin";
 
 
 const router = createBrowserRouter([
@@ -53,7 +55,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/signup',
-                element: <Signup></Signup>
+                element: <Reg></Reg>
             },
             {
                 path: '/forget',
@@ -105,38 +107,38 @@ const router = createBrowserRouter([
 
             {
                 path: '/admin',
-                element: <AllMovies />
+                element: <PrivateAdmin><AllMovies /></PrivateAdmin>
 
             },
             {
                 path: '/admin/allmovies',
-                element: <AllMovies />
+                element: <PrivateAdmin><AllMovies /></PrivateAdmin>
 
             },
             {
                 path: '/admin/allmovies',
-                element: <AllMovies />
+                element: <PrivateAdmin><AllMovies /></PrivateAdmin>
 
             },
             {
                 path: '/admin/allusers',
-                element: <AllUsers />
+                element: <PrivateAdmin><AllUsers /></PrivateAdmin>
 
             },
             {
                 path: '/admin/uploadmovies',
-                element: <UploadMovies />
+                element: <PrivateAdmin><UploadMovies /></PrivateAdmin>
 
             },
             {
                 path: '/admin/updatemovie',
-                element: <MovieUpdate />
+                element: <PrivateAdmin> <MovieUpdate /></PrivateAdmin>
 
             },
             {
                 path: '/admin/allCategories',
-                element: <AllCategories></AllCategories>
-
+                element: <PrivateAdmin><AllCategories></AllCategories>
+                </PrivateAdmin>
             },
         ]
     }

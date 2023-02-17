@@ -38,7 +38,7 @@ const Premium = () => {
 
     return (
         <div>
-            <div className='mx-auto my-5'>
+            <div className='mx-auto my-5 mt-5'>
                 <p className='text-2xl text-center font-bold mb-3'>Enjoy our premium contents</p>
                 <div className='carousel carousel-center mx-auto'>
                     <div className="carousel-item grid grid-cols-3 mx-auto ">

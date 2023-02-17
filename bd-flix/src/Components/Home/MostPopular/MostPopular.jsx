@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import Original from '../IndexPage/Original/Original';
 import { useContext } from 'react';
 import { AuthContext } from '../../Context/Authprovider/Authprovider';
+import { Link } from 'react-router-dom';
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
@@ -38,15 +39,15 @@ const MostPopular = () => {
     return (
         <>
 
-<<<<<<< HEAD
-            <div className='relative my-12 lg:my-2 p-4'>
-                <div className='flex justify-between mb-3'>
-                    <h1 className='text-md   font-bold text-white'>Most Popular</h1>
-=======
+  
+        {/* <div className='relative my-12 lg:my-2 p-4'>
+            <div className='flex justify-between mb-3'>
+                <h1 className='text-md   font-bold text-white'>Most Popular</h1> */}
+
             <div className='lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
                     <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
+    
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>
 
@@ -58,7 +59,7 @@ const MostPopular = () => {
                             <div className="carousel-item">
                                 {
                                     MostPopular.map((images, index) => (
-<<<<<<< HEAD
+  
                                         <div
                                             key={index}
                                             className={`carousel-item cursor-pointer ${index === currentIndex ? 'active' : ''}`}
@@ -84,27 +85,8 @@ const MostPopular = () => {
                                     ))
                                 }
 
-                                {/* <button
-                                    className={`lg:block hidden absolute bottom-[50%] text-2xl text-white rounded-full left-0 p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
-                                    onClick={handlePrevSlide}
-                                >
-                                    <FaAngleLeft />
-                                </button>
-
-                                <button
-                                    className={`lg:block hidden absolute bottom-[50%] text-2xl rounded-full right-0 text-white p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
-                                    onClick={handleNextSlide}
-                                >
-                                    <FaAngleRight />
-                                </button> */}
-=======
-                                        <Original images={images}></Original>
-                                       
-                                    ))
-                                }
-
                                
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
+    
                             </div>
                         </div>
                     }

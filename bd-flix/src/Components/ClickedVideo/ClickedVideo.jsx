@@ -11,11 +11,7 @@ import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
 import { RiThumbUpFill, RiThumbUpLine } from 'react-icons/ri';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
-<<<<<<< HEAD
-import Main from '../../Main/Main';
-=======
 import Download from './Download/Download';
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
 
 import { AuthContext } from '../Context/Authprovider/Authprovider';
@@ -28,10 +24,6 @@ const ClickedVideo = () => {
 
     const { user } = useContext(AuthContext)
 
-   
-    
-
-
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
@@ -39,11 +31,16 @@ const ClickedVideo = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [doFetch, setDoFetch] = useState(false);
     const [newData, setNewData] = useState(data);
-
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetch(`http://localhost:5000/recommend/${data.original_title}`)
+        setLoading(true);
+        fetch(`https://recomended-movie.onrender.com/recommend/${data.original_title}`)
             .then(res => res.json())
-            .then(result => setRecomended(result))
+            .then(result => {
+                console.log("result", result);
+                setRecomended(result)
+                setLoading(false)
+            })
     }, [])
 
 
@@ -52,7 +49,7 @@ const ClickedVideo = () => {
 
 
 
-    console.log(data);
+
 
 
     const PopularMovies = [
@@ -99,18 +96,18 @@ const ClickedVideo = () => {
                     setIsLiked(true)
                 }
             })
-    }, [ user?.email, data._id])
+    }, [user?.email, data._id])
 
 
 
-    const showLike = ()=> {
+    const showLike = () => {
 
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/numoflike/?postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
                 setNewData(data)
             })
-            .catch(er => console.error("notun error",er));
+            .catch(er => console.error("notun error", er));
 
     }
 
@@ -187,8 +184,8 @@ const ClickedVideo = () => {
 
     ///watchlist
 
-    
-    
+
+
 
     const [watchlist, setwatchlists] = useState([])
 
@@ -309,10 +306,6 @@ const ClickedVideo = () => {
         const posterimg = data.poster_path;
         const route = `${location?.pathname}`
         const now = new Date();
-        // const defaulttime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
-        // console.log(defaulttime)
-
-
 
         const defaultTime = new Date(date.format(now, 'YYYY/MM/DD HH:mm:ss'))
 
@@ -451,11 +444,7 @@ const ClickedVideo = () => {
 
     return (
         <>
-<<<<<<< HEAD
-            <div className='mx-2 md:mx-4 relative top-20'>
-=======
             <div className='mx-2 md:mx-4 relative top-20' onLoad={history}  >
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
                 <div className=''>
                     <div className='col-span-2'>
@@ -467,11 +456,7 @@ const ClickedVideo = () => {
                                     <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
                                     <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
                                 </div> :
-<<<<<<< HEAD
-                                <video ref={videoRef} className='border h-full w-full' controls={play} autoPlay src={video}>
-=======
                                 <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                                 </video>
                             }
                             <button onClick={() => setPlay(!play)}>{play ? '' :
@@ -486,31 +471,6 @@ const ClickedVideo = () => {
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
-<<<<<<< HEAD
-                                        <div className={"" + (isLike ? "text-blue-500" : "")}>
-                                            <FaThumbsUp onClick={onLikeButtonClick}
-                                                className="text-xl cursor-pointer" />
-                                            <p className='text-xs -mt-1'>{like}</p>
-                                        </div>
-
-                                        <label htmlFor="reviewButton">
-                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
-                                        </label>
-
-
-                                        <div className=''>
-                                            <MdPlaylistAdd className='text-2xl mx-auto'></MdPlaylistAdd>
-                                            <p className='text-xs -mt-1'>WatchList</p>
-                                        </div>
-                                        <div>
-                                            <BiShareAlt className='text-xl mx-auto'></BiShareAlt>
-                                            <p className='text-xs'>Share</p>
-                                        </div>
-                                        <button onClick={handleDownload} className='cursor-pointer'>
-                                            <FiDownload className='text-xl mx-auto'></FiDownload>
-                                            <p className='text-xs'>Download</p>
-                                        </button>
-=======
                                         {/* <div className={"" + (isLike ? "text-blue-500" : "")}>
                                             <FaThumbsUp onClick={onLikeButtonClick}
                                                 className="text-xl cursor-pointer" />
@@ -551,8 +511,7 @@ const ClickedVideo = () => {
                                         </div>
                                         <Download data={data}>
 
-</Download>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
+                                        </Download>
                                     </div>
                                 </div>
                             </div>
@@ -576,19 +535,17 @@ const ClickedVideo = () => {
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
                             <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
+
                                 {
                                     recomended?.slice(0, 6).map(movies =>
                                         <Recommended
+                                            loading={loading}
                                             video={video}
                                             setVideo={setVideo}
                                             movies={movies}></Recommended>
                                     )
                                 }
-<<<<<<< HEAD
                             </div>
-=======
-                                                            </div>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                         </div>
                     </div>
 

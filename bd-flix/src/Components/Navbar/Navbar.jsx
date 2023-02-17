@@ -1,14 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-<<<<<<< HEAD
-import { FaHome, FaVideo, FaToggleOn, FaToggleOff } from 'react-icons/fa';
-=======
 import { FaHome, FaVideo, FaToggleOn, FaToggleOff, FaUserAlt } from 'react-icons/fa';
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 import { FaEnvelope } from 'react-icons/fa';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
-import logo from '../../images/brand.png';
-import { MdPlayCircle } from "react-icons/md";
+import logo from '../../images/brand.png'
 import { useEffect } from 'react';
 import useAdmin from '../../Hooks/Admin/useAdmin';
 const Navbar = () => {
@@ -17,18 +12,11 @@ const Navbar = () => {
     const [AllMoviesSearch, setData] = useState([]);
     const [searchApiData, setSearchApiData] = useState([])
     const [filterVal, setFilterVal] = useState('');
-<<<<<<< HEAD
     const { user, logout, mode, Togglebutton } = useContext(AuthContext)
-
-    useEffect(() => {
-        fetch('http://localhost:5000/allsearch')
-=======
-    const { user, userInfo, logout, mode, Togglebutton } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
 
     useEffect(() => {
         fetch('https://bd-flix-server-emonkumardas.vercel.app/allsearch')
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
             .then(res => res.json())
             .then(res => {
                 setData(res)
@@ -51,24 +39,19 @@ const Navbar = () => {
         <li><Link to='/premium' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Premium</Link></li>
         <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li>
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
-<<<<<<< HEAD
-        {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
-=======
 
 
 
         {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
 
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
     </>
 
     const bottomNav = <>
-
-        <Link to='/media'
-            className={`text-2xl text-center py-2 px-2 rounded-full hover:bg-green-700 cursor-pointer ${active === 'media' ? 'bg-green-700' : ''}`}
-            onClick={() => setActive('media')}
+        <Link to='/'
+            className={`text-2xl text-center py-2 px-6 rounded-full hover:bg-green-700 cursor-pointer ${active === 'home' ? 'bg-green-700' : ''}`}
+            onClick={() => setActive('home')}
         >
-            <FaVideo />
+            <FaHome />
         </Link>
         <Link to='/media'
             className={`text-2xl text-center py-2 px-6 rounded-full hover:bg-green-700 cursor-pointer ${active === 'media' ? 'bg-green-700' : ''}`}
@@ -76,22 +59,12 @@ const Navbar = () => {
         >
             <FaVideo />
         </Link>
-        {/* middle ------------------------------- */}
-        <Link to='/'
-            className={`text-6xl relative bottom-7 text-center border-solid border-2 border-green-800  rounded-full bg-transparent cursor-pointer ${active === 'home' ? 'bg-green-700' : ''}`}
-            onClick={() => setActive('home')}
-        >
-
-            <MdPlayCircle />
-        </Link>
-        {/* middle ------------------------------- */}
         <Link
             className={`text-2xl text-center py-2 px-6 rounded-full hover:bg-green-700 cursor-pointer ${active === 'message' ? 'bg-green-700' : ''}`}
             onClick={() => setActive('message')}
         >
             <FaEnvelope />
         </Link>
-
         {
             user?.uid ?
 
@@ -117,72 +90,55 @@ const Navbar = () => {
             setData(searchApiData)
         } else {
 
-            const filterSearch = searchApiData.filter(it => it?.original_title?.toLowerCase().includes(e.target.value.toLowerCase()));
+            const filterSearch = searchApiData.filter(it => it?.title?.toLowerCase().includes(e.target.value.toLowerCase()));
             setData(filterSearch)
         }
         setFilterVal(e.target.value)
     }
     return (
         <>
-<<<<<<< HEAD
-            <div className={`navbar bg-transparent absolute`}  style={{ zIndex: 1}}>
-=======
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
 
             <div
-                className="navbar absolute w-full" style={{ zIndex: 1 }}>
+                className="navbar bg-transparent absolute" style={{ zIndex: 1 }}>
                 <div className="navbar-start">
-<<<<<<< HEAD
-
-                    <div className='flex gap-2'>
-                        <div className='btn rounded font-mono uppercase bg-none shadow-inner bg-transparent border-none text-xl font-bold text-white'><img src={logo} alt=''></img>-FLIX</div>
-                        {/* <div className='font-serif text-xl font-bold text-white'>BD-<span  className="text-green-600">FL</span>IX</div> */}
-=======
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                         </label>
-                        <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-slate-800 rounded-box w-52">
+                        <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                             {nav}
+
                             {
                                 user?.uid ?
                                     <>
+
+
+
+
                                         <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
                                     </>
                                     :
                                     <li><Link to='/login' className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"> Login</Link></li>
                             }
                         </ul>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                     </div>
-                    <Link to="/" className="normal-case lg:block md:block hidden text-xl">
+                    <Link to="/" className="normal-case text-xl">
                         <div className='btn rounded font-mono uppercase shadow-inner bg-transparent border-none text-sm lg:text-xl font-bold text-white'>
                             <img className='w-4 lg:w-12' src={logo} alt='' />-FLIX
                         </div>
                     </Link>
-                    
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         {nav}
                     </ul>
                 </div>
-<<<<<<< HEAD
-
                 <div className="navbar-end">
-                    {/* search bar---------------------------------------- */}
-                    <div className="dropdown">
-                        <label tabIndex={0} ><input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input lg:block hidden lg:w-full h-10 rounded-xl border-white bg-transparent" /></label>
-                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-=======
-                <div className="navbar-end overflow-hidden">
-
                     <div className="dropdown mx-8">
                         <label tabIndex={0} >
                             <input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-lg border-white bg-transparent" /></label>
                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 ">
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                             <li>{
                                 AllMoviesSearch?.slice(0, 3).map(it => {
                                     return (
@@ -196,15 +152,22 @@ const Navbar = () => {
 
                         </ul>
                     </div>
-<<<<<<< HEAD
-                    {/* search bar---------------------------------------- */}
+
+
                     {user?.uid ?
                         <>
-                           
-                                <Link to="/admin" className=" text-white font-bold mx-2 hover:text-green-400 focus:outline-none focus:shadow-outline border-white">Admin</Link>
-                        
+                            {
+                                isAdmin && <>
+                                   <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
+
+                                </>
+                            }
+
+
+
                             <div className="dropdown dropdown-end">
-                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                <label tabIndex={0}
+                                    className="hidden lg:block btn btn-ghost btn-circle avatar">
                                     <div className="w-10 rounded-full">
                                         <img src={user?.photoURL} alt='' />
                                     </div>
@@ -217,39 +180,9 @@ const Navbar = () => {
 
                         </>
                         :
-                        <li><Link to='/login' className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"> Login</Link></li>
-=======
-
-
-                    {
-                        user?.uid ?
-                            <>
-                                {
-                                    isAdmin && <>
-                                        <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
-
-                                    </>
-                                }
-
-                                <div className="dropdown dropdown-end">
-                                    <label tabIndex={0}
-                                        className="hidden lg:block btn btn-ghost btn-circle avatar">
-                                        <div className="w-10 rounded-full">
-                                            <img src={user?.photoURL} alt='' />
-                                        </div>
-                                    </label>
-                                    <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                                        <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" ><Link to='/profile'>Profile</Link></li>
-                                        <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
-                                    </ul>
-                                </div>
-
-                            </>
-                            :
-                            <ul>
-                                <li><Link to='/login' className="hidden lg:block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"> Login</Link></li>
-                            </ul>
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
+                        <ul>
+                            <li><Link to='/login' className="hidden lg:block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"> Login</Link></li>
+                        </ul>
 
                     }
                 </div>

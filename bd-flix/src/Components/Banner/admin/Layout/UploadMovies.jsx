@@ -12,6 +12,9 @@ const UploadMovies = () => {
   useEffect(() => {
 
     fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
+
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
+
         .then(res => res.json())
         .then(data => {
             setCategories(data)

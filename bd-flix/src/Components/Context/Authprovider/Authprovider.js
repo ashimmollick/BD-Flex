@@ -10,6 +10,27 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const [user, setuser] = useState(null);
     const [loading, setloading] = useState(true);
+    const [userInfo, setUserInfo] = useState(null);
+    const [makeFetch, setMakeFetch] = useState(false);
+
+
+
+    console.log(user?.email);
+
+    
+    // fetch user info from mongodb 
+    useEffect(() => {
+        if(user?.email){
+            fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/${user?.email}`)
+            .then(res => res.json())
+            .then(data => {
+                setUserInfo(data)
+                setMakeFetch(false)
+            });
+        }
+    }, [user?.email, makeFetch])
+
+
 
     const createUser = (email, password) => {
         setloading(true)
@@ -60,7 +81,7 @@ const AuthProvider = ({ children }) => {
         }
     })
     const authInfo = {
-        user,
+        user, userInfo, setMakeFetch,
         loading, createUser, signIn, providerLogin, logout, updateUserProfile, Resetpass
 
     }

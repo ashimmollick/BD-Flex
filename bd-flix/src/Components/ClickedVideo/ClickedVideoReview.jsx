@@ -6,6 +6,7 @@ const ClickedVideoReview = ({ data }) => {
     const [loading, setLoading] = useState(false)
 
 
+
     const { user } = useContext(AuthContext)
 
     const handleReview = event => {
@@ -18,13 +19,22 @@ const ClickedVideoReview = ({ data }) => {
         const rating = form.rating.value;
         const postId = data._id;
 
+        const likes = []
+
+        const posterimg = data.poster_path
+
+
+
         const review = {
             email,
             name,
             image,
             comments,
             rating,
-            postId
+            postId,
+
+            likes
+
         }
 
         fetch('https://bd-flix-server-emonkumardas.vercel.app/review', {

@@ -3,10 +3,14 @@ import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
 import { useEffect } from 'react';
 import Original from '../IndexPage/Original/Original';
+import { useContext } from 'react';
+import { AuthContext } from '../../Context/Authprovider/Authprovider';
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
     const [MostPopular, setMostPopular] = useState([]);
+    const {userInfo} = useContext(AuthContext);
+    // console.log("newuser", userInfo);
 
     useEffect(() => {
         setLoading(true);

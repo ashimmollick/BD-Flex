@@ -5,6 +5,7 @@ import Navbar from '../Components/Navbar/Navbar';
 // import Slider from '../Components/Home/IndexSlider/Slider';
 const Main = () => {
     return (
+<<<<<<< HEAD
         <div className='relative'>
             <Navbar></Navbar>
             <Outlet></Outlet>
@@ -12,6 +13,17 @@ const Main = () => {
            <Footer></Footer>
            </div>
         </div>
+=======
+        <>
+        <div className='relative'style={{clear:"both"}}>
+            <Navbar></Navbar>
+            <Outlet></Outlet>
+            </div>
+           <div className='' style={{clear:"both"}}>
+           <Footer></Footer>
+           </div>
+           </>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
     );
 };
 

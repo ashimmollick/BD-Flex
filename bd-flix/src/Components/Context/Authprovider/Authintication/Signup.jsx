@@ -21,7 +21,7 @@ const Signup = () => {
 
 
 
-    const { createUser, updateUserProfile, verifyEmail } = useContext(AuthContext)
+    const { createUser, updateUserProfile } = useContext(AuthContext)
     const handlesignup = event => {
         event.preventDefault();
         const form = event.target;
@@ -36,7 +36,7 @@ const Signup = () => {
         formData.append('imageFile', image)
         setloading(true)
 
-        const url = "http://localhost:5000/uploadPhoto"
+        const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
         fetch(url, {
             method: 'POST',
@@ -44,44 +44,38 @@ const Signup = () => {
         })
             .then(res => res.json())
             .then(imageData => {
-                console.log(imageData.url)
+                
                 createUser(email, password)
+
+
+
+
                     .then(result => {
-                        const user = result.user;
-                        console.log(user);
-                        setError('');
+
+                        setAuthToken(result.user)
+
+
+                        toast.success('User Created Successfully')
+                        setloading(false)
+
+
                         navigate('/')
-                        form.reset();
-
-                        handleUpdateUserProfile(name, imageData.url);
-                        handleEmailVerification();
-                        toast.success('Please verify your email address.')
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        setError(error.message);
 
 
-                        if (error.code == "auth/email-already-in-use") {
-                            toast("The email address is already in use");
-                            setloading(false)
-                        } else if (error.code == "auth/invalid-email") {
-                            toast.error("The email address is not valid.");
-                            setloading(false)
-                        } else if (error.code == "auth/operation-not-allowed") {
-                            toast.error("Operation not allowed.");
-                            setloading(false)
-                        } else if (error.code == "auth/weak-password") {
-                            toast.error("The password is too weak.");
-                            setloading(false)
-                        }
-                    });
+
+                        updateUserProfile(name, imageData.data.display_url)
+
+                            .then(() => {
+                                navigate(from, { replace: true })
+                            }).catch(error => console.log(error))
+
+                    }).catch(error => console.log(error))
 
             }).catch(error => console.log(error))
 
         // const saveUser = (name, email) => {
         //     const user = { name, email };
-        //     fetch('http://localhost:5000/allUsers', {
+        //     fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers', {
         //         method: "POST",
         //         headers: {
         //             'content-type': 'application/json',
@@ -95,34 +89,37 @@ const Signup = () => {
         //         })
         // }
 
+        createUser(email, password).then(result => {
+            const user = result.user;
+
+            navigate('/')
+            setError('')
+            form.reset()
+            // handleupdateprofile(name)
+        })
+            .catch(err => {
+                console.error(err)
+                setError(err.message)
+
+                if (error === 'Firebase: Error (auth/email-already-in-use).') {
+                    toast.error('Already have an account')
+                    setloading(false)
+
+                }
+            })
 
 
 
     }
 
 
-
-
-    const handleUpdateUserProfile = (name, photoURL) => {
-        const profile = {
-            displayName: name,
-            photoURL: photoURL
-        }
-
-        updateUserProfile(profile)
-            .then(() => { })
-            .catch(error => console.error(error));
-    }
-
-    const handleEmailVerification = () => {
-        verifyEmail()
-            .then(() => { })
-            .catch(error => console.error(error));
-    }
-
-
-
-
+    // const handleupdateprofile = (name, photoURL) => {
+    //     const profile = {
+    //         displayName: name,
+    //         photoURL: photoURL
+    //     }
+    //     updateUserProfile(profile).then(() => { }).catch(error => console.error(error))
+    // }
 
 
 

@@ -35,15 +35,23 @@ const EditProfile = () => {
             genre: genre
         }
 
-        console.log(editProfile)
 
-        fetch('http://localhost:5000/userProfile', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(editProfile)
-        })
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
+
+
+            // console.log(editProfile)
+
+            // fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
+
+                // fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
+
+
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(editProfile)
+                })
             .then(res => res.json())
             .then(data => {
                 if (data.acknowledged) {
@@ -59,6 +67,11 @@ const EditProfile = () => {
 
 
     }
+
+
+
+
+
 
     return (
 

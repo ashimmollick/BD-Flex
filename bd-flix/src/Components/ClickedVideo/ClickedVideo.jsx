@@ -1,28 +1,58 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { BiShareAlt } from 'react-icons/bi';
 import { FiDownload } from 'react-icons/fi';
 import { MdPlaylistAdd } from 'react-icons/md';
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
-import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
+
+import { RiThumbUpFill, RiThumbUpLine } from 'react-icons/ri';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
+<<<<<<< HEAD
 import Main from '../../Main/Main';
+=======
+import Download from './Download/Download';
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
 
+import { AuthContext } from '../Context/Authprovider/Authprovider';
+import { toast } from 'react-toastify';
+
+import date from 'date-and-time';
+import Share from './Share/Share';
 
 const ClickedVideo = () => {
+
+    const { user } = useContext(AuthContext)
+
+   
+    
+
+
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
+
+    const [isLiked, setIsLiked] = useState(false);
+    const [doFetch, setDoFetch] = useState(false);
+    const [newData, setNewData] = useState(data);
+
     useEffect(() => {
         fetch(`http://localhost:5000/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])
 
+
+    const location = useLocation()
+    const form = location?.state?.from?.pathname
+
+
+
+    console.log(data);
 
 
     const PopularMovies = [
@@ -57,21 +87,355 @@ const ClickedVideo = () => {
         }
     ]
 
-    // Start Like and dislike post---------------------------------------->
-    const [like, setLike] = useState(0);
-    const [isLike, setIsLike] = useState(false);
 
 
-    const onLikeButtonClick = () => {
+    // fetch isliked information \/
 
-        setIsLike(!isLike);
-        setLike(like + (isLike ? -1 : 1));
+    useEffect(() => {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (user?.email === data.userEmail) {
+                    setIsLiked(true)
+                }
+            })
+    }, [ user?.email, data._id])
+
+
+
+    const showLike = ()=> {
+
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/numoflike/?postId=${data._id}`)
+            .then(res => res.json())
+            .then(data => {
+                setNewData(data)
+            })
+            .catch(er => console.error("notun error",er));
 
     }
 
 
+    // fetch like information /\
+
+
+
+
+    // Start Like and dislike post---------------------------------------->
+
+    const handleLike = () => {
+
+        const likeInfo = {
+            userEmail: user?.email,
+            videoId: data._id
+        }
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(likeInfo)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    // setDoFetch(false)
+                    setIsLiked(true)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ id: data._id, increase: 1 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    setDoFetch(true)
+                    showLike()
+                    // setIsLiked(true)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+    }
+
+
+
+
+
+    const [watchlists, setwatchlistss] = useState([])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ///watchlist
+
+    
+    
+
+    const [watchlist, setwatchlists] = useState([])
+
+    useEffect(() => {
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/watchlist')
+            .then(res => res.json())
+            .then(data => {
+                setwatchlists(data)
+                setDoFetch(false)
+
+            })
+
+    }, [doFetch])
+
+
+
+
+    const [change, setchange] = useState(false)
+    // console.log(change)
+
+
+    // }
+
+
+
+
+    const onWatchlistButtonclick = (event) => {
+        event.preventDefault()
+
+
+
+        const email = user?.email;
+        const name = user?.displayName;
+        const MovieID = data?._id;
+        const title = data?.title;
+        const posterimg = data.poster_path;
+
+
+
+        const route = `${location?.pathname}`
+        const getuser = (!!watchlist.find(watch => watch.email))
+        const newe = watchlist.map(watch => watch.email)
+        // const a = [...newe]
+        // console.log(a)
+
+        // const uniq = [...new Set(a)];
+        // console.log(uniq)
+
+
+        const ifExist = !!watchlist.find(watch => ((watch.MovieID === MovieID) && (watch.email === user.email)));
+
+
+
+
+        if (ifExist) {
+
+
+
+            toast("this video is already added!")
+        }
+        else {
+            if (user.uid) {
+                const watchlists = {
+                    email, name, MovieID, title, route, posterimg, change
+
+                }
+                // console.log(watchlists)
+
+                fetch('https://bd-flix-server-emonkumardas.vercel.app/watchlist', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(watchlists)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.acknowledged) {
+                            toast.success('successfully added on watchlist')
+                            setDoFetch(true)
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error)
+
+                    })
+            }
+            else {
+                toast.error('please login')
+            }
+        }
+
+
+
+
+    }
+    //end of watchlist
+
+
+    //history api fetch
+
+
+
+
+
+
+
+
+    const history = (event) => {
+        event.preventDefault();
+
+        const email = user?.email;
+        const name = user?.displayName;
+        const MovieID = data?._id;
+        const title = data?.title;
+        const posterimg = data.poster_path;
+        const route = `${location?.pathname}`
+        const now = new Date();
+        // const defaulttime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
+        // console.log(defaulttime)
+
+
+
+        const defaultTime = new Date(date.format(now, 'YYYY/MM/DD HH:mm:ss'))
+
+
+
+
+        // const ifExist = !!historys.find(watch => ((watch.MovieID === MovieID) && (watch.email === user.email)));
+
+
+
+
+
+
+
+
+        const history = {
+            email, name, MovieID, title, route, posterimg, defaultTime
+
+        }
+
+
+        if (user.uid && user.email) {
+            fetch('https://bd-flix-server-emonkumardas.vercel.app/history', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(history)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.acknowledged) {
+
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error)
+
+                })
+
+
+        }
+
+        else {
+            toast.success('please')
+        }
+
+
+    }
+
+
+
+
+
+
+    // handle dislike \/
+
+    const handleDisLike = () => {
+
+        const likeInfo = {
+            userEmail: user?.email,
+            videoId: data._id
+        }
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/likes', {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(likeInfo)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    setIsLiked(false)
+                }
+            })
+            .catch(er => console.error(er));
+
+
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/videoLike', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ id: data._id, increase: -1 })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.acknowledged) {
+                    setDoFetch(true)
+                    showLike()
+                }
+            })
+            .catch(er => console.error(er));
+
+    }
+
+
+
+    // handle dislike /\
+
+
+
+
+    // const [like, setLike] = useState(0);
+    // const [isLike, setIsLike] = useState(false);
+
+
+    // const onLikeButtonClick = () => {
+
+    //     setIsLike(!isLike);
+    //     setLike(like + (isLike ? -1 : 1));
+
+    // }
+
+
+
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
+
     //Download-------------------------------------->
 
     const videoRef = useRef(null);
@@ -84,9 +448,14 @@ const ClickedVideo = () => {
         a.click();
     };
     //End of Download-------------------------------------->
+
     return (
         <>
+<<<<<<< HEAD
             <div className='mx-2 md:mx-4 relative top-20'>
+=======
+            <div className='mx-2 md:mx-4 relative top-20' onLoad={history}  >
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
                 <div className=''>
                     <div className='col-span-2'>
@@ -98,7 +467,11 @@ const ClickedVideo = () => {
                                     <img className='object-cover w-full h-[500px]' src={data.poster_path} alt='poster'></img>
                                     <div className='absolute lg:inset-0 lg:bg-black lg:opacity-50'></div>
                                 </div> :
+<<<<<<< HEAD
                                 <video ref={videoRef} className='border h-full w-full' controls={play} autoPlay src={video}>
+=======
+                                <video ref={videoRef} className='h-full w-full' controls={play} autoPlay src={video}>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                                 </video>
                             }
                             <button onClick={() => setPlay(!play)}>{play ? '' :
@@ -113,6 +486,7 @@ const ClickedVideo = () => {
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
+<<<<<<< HEAD
                                         <div className={"" + (isLike ? "text-blue-500" : "")}>
                                             <FaThumbsUp onClick={onLikeButtonClick}
                                                 className="text-xl cursor-pointer" />
@@ -136,6 +510,49 @@ const ClickedVideo = () => {
                                             <FiDownload className='text-xl mx-auto'></FiDownload>
                                             <p className='text-xs'>Download</p>
                                         </button>
+=======
+                                        {/* <div className={"" + (isLike ? "text-blue-500" : "")}>
+                                            <FaThumbsUp onClick={onLikeButtonClick}
+                                                className="text-xl cursor-pointer" />
+                                            <p className='text-xs -mt-1'>{like}</p>
+                                        </div> */}
+
+                                        {
+                                            isLiked ?
+                                                <div className='flex flex-col justify-center items-center mt-2'>
+                                                    <button onClick={handleDisLike} className='' > <RiThumbUpFill className='text-xl text-green-500 -mb-1'></RiThumbUpFill> </button>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
+                                                </div>
+                                                :
+                                                <div className='flex flex-col justify-center items-center mt-2'>
+                                                    <button onClick={handleLike} className='' > <RiThumbUpLine className='text-xl  -mb-1'></RiThumbUpLine> </button>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
+                                                </div>
+                                        }
+
+                                        {/* <label htmlFor="reviewButton">
+                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
+                                        </label> */}
+
+                                        <div className=''>
+                                            <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
+                                            <p className='text-xs -mt-1'>WatchList</p>
+                                        </div>
+                                        <div>
+                                            <label htmlFor="my-modal-3" ><BiShareAlt className='text-xl mx-auto'></BiShareAlt>
+                                                <p className='text-xs'>Share</p></label>
+                                            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+                                            <div className="modal">
+                                                <div className="modal-box bg-slate-800 relative flex justify-center">
+                                                    <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+                                                    <Share data={data}></Share>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Download data={data}>
+
+</Download>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +584,11 @@ const ClickedVideo = () => {
                                             movies={movies}></Recommended>
                                     )
                                 }
+<<<<<<< HEAD
                             </div>
+=======
+                                                            </div>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                         </div>
                     </div>
 

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import Original from '../IndexPage/Original/Original';
+import { useContext } from 'react';
+import { AuthContext } from '../../Context/Authprovider/Authprovider';
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
     const [MostPopular, setMostPopular] = useState([]);
+    const {userInfo} = useContext(AuthContext);
+    // console.log("newuser", userInfo);
 
     useEffect(() => {
         setLoading(true);
@@ -35,9 +38,15 @@ const MostPopular = () => {
     return (
         <>
 
+<<<<<<< HEAD
             <div className='relative my-12 lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
                     <h1 className='text-md   font-bold text-white'>Most Popular</h1>
+=======
+            <div className='lg:my-2 p-4'>
+                <div className='flex justify-between mb-3'>
+                    <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>
 
@@ -49,6 +58,7 @@ const MostPopular = () => {
                             <div className="carousel-item">
                                 {
                                     MostPopular.map((images, index) => (
+<<<<<<< HEAD
                                         <div
                                             key={index}
                                             className={`carousel-item cursor-pointer ${index === currentIndex ? 'active' : ''}`}
@@ -87,6 +97,14 @@ const MostPopular = () => {
                                 >
                                     <FaAngleRight />
                                 </button> */}
+=======
+                                        <Original images={images}></Original>
+                                       
+                                    ))
+                                }
+
+                               
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                             </div>
                         </div>
                     }

@@ -21,7 +21,7 @@ const Profile = () => {
 
     const now = new Date();
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center relative top-20'>
         
             <aside className="w-full p-6 sm:w-60 dark:bg-gray-900 dark:text-gray-100">
                 <nav className="space-y-8 text-sm">

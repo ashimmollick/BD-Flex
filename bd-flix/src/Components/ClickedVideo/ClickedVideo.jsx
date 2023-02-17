@@ -28,7 +28,7 @@ const ClickedVideo = () => {
     const [newData, setNewData] = useState(data);
 
     useEffect(() => {
-        fetch(`https://bd-flix-server-emonkumardas.vercel.app/recommend/${data.original_title}`)
+        fetch(`http://localhost:5000/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => setRecomended(result))
     }, [])

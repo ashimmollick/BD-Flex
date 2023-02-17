@@ -18,7 +18,7 @@ const AllCategories = () => {
                 setDoFetch(false)
             })
 
-    }, [doFetch] )
+    }, [doFetch])
 
 
 
@@ -29,15 +29,20 @@ const AllCategories = () => {
 
         const ifExist = !!categories.find(cat => cat.categoryName === catName);
 
-        if(ifExist){
+        if (ifExist) {
             toast(" this category is already exist !")
         }
-        else{
+        else {
             const newCategory = {
-                'categoryName' : catName
+                'categoryName': catName
             }
+
+
+            fetch('http://localhost:5000/category', {
+
     
             fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
+
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -53,7 +58,7 @@ const AllCategories = () => {
                     }
                 })
                 .catch(er => console.error(er));
-    
+
         }
 
 

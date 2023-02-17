@@ -5,7 +5,11 @@ const useToken = email => {
    
     useEffect(() => {
         if (email) {
+
+            fetch(`http://localhost:5000/user/${email}`)
+
             fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
+
                 .then(res => res.json())
                 .then(data => {
                     if (data.ACCESS_TOKEN) {

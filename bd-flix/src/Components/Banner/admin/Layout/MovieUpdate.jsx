@@ -14,6 +14,15 @@ const MovieUpdate = (singleMovie) => {
 
   useEffect(() => {
 
+    fetch('http://localhost:5000/category')
+      .then(res => res.json())
+      .then(data => {
+        setNewCategories(data)
+
+      })
+
+  }, [])
+
     fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
         .then(res => res.json())
         .then(data => {
@@ -22,6 +31,7 @@ const MovieUpdate = (singleMovie) => {
         })
 
 }, [] )
+
 
   const navigate = useNavigate()
 
@@ -45,7 +55,7 @@ const MovieUpdate = (singleMovie) => {
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
 
- 
+
 
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
@@ -68,6 +78,7 @@ const MovieUpdate = (singleMovie) => {
       .then(ImageData => {
 
 
+
         const updateMovie = {
           image: ImageData.data.url,
           category: movieWithoutSpaces,
@@ -80,7 +91,7 @@ const MovieUpdate = (singleMovie) => {
 
 
 
-        fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/updateMovie/${updateMovie}`, {
+        fetch(`http://localhost:5000/updateMovie/${updateMovie}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json"
@@ -143,14 +154,14 @@ const MovieUpdate = (singleMovie) => {
 
 
                 <div className="form-control">
-                <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-xl font-bold">Banner</span>
-                </label>
-                <img className='w-[200px] h-[200px]' src={updateData.poster_path} alt=" Banner"/>
-  
-                {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
-              </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text text-xl font-bold">Banner</span>
+                    </label>
+                    <img className='w-[200px] h-[200px]' src={updateData.poster_path} alt=" Banner" />
+
+                    {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
+                  </div>
                   <label className="label">
                     <span className="label-text">Image Upload</span>
                   </label>
@@ -165,9 +176,15 @@ const MovieUpdate = (singleMovie) => {
                   <label className="label">
                     <span className="label-text">Video Upload</span>
                   </label>
+
+                  <div className="flex">
+                    <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
+                  </div>
+
                <div className="flex">
                     <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
                   </div> 
+
                   {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
                 </div>
 
@@ -176,6 +193,20 @@ const MovieUpdate = (singleMovie) => {
                     <span className="label-text">Catagories: {updateData.category} </span>
                   </label>
                   <select name='productCatagories' className="input rounded-md bg-transparent input-bordered" >
+
+
+                    {
+                      newCategories.map(category =>
+                        <option className='bg-slate-900'>{category.categoryName}</option>
+                      )
+                    }
+
+
+
+                    {/* 
+                   <option className='bg-slate-900'>Movies For You</option>
+                    <option className='bg-slate-900'>Post Popular Movie</option> */}
+
 
                   {
                     newCategories.map(category =>
@@ -190,13 +221,13 @@ const MovieUpdate = (singleMovie) => {
                     <option className='bg-slate-900'>Post Popular Movie</option> */}
 
 
-                    
+
                   </select>
                 </div>
               </div>
-                <div className="form-control mt-6">
-                  <button className=" font-bold p-3 rounded-lg bg-green-700">{loading ? "Loading..." : "Update"}</button>
-                </div>
+              <div className="form-control mt-6">
+                <button className=" font-bold p-3 rounded-lg bg-green-700">{loading ? "Loading..." : "Update"}</button>
+              </div>
             </div>
           </form>
         </div>

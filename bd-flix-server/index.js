@@ -16,6 +16,7 @@ app.use(express.json());
 const multer = require("multer");
 const firebase = require("firebase/app");
 const { getStorage, ref, uploadBytes, getDownloadURL } = require("firebase/storage");
+const { query } = require('express');
 
 const firebaseConfig = {
     apiKey: "AIzaSyC6rov5IQ_uuDeY_DRnHhSADgnb3XoukL8",
@@ -65,7 +66,11 @@ function verifyfyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
         if (err) {
+
             return res.status(403).send({ message: 'forbidden access' })
+
+            return res.status(403).send({ message: 'forbidden accessssssss' })
+
         }
         req.decoded = decoded;
         next();
@@ -89,15 +94,30 @@ async function run() {
 
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
+        const likeCollection = client.db("bdFlix").collection("like");
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
+<<<<<<< HEAD
+=======
         //Category collection
-        const categoryCollection = client.db("bdFlix").collection("category");  
-        
+        const categoryCollection = client.db("bdFlix").collection("category");
+
+
+
+        const Watchlist = client.db("bdFlix").collection("watchlist");
+        const Historys = client.db("bdFlix").collection("History");
+
+
+
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
 
 
+
+
+
+
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
         app.get('/mostPopularMovies', async (req, res) => {
             const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
@@ -106,13 +126,10 @@ async function run() {
 
         app.post('/allmovies', async (req, res) => {
             const allmovies = req.body;
-
             // Get the highest ID from the existing movie documents
             const highestId = await allMoviesCollection.find({}).sort({ id: -1 }).limit(1).toArray();
-
             // Set the new ID for the movie document to be inserted
             allmovies.id = highestId.length === 0 ? 0 : highestId[0].id + 1;
-
             const result = await allMoviesCollection.insertOne(allmovies);
             res.send(result);
         });
@@ -154,8 +171,6 @@ async function run() {
 
         app.get('/allUsers', async (req, res) => {
 
-
-
             const result = await allUsers.find({}).toArray();
             res.send(result);
         })
@@ -164,6 +179,14 @@ async function run() {
         app.post('/allUsers', async (req, res) => {
             const users = req.body;
             const result = await allUsers.insertOne(users)
+            res.send(result);
+        })
+
+        //get current user
+        app.get('/allUsers/:id', async (req, res) => {
+            const email = req.params.id;
+            const query = { email: email };
+            const result = await allUsers.findOne(query);
             res.send(result);
         })
 
@@ -188,7 +211,13 @@ async function run() {
         app.put('/allUsers/:id', async (req, res) => {
             const email = req.params.id;
             const query = { email: email };
+
+
             console.log(email)
+
+
+
+
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
@@ -216,10 +245,22 @@ async function run() {
                 const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
                 return res.send({ ACCESS_TOKEN: token })
             }
+
+
             console.log(user);
+
+
+
+
+
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
+
+
+
+
+
 
 
         // app.get('/users/:email', async (req, res) => {
@@ -251,6 +292,10 @@ async function run() {
             const result = await allUsers.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
+
+
+
+
         //make admin to member
         app.put('/allUsers/deleteAdmin/:id', verifyfyJWT, async (req, res) => {
             const decodedEmail = req.decoded.email;
@@ -312,6 +357,39 @@ async function run() {
                 res.send(result)
             }
         })
+
+        // update user
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const UserUpdate = req.body;
+            const option = { upset: true }
+            const updateUser = {
+                $set: {
+                    name: UserUpdate.name,
+                    address: UserUpdate.address,
+                    gender: UserUpdate.gender,
+                    genre: UserUpdate.genre
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateUser, option)
+            res.send(result)
+        })
+
+        // subscribe---------------------------------
+        app.put('/subscribe/:id', async (req, res) => {
+            const email = req.params.id;
+            const filter = { email: email  }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isSubscribe: true
+                }
+            }
+            const result = await allUsers.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
 
         // update user
         app.put('/user/:id', async (req, res) => {
@@ -397,10 +475,97 @@ async function run() {
             res.send(result);
         })
 
+
+
+
+
         app.get('/comedies', async (req, res) => {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
+
+        //watchlist
+
+        app.post('/watchlist', async (req, res) => {
+            const item = req.body;
+            const result = await Watchlist.insertOne(item);
+            res.send(result)
+
+
+        })
+        //getting watchlist
+        app.get('/watchlist', async (req, res) => {
+
+
+
+            const watchlist = await Watchlist.find({}).toArray()
+            res.send(watchlist)
+        })
+
+        //delete watchlist
+
+
+        app.delete('/watchlist/:id', async (req, res) => {
+            const { id } = req.params;
+            const deleteId = { _id: ObjectId(id) };
+            const result = await Watchlist.deleteOne(deleteId);
+
+            res.send(result);
+        })
+
+
+        //cheacking history
+        app.post('/history', async (req, res) => {
+            const item = req.body;
+
+
+            const result = await Historys.insertOne(item);
+            res.send(result)
+
+
+        })
+
+
+
+
+
+
+
+        //getting history
+        app.get('/history', async (req, res) => {
+
+            const result = await Historys.find({}).toArray()
+            res.send(result)
+        })
+
+
+        app.delete('/history/:id', async (req, res) => {
+            const { id } = req.params;
+            const MovieID = {
+                email: id
+            };
+
+            console.log(MovieID)
+            const result = await Historys.deleteMany(MovieID);
+            res.send(result);
+        })
+
+        app.get('/watchlists', async (req, res) => {
+
+            const email = req.query.email;
+            const MovieID = req.query.movieid;
+
+            const query = { email: email, MovieID: MovieID }
+            console.log(query)
+
+
+            const sourob = await Watchlist.findOne(query)
+            console.log(sourob)
+            // res.send(sourob)
+            res.send(sourob)
+        })
+
+
 
 
         //----------- check isLiked or not-----
@@ -408,24 +573,24 @@ async function run() {
         app.get('/isLiked', async (req, res) => {
             const email = req.query.email;
             const postId = req.query.postId;
-   
+
             const query = { userEmail: email, videoId: postId }
 
-            
+
             const cursor = await likesCollection.findOne(query);
-            
+
             // console.log(cursor);
             res.send(cursor);
-         })
+        })
 
 
         app.get('/numoflike', async (req, res) => {
             const postId = req.query.postId;
-            const query = {_id: postId }
+            const query = { _id: postId }
             const cursor = await allMoviesCollection.findOne(query);
-            
+
             res.send(cursor);
-         })
+        })
 
 
         //----------- LIKE -------------
@@ -434,16 +599,16 @@ async function run() {
             const likes = req.body;
             const result = await likesCollection.insertOne(likes);
             res.send(result);
-         })
+        })
 
-         app.put('/videoLike', async (req, res) => {
+        app.put('/videoLike', async (req, res) => {
             const postId = req.body.id;
             const increase = req.body.increase;
-            const query = {_id: postId};
+            const query = { _id: postId };
             const options = { upsert: true };
-               const result = await allMoviesCollection.updateOne( query,{ $inc: {likeCount: increase }},);
-               res.send(result);
-         })
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
 
         //----------- UNLIKE -------------
         app.delete('/likes', async (req, res) => {
@@ -452,9 +617,64 @@ async function run() {
             const query = { userEmail: email, videoId: videoId }
             const result = await likesCollection.deleteOne(query);
             if (result.deletedCount === 1) {
-               res.send(true);
+                res.send(true);
             }
-         })
+        })
+
+
+
+        //----------- check isLiked or not-----
+
+        app.get('/isLiked', async (req, res) => {
+            const email = req.query.email;
+            const postId = req.query.postId;
+
+            const query = { userEmail: email, videoId: postId }
+
+
+            const cursor = await likesCollection.findOne(query);
+
+            // console.log(cursor);
+            res.send(cursor);
+        })
+
+
+        app.get('/numoflike', async (req, res) => {
+            const postId = req.query.postId;
+            const query = { _id: postId }
+            const cursor = await allMoviesCollection.findOne(query);
+
+            res.send(cursor);
+        })
+
+
+        //----------- LIKE -------------
+
+        app.post('/likes', async (req, res) => {
+            const likes = req.body;
+            const result = await likesCollection.insertOne(likes);
+            res.send(result);
+        })
+
+        app.put('/videoLike', async (req, res) => {
+            const postId = req.body.id;
+            const increase = req.body.increase;
+            const query = { _id: postId };
+            const options = { upsert: true };
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
+
+        //----------- UNLIKE -------------
+        app.delete('/likes', async (req, res) => {
+            const email = req.body.userEmail;
+            const videoId = req.body.videoId;
+            const query = { userEmail: email, videoId: videoId }
+            const result = await likesCollection.deleteOne(query);
+            if (result.deletedCount === 1) {
+                res.send(true);
+            }
+        })
 
 
 
@@ -464,6 +684,13 @@ async function run() {
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
+        // app.post('/like', async (req, res) => {
+        //     const review = req.body;
+        //     const result = await likeCollection.insertOne(review);
+        //     res.send(result);
+        // });
+
+
 
         //save user email and generate JWT token
         app.put('/user/:email', async (req, res) => {
@@ -492,7 +719,11 @@ async function run() {
                 .then(() => {
                     // console.log("file uploaded");
                     getDownloadURL(storageRef).then(url => {
+<<<<<<< HEAD
                         // console.log(`Download URL: ${url}`);
+=======
+                        console.log(`Download URL: ${url}`);
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
                         res.send({ url });
                     });
@@ -502,6 +733,111 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
+<<<<<<< HEAD
+
+        // Movie recomended system end*******************************************
+
+        const Natural = require('natural');
+        const fs = require('fs');
+        const csv = require('csv-parser');
+
+        let newData = [];
+
+        fs.createReadStream('./new.csv')
+            .pipe(csv())
+            .on('data', (row) => {
+                newData.push(row);
+            })
+            .on('end', () => {
+                console.log('CSV file successfully processed');
+            });
+
+        app.get('/recommend/:movie', async (req, res) => {
+            try {
+                let movie = req.params.movie;
+                let index;
+                for (let i = 0; i < newData.length; i++) {
+                    const lowercaseMovie = newData[i].title.toLowerCase();
+
+                    if (newData[i].title === movie || lowercaseMovie == movie) {
+                        index = i;
+                        break;
+                    }
+                }
+                let allTags = newData.map(data => data.tags);
+                let TfIdf = new Natural.TfIdf();
+                TfIdf.addDocument(allTags);
+                let similarity = [];
+                for (let i = 0; i < allTags.length; i++) {
+                    similarity.push(TfIdf.tfidf(allTags[i], index));
+                }
+                let distances = [];
+                for (let i = 0; i < allTags.length; i++) {
+                    if (i === index) {
+                        continue;
+                    }
+                    distances.push({ index: i, distance: similarity[i] });
+                }
+                distances.sort((a, b) => b.distance - a.distance);
+                let recommendedMovies = [];
+                for (let i = 0; i < 10; i++) {
+                    recommendedMovies.push(newData[distances[i].index].title);
+                }
+                const words = [];
+                for (const movie of recommendedMovies) {
+                    const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
+                    for (const word of movieWords) {
+                        words.push(word);
+                    }
+                    words.push(req.params.movie);
+                }
+
+                let wordsLowerCase = words.map(word => word.toLowerCase());
+                allMoviesCollection.createIndex({ original_title: "text" });
+
+                allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    res.send(result);
+                });
+            } catch (error) {
+                if (error instanceof TypeError || Object.keys(result).length === 0) {
+                    res.send(await generateRandomData());
+                }
+            }
+        });
+        const axios = require('axios');
+        async function generateRandomData() {
+            try {
+                const response = await axios.get('http://localhost:5000/allMovie');
+                const data = response.data;
+
+                const randomData = [];
+                while (randomData.length < 6) {
+                    const randomIndex = Math.floor(Math.random() * data.length);
+                    const randomItem = data[randomIndex];
+                    if (!randomData.includes(randomItem)) {
+                        randomData.push(randomItem);
+                    }
+                }
+
+                return randomData;
+            } catch (error) {
+                console.error(error);
+                return [];
+            }
+        }
+=======
+        //   get device ip user--------------------------------------------
+        app.get('/check-user', async (req, res) => {
+            const { email, deviceId } = req.query;
+            const user = await usersCollection.findOne({ email: email, deviceId: deviceId });
+            const userExists = Boolean(user);
+            res.send({ userExists });
+        });
+        //   get device ip user-------------------------------------
+
 
         // Movie recomended system end*******************************************
         // const Natural = require('natural');
@@ -575,7 +911,7 @@ async function run() {
         // const axios = require('axios');
         // async function generateRandomData() {
         //     try {
-        //         const response = await axios.get('http://localhost:5000/allMovie');
+        //         const response = await axios.get('https://bd-flix-server-emonkumardas.vercel.app/allMovie');
         //         const data = response.data;
 
         //         const randomData = [];
@@ -593,7 +929,10 @@ async function run() {
         //         return [];
         //     }
         // }
-        // // Movie recomended system end*******************************************
+
+        
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
+        // Movie recomended system end*******************************************
 
 
 
@@ -601,6 +940,7 @@ async function run() {
 
 
     finally { }
+
 }
 run().catch(console.dir);
 

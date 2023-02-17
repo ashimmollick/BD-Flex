@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import { AiOutlineArrowRight } from "react-icons/ai"
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../Context/Authprovider/Authprovider';
 import './MovieForyou.css';
 
 const MoviesForYou = () => {
 
     const navigate = useNavigate();
+
 
     const [MoviesForYou, setMoviesForYou] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -30,40 +32,7 @@ const MoviesForYou = () => {
 
     // let image = 'https://image.tmdb.org/t/p/w500/';
 
-    // const PopularMovies = [
-    //     {
-    //         "name": "Avengers",
-    //         "PhotoUrl": "https://i.ibb.co/rs5DVjP/avenger1.png"
-    //     },
-    //     {
-    //         "name": "Panther",
-    //         "PhotoUrl": "https://i.ibb.co/N34wFcF/Panther2.png"
-    //     },
-    //     {
-    //         "name": "Bizli",
-    //         "PhotoUrl": "https://i.ibb.co/KDNWn2h/Bizli3.png"
-    //     },
-    //     {
-    //         "name": "Pashan",
-    //         "PhotoUrl": "https://i.ibb.co/K9n2VsZ/pasan4.png"
-    //     },
-    //     {
-    //         "name": "Movie Name",
-    //         "PhotoUrl": "https://i.ibb.co/rs5DVjP/avenger1.png"
-    //     },
-    //     {
-    //         "name": "Movie Name",
-    //         "PhotoUrl": "https://i.ibb.co/rs5DVjP/avenger1.png"
-    //     },
-    //     {
-    //         "name": "Movie Name",
-    //         "PhotoUrl": "https://i.ibb.co/rs5DVjP/avenger1.png"
-    //     },
-    //     {
-    //         "name": "Movie Name",
-    //         "PhotoUrl": "https://i.ibb.co/rs5DVjP/avenger1.png"
-    //     }
-    // ]
+   
 
     const [arrowButtonVisibility, setArrowButtonVisibility] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);

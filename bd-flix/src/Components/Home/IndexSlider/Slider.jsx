@@ -18,7 +18,11 @@ const Slider = () => {
     }, [currentSlide]);
 
     return (
+<<<<<<< HEAD
+        <div className='' style={{}}>
+=======
         < >
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
             <div className='relative'>
                 <div className=' inset-0'>
                     <div className='border-b-4 border-indigo-500'>
@@ -31,14 +35,24 @@ const Slider = () => {
 
                 <div className='absolute bottom-0 left-0 right-0 flex justify-center'>
                     {slider.map((_, index) => (
+<<<<<<< HEAD
+                        <div 
+                            key={index}
+                            className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`} 
+=======
                         <div
                             key={index}
                             className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`}
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                         />
                     ))}
                 </div>
             </div>
+<<<<<<< HEAD
+        </div>
+=======
         </>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
     );
 };
 

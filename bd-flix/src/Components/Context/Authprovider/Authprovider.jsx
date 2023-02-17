@@ -11,6 +11,11 @@ const AuthProvider = ({ children }) => {
     const [user, setuser] = useState(null);
     const [loading, setloading] = useState(true);
 
+
+
+
+
+
     const createUser = (email, password) => {
         setloading(true)
         return createUserWithEmailAndPassword(auth, email, password);
@@ -19,13 +24,14 @@ const AuthProvider = ({ children }) => {
 
     }
 
-
-
-
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setuser(currentUser);
-            console.log(currentUser)
+
+
+
+
+
         });
         return () => unsubscribe();
     }, [])

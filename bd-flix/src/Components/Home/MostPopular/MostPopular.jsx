@@ -3,10 +3,14 @@ import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
 import { useEffect } from 'react';
 import Original from '../IndexPage/Original/Original';
+import { useContext } from 'react';
+import { AuthContext } from '../../Context/Authprovider/Authprovider';
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
     const [MostPopular, setMostPopular] = useState([]);
+    const {userInfo} = useContext(AuthContext);
+    // console.log("newuser", userInfo);
 
     useEffect(() => {
         setLoading(true);
@@ -34,9 +38,15 @@ const MostPopular = () => {
     return (
         <>
 
+<<<<<<< HEAD
+            <div className='relative my-12 lg:my-2 p-4'>
+                <div className='flex justify-between mb-3'>
+                    <h1 className='text-md   font-bold text-white'>Most Popular</h1>
+=======
             <div className='lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
                     <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>
 
@@ -48,12 +58,53 @@ const MostPopular = () => {
                             <div className="carousel-item">
                                 {
                                     MostPopular.map((images, index) => (
+<<<<<<< HEAD
+                                        <div
+                                            key={index}
+                                            className={`carousel-item cursor-pointer ${index === currentIndex ? 'active' : ''}`}
+                                            style={{
+                                                transform: `translateX(${-100 * currentIndex}%)`,
+                                                transition: 'transform 0.3s ease-in-out',
+                                            }}>
+
+                                            <Link to={`/clickedvideo/${images.id}`} className="carousel-item mr-3 overflow-hidden">
+                                                <div className='relative transition-transform duration-300 ease-in-out transform hover-zoom'>
+
+                                                    <img
+                                                        className='object-cover rounded-sm lg:h-full h-[300px] w-full'
+                                                        src={images.poster_path} alt=''
+                                                    ></img>
+
+                                                    {/* <h2 className=" absolute bottom-[8%] left-0 md:text-md text-md font-semibold text-white mx-2 ">{images.name}</h2> */}
+                                                    <div className="most-popular-gradient absolute bottom-0 left-0 w-full h-2/6"></div>
+                                                </div>
+
+                                            </Link>
+                                        </div>
+                                    ))
+                                }
+
+                                {/* <button
+                                    className={`lg:block hidden absolute bottom-[50%] text-2xl text-white rounded-full left-0 p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
+                                    onClick={handlePrevSlide}
+                                >
+                                    <FaAngleLeft />
+                                </button>
+
+                                <button
+                                    className={`lg:block hidden absolute bottom-[50%] text-2xl rounded-full right-0 text-white p-4 ${arrowButtonVisibility ? '' : 'hidden'}`}
+                                    onClick={handleNextSlide}
+                                >
+                                    <FaAngleRight />
+                                </button> */}
+=======
                                         <Original images={images}></Original>
                                        
                                     ))
                                 }
 
                                
+>>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
                             </div>
                         </div>
                     }

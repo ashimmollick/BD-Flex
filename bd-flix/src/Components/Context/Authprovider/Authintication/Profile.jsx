@@ -11,7 +11,7 @@ const Profile = () => {
     const { data: users = [] } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/userProfile');
+            const res = await fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile');
             const data = await res.json();
             return data;
         }
@@ -21,10 +21,8 @@ const Profile = () => {
 
     const now = new Date();
     return (
-        <div className='flex justify-center'>
-            {
-                console.log(users)
-            }
+        <div className='flex justify-center relative top-20'>
+        
             <aside className="w-full p-6 sm:w-60 dark:bg-gray-900 dark:text-gray-100">
                 <nav className="space-y-8 text-sm">
                     <div className="space-y-2">
@@ -38,7 +36,7 @@ const Profile = () => {
                         <div className="flex flex-col space-y-6">
                             <Link to='/' rel="noopener noreferrer" >HomePage</Link>
                             <Link to='/profile' rel="noopener noreferrer" >Profile</Link>
-                            <Link to='/Mywatchlist' rel="noopener noreferrer" >My Watchlist</Link>
+                            <Link to='/watchlist' rel="noopener noreferrer" >My Watchlist</Link>
                             <Link to='/History' rel="noopener noreferrer" >History</Link>
                         </div>
                     </div>

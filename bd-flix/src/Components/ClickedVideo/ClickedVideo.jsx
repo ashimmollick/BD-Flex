@@ -263,12 +263,12 @@ const ClickedVideo = () => {
                                             isLiked ?
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleDisLike} className='' > <RiThumbUpFill className='text-xl text-green-500 -mb-1'></RiThumbUpFill> </button>
-                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
                                                 </div>
                                                 :
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleLike} className='' > <RiThumbUpLine className='text-xl  -mb-1'></RiThumbUpLine> </button>
-                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
                                                 </div>
                                         }
 

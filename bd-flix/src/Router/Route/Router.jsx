@@ -19,10 +19,12 @@ import HomePage from "../../Components/Home/IndexPage/HomePage";
 import LogInScreen from "../../Components/LogInScreen/LogInScreen";
 import Movies from "../../Components/Movies/Movies";
 import Premium from "../../Components/Premium/Premium";
+import Subscribe from "../../Components/Subscribe/Subscribe";
 import TvShows from "../../Components/Tvshows/Tvshows";
 import Main from "../../Main/Main";
 import Private from "../Private";
 import PrivateAdmin from "../PrivateAdmin";
+import OnlyForSubscriber from "../OnlyForSubscriber";
 
 
 const router = createBrowserRouter([
@@ -37,17 +39,21 @@ const router = createBrowserRouter([
             {
                 path: '/clickedvideo/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
-                element: <Private><ClickedVideo></ClickedVideo></Private>
+                element: <Private><OnlyForSubscriber><ClickedVideo></ClickedVideo></OnlyForSubscriber></Private>
             },
             {
                 path: '/moviesforyou/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
-                element: <Private><ClickedVideo></ClickedVideo></Private>
+                element: <Private><OnlyForSubscriber><ClickedVideo></ClickedVideo></OnlyForSubscriber></Private>
             },
             {
                 path: '/allmovie/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
-                element: <Private><ClickedVideo></ClickedVideo></Private>
+                element: <Private><OnlyForSubscriber><ClickedVideo></ClickedVideo></OnlyForSubscriber></Private>
+            },
+            {
+                path: '/subscribe',
+                element: <Private><Subscribe></Subscribe></Private>
             },
             // {
             //     path: '/login',

@@ -7,6 +7,9 @@ import AllUsers from "../../Components/Banner/admin/Layout/AllUsers";
 import MovieUpdate from "../../Components/Banner/admin/Layout/MovieUpdate";
 import UploadMovies from "../../Components/Banner/admin/Layout/UploadMovies";
 import ClickedVideo from "../../Components/ClickedVideo/ClickedVideo";
+import History from "../../Components/ClickedVideo/History/History";
+
+import Watchlist from "../../Components/ClickedVideo/Watchlist/Watchlist";
 import EditProfile from "../../Components/Context/Authprovider/Authintication/EditProfile";
 import Forget from "../../Components/Context/Authprovider/Authintication/Forget";
 import Login from "../../Components/Context/Authprovider/Authintication/Login";
@@ -55,6 +58,20 @@ const router = createBrowserRouter([
                 path: '/subscribe',
                 element: <Private><Subscribe></Subscribe></Private>
             },
+            {
+                path: '/login',
+                element: <Login></Login>
+            },
+            {
+                path: '/signup',
+                element: <Reg></Reg>,
+
+               
+
+   
+              
+
+            },
             // {
             //     path: '/login',
             //     element: <Login></Login>
@@ -82,10 +99,19 @@ const router = createBrowserRouter([
                 path: '/profile',
                 element: <Private><Profile></Profile></Private>
 
+            }, {
+                path: '/history',
+                element: <Private><History></History></Private>
+
             },
             {
                 path: '/editprofile',
                 element: <Private><EditProfile></EditProfile></Private>
+
+            },
+            {
+                path: '/watchlist',
+                element: <Private><Watchlist></Watchlist></Private>
 
             },
             {

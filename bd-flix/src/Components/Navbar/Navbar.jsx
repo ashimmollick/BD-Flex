@@ -16,7 +16,7 @@ const Navbar = () => {
     const [isAdmin] = useAdmin(user?.email)
 
     useEffect(() => {
-        fetch('http://localhost:5000/allsearch')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/allsearch')
             .then(res => res.json())
             .then(res => {
                 setData(res)

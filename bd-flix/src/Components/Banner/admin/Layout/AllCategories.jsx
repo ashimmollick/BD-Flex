@@ -11,14 +11,14 @@ const AllCategories = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/category')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
             .then(res => res.json())
             .then(data => {
                 setCategories(data)
                 setDoFetch(false)
             })
 
-    }, [doFetch] )
+    }, [doFetch])
 
 
 
@@ -29,21 +29,31 @@ const AllCategories = () => {
 
         const ifExist = !!categories.find(cat => cat.categoryName === catName);
 
-        if(ifExist){
+        if (ifExist) {
             toast(" this category is already exist !")
         }
-        else{
+        else {
             const newCategory = {
-                'categoryName' : catName
+                'categoryName': catName
             }
-    
-            fetch('http://localhost:5000/category', {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(newCategory)
-            })
+
+
+            // fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
+
+
+
+                // fetch('http://localhost:5000/category', {
+
+
+                    fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
+
+
+                        method: 'POST',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify(newCategory)
+                    })
                 .then(res => res.json())
                 .then(data => {
                     if (data.acknowledged) {
@@ -53,7 +63,7 @@ const AllCategories = () => {
                     }
                 })
                 .catch(er => console.error(er));
-    
+
         }
 
 

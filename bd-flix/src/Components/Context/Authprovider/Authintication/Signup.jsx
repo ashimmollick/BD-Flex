@@ -92,10 +92,6 @@ const Signup = () => {
         createUser(email, password).then(result => {
             const user = result.user;
 
-            console.log(user);
-
-
-
             navigate('/')
             setError('')
             form.reset()

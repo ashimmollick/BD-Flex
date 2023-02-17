@@ -10,7 +10,10 @@ const PrivateAdmin = ({ children }) => {
     const { user, loading } = useContext(AuthContext);
     const [isAdmin, isAdminLoading] = useAdmin(user?.email);
 
+
     console.log(user.email, isAdmin, 'from private route')
+
+
 
 
     if (loading || isAdminLoading) {

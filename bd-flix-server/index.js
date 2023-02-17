@@ -16,6 +16,7 @@ app.use(express.json());
 const multer = require("multer");
 const firebase = require("firebase/app");
 const { getStorage, ref, uploadBytes, getDownloadURL } = require("firebase/storage");
+const { query } = require('express');
 
 const firebaseConfig = {
     apiKey: "AIzaSyC6rov5IQ_uuDeY_DRnHhSADgnb3XoukL8",
@@ -65,7 +66,11 @@ function verifyfyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
         if (err) {
+
             return res.status(403).send({ message: 'forbidden access' })
+
+            return res.status(403).send({ message: 'forbidden accessssssss' })
+
         }
         req.decoded = decoded;
         next();
@@ -97,8 +102,16 @@ async function run() {
 
 
 
+        const Watchlist = client.db("bdFlix").collection("watchlist");
+        const Historys = client.db("bdFlix").collection("History");
+
+
+
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
+
+
+
 
 
 
@@ -190,7 +203,10 @@ async function run() {
             const email = req.params.id;
             const query = { email: email };
 
+
             console.log(email)
+
+
 
 
             const user = req.body;
@@ -221,13 +237,21 @@ async function run() {
                 return res.send({ ACCESS_TOKEN: token })
             }
 
+
             console.log(user);
+
+
 
 
 
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
+
+
+
+
+
 
 
         // app.get('/users/:email', async (req, res) => {
@@ -405,10 +429,97 @@ async function run() {
             res.send(result);
         })
 
+
+
+
+
         app.get('/comedies', async (req, res) => {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
+
+        //watchlist
+
+        app.post('/watchlist', async (req, res) => {
+            const item = req.body;
+            const result = await Watchlist.insertOne(item);
+            res.send(result)
+
+
+        })
+        //getting watchlist
+        app.get('/watchlist', async (req, res) => {
+
+
+
+            const watchlist = await Watchlist.find({}).toArray()
+            res.send(watchlist)
+        })
+
+        //delete watchlist
+
+
+        app.delete('/watchlist/:id', async (req, res) => {
+            const { id } = req.params;
+            const deleteId = { _id: ObjectId(id) };
+            const result = await Watchlist.deleteOne(deleteId);
+
+            res.send(result);
+        })
+
+
+        //cheacking history
+        app.post('/history', async (req, res) => {
+            const item = req.body;
+
+
+            const result = await Historys.insertOne(item);
+            res.send(result)
+
+
+        })
+
+
+
+
+
+
+
+        //getting history
+        app.get('/history', async (req, res) => {
+
+            const result = await Historys.find({}).toArray()
+            res.send(result)
+        })
+
+
+        app.delete('/history/:id', async (req, res) => {
+            const { id } = req.params;
+            const MovieID = {
+                email: id
+            };
+
+            console.log(MovieID)
+            const result = await Historys.deleteMany(MovieID);
+            res.send(result);
+        })
+
+        app.get('/watchlists', async (req, res) => {
+
+            const email = req.query.email;
+            const MovieID = req.query.movieid;
+
+            const query = { email: email, MovieID: MovieID }
+            console.log(query)
+
+
+            const sourob = await Watchlist.findOne(query)
+            console.log(sourob)
+            // res.send(sourob)
+            res.send(sourob)
+        })
+
+
 
 
         //----------- check isLiked or not-----
@@ -429,11 +540,66 @@ async function run() {
 
         app.get('/numoflike', async (req, res) => {
             const postId = req.query.postId;
-            const query = {_id: postId }
+            const query = { _id: postId }
             const cursor = await allMoviesCollection.findOne(query);
-            
+
             res.send(cursor);
-         })
+        })
+
+
+        //----------- LIKE -------------
+
+        app.post('/likes', async (req, res) => {
+            const likes = req.body;
+            const result = await likesCollection.insertOne(likes);
+            res.send(result);
+        })
+
+        app.put('/videoLike', async (req, res) => {
+            const postId = req.body.id;
+            const increase = req.body.increase;
+            const query = { _id: postId };
+            const options = { upsert: true };
+            const result = await allMoviesCollection.updateOne(query, { $inc: { likeCount: increase } },);
+            res.send(result);
+        })
+
+        //----------- UNLIKE -------------
+        app.delete('/likes', async (req, res) => {
+            const email = req.body.userEmail;
+            const videoId = req.body.videoId;
+            const query = { userEmail: email, videoId: videoId }
+            const result = await likesCollection.deleteOne(query);
+            if (result.deletedCount === 1) {
+                res.send(true);
+            }
+        })
+
+
+
+        //----------- check isLiked or not-----
+
+        app.get('/isLiked', async (req, res) => {
+            const email = req.query.email;
+            const postId = req.query.postId;
+
+            const query = { userEmail: email, videoId: postId }
+
+
+            const cursor = await likesCollection.findOne(query);
+
+            // console.log(cursor);
+            res.send(cursor);
+        })
+
+
+        app.get('/numoflike', async (req, res) => {
+            const postId = req.query.postId;
+            const query = { _id: postId }
+            const cursor = await allMoviesCollection.findOne(query);
+
+            res.send(cursor);
+        })
 
 
         //----------- LIKE -------------
@@ -625,6 +791,7 @@ async function run() {
 
 
     finally { }
+
 }
 run().catch(console.dir);
 

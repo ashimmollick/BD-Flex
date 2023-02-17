@@ -48,7 +48,7 @@ const Reg = () => {
                 createUser(email, password)
                     .then(result => {
                         const user = result.user;
-                        console.log(user);
+                        // console.log(user);
                         setError('');
                         navigate('/')
                         form.reset();
@@ -58,7 +58,7 @@ const Reg = () => {
                         toast.success('Please verify your email address.')
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                         setError(error.message);
 
 
@@ -77,7 +77,7 @@ const Reg = () => {
                         }
                     });
 
-            }).catch(error => console.log(error))
+            }).catch(error => console.error(error))
 
 
 
@@ -124,7 +124,7 @@ const Reg = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+
                 getUserToken(email)
             })
     }
@@ -132,7 +132,7 @@ const Reg = () => {
 
 
     const getUserToken = email => {
-        console.log(email, 'getuser')
+        console.error(email, 'getuser')
         fetch(`http://localhost:5000/jwt?email=${email}`)
             .then(res => res.json())
             .then(data => {

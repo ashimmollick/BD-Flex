@@ -82,7 +82,6 @@ const AllUsers = () => {
         res => res.json()
       )
       .then(data => {
-        console.log(data)
 
         if (data.deletedCount > 0) {
           toast.success(' successfully deleted')

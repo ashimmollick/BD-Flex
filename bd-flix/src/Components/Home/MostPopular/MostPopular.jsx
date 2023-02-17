@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
 const MostPopular = () => {
@@ -32,6 +32,17 @@ const MostPopular = () => {
         setCurrentIndex(currentIndex + 1);
     };
 
+    const location = useLocation()
+    const route = location
+
+    const most = MostPopular.map(most => most.title)
+
+
+
+
+
+
+
     return (
         <>
 
@@ -56,6 +67,7 @@ const MostPopular = () => {
                                                 transform: `translateX(${-100 * currentIndex}%)`,
                                                 transition: 'transform 0.3s ease-in-out',
                                             }}>
+
 
                                             <Link to={`/clickedvideo/${images.id}`} className="carousel-item mr-3 overflow-hidden">
                                                 <div className='relative transition-transform duration-300 ease-in-out transform hover-zoom'>

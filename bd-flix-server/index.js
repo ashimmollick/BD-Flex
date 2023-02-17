@@ -16,6 +16,7 @@ app.use(express.json());
 const multer = require("multer");
 const firebase = require("firebase/app");
 const { getStorage, ref, uploadBytes, getDownloadURL } = require("firebase/storage");
+const { query } = require('express');
 
 const firebaseConfig = {
     apiKey: "AIzaSyC6rov5IQ_uuDeY_DRnHhSADgnb3XoukL8",
@@ -65,7 +66,7 @@ function verifyfyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
         if (err) {
-            return res.status(403).send({ message: 'forbidden access' })
+            return res.status(403).send({ message: 'forbidden accessssssss' })
         }
         req.decoded = decoded;
         next();
@@ -93,6 +94,9 @@ async function run() {
 
         //Category collection
         const categoryCollection = client.db("bdFlix").collection("category");
+        const Watchlist = client.db("bdFlix").collection("watchlist");
+        const Historys = client.db("bdFlix").collection("History");
+
 
 
         app.get('/mostPopularMovies', async (req, res) => {
@@ -216,6 +220,8 @@ async function run() {
             res.status(403).send({ ACCESS_TOKEN: '' })
 
         })
+
+
 
 
         // app.get('/users/:email', async (req, res) => {
@@ -393,10 +399,97 @@ async function run() {
             res.send(result);
         })
 
+
+
+
+
         app.get('/comedies', async (req, res) => {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
+
+        //watchlist
+
+        app.post('/watchlist', async (req, res) => {
+            const item = req.body;
+            const result = await Watchlist.insertOne(item);
+            res.send(result)
+
+
+        })
+        //getting watchlist
+        app.get('/watchlist', async (req, res) => {
+
+
+
+            const watchlist = await Watchlist.find({}).toArray()
+            res.send(watchlist)
+        })
+
+        //delete watchlist
+
+
+        app.delete('/watchlist/:id', async (req, res) => {
+            const { id } = req.params;
+            const deleteId = { _id: ObjectId(id) };
+            const result = await Watchlist.deleteOne(deleteId);
+
+            res.send(result);
+        })
+
+
+        //cheacking history
+        app.post('/history', async (req, res) => {
+            const item = req.body;
+
+
+            const result = await Historys.insertOne(item);
+            res.send(result)
+
+
+        })
+
+
+
+
+
+
+
+        //getting history
+        app.get('/history', async (req, res) => {
+
+            const result = await Historys.find({}).toArray()
+            res.send(result)
+        })
+
+
+        app.delete('/history/:id', async (req, res) => {
+            const { id } = req.params;
+            const MovieID = {
+                email: id
+            };
+
+            console.log(MovieID)
+            const result = await Historys.deleteMany(MovieID);
+            res.send(result);
+        })
+
+        app.get('/watchlists', async (req, res) => {
+
+            const email = req.query.email;
+            const MovieID = req.query.movieid;
+
+            const query = { email: email, MovieID: MovieID }
+            console.log(query)
+
+
+            const sourob = await Watchlist.findOne(query)
+            console.log(sourob)
+            // res.send(sourob)
+            res.send(sourob)
+        })
+
+
 
 
         // reviews collection of users
@@ -545,6 +638,7 @@ async function run() {
 
 
     finally { }
+
 }
 run().catch(console.dir);
 

@@ -3,6 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 import { BiShareAlt } from 'react-icons/bi';
 import { FiDownload } from 'react-icons/fi';
 import { MdPlaylistAdd } from 'react-icons/md';
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
@@ -10,10 +11,15 @@ import { FaThumbsUp, FaCommentAlt } from 'react-icons/fa';
 import { useEffect } from 'react';
 import ClickedVideoReview from './ClickedVideoReview';
 import Main from '../../Main/Main';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/Authprovider/Authprovider';
+import { toast } from 'react-toastify';
 
-
+import date from 'date-and-time';
 
 const ClickedVideo = () => {
+    const { user } = useContext(AuthContext)
+
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
@@ -23,8 +29,8 @@ const ClickedVideo = () => {
             .then(result => setRecomended(result))
     }, [])
 
-
-
+    const location = useLocation()
+    const form = location?.state?.from?.pathname
     const PopularMovies = [
 
         {
@@ -70,6 +76,208 @@ const ClickedVideo = () => {
     }
 
 
+
+
+    const [watchlists, setwatchlistss] = useState([])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ///watchlist
+
+    const [doFetch, setDoFetch] = useState(false);
+
+    const [watchlist, setwatchlists] = useState([])
+
+    useEffect(() => {
+
+        fetch('http://localhost:5000/watchlist')
+            .then(res => res.json())
+            .then(data => {
+                setwatchlists(data)
+                setDoFetch(false)
+
+            })
+
+    }, [doFetch])
+
+
+
+
+    const [change, setchange] = useState(false)
+    // console.log(change)
+
+
+    // }
+
+
+
+
+    const onWatchlistButtonclick = (event) => {
+        event.preventDefault()
+
+
+
+        const email = user?.email;
+        const name = user?.displayName;
+        const MovieID = data?._id;
+        const title = data?.title;
+        const posterimg = data.poster_path;
+
+
+
+        const route = `${location?.pathname}`
+        const getuser = (!!watchlist.find(watch => watch.email))
+        const newe = watchlist.map(watch => watch.email)
+        // const a = [...newe]
+        // console.log(a)
+
+        // const uniq = [...new Set(a)];
+        // console.log(uniq)
+
+
+        const ifExist = !!watchlist.find(watch => ((watch.MovieID === MovieID) && (watch.email === user.email)));
+
+
+
+
+        if (ifExist) {
+
+
+
+            toast("this video is already added!")
+        }
+        else {
+            if (user.uid) {
+                const watchlists = {
+                    email, name, MovieID, title, route, posterimg, change
+
+                }
+                // console.log(watchlists)
+
+                fetch('http://localhost:5000/watchlist', {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify(watchlists)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.acknowledged) {
+                            toast.success('successfully added on watchlist')
+                            setDoFetch(true)
+                        }
+
+                    })
+                    .catch(error => {
+                        console.error(error)
+
+                    })
+            }
+            else {
+                toast.error('please login')
+            }
+        }
+
+
+
+
+    }
+    //end of watchlist
+
+
+    //history api fetch
+
+
+
+
+
+
+
+
+    const history = (event) => {
+        event.preventDefault();
+
+        const email = user?.email;
+        const name = user?.displayName;
+        const MovieID = data?._id;
+        const title = data?.title;
+        const posterimg = data.poster_path;
+        const route = `${location?.pathname}`
+        const now = new Date();
+        // const defaulttime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
+        // console.log(defaulttime)
+
+
+
+        const defaultTime = new Date(date.format(now, 'YYYY/MM/DD HH:mm:ss'))
+
+
+
+
+        // const ifExist = !!historys.find(watch => ((watch.MovieID === MovieID) && (watch.email === user.email)));
+
+
+
+
+
+
+
+
+        const history = {
+            email, name, MovieID, title, route, posterimg, defaultTime
+
+        }
+
+
+        if (user.uid && user.email) {
+            fetch('http://localhost:5000/history', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(history)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.acknowledged) {
+
+
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error)
+
+                })
+
+
+        }
+
+        else {
+            toast.success('please')
+        }
+
+
+    }
+
+
+
+
+
+
+
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
     //Download-------------------------------------->
@@ -84,9 +292,10 @@ const ClickedVideo = () => {
         a.click();
     };
     //End of Download-------------------------------------->
+
     return (
         <>
-            <div className='mx-2 md:mx-4 relative top-20'>
+            <div className='mx-2 md:mx-4 relative top-20' onLoad={history}  >
 
                 <div className=''>
                     <div className='col-span-2'>
@@ -123,9 +332,8 @@ const ClickedVideo = () => {
                                             <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
                                         </label>
 
-
                                         <div className=''>
-                                            <MdPlaylistAdd className='text-2xl mx-auto'></MdPlaylistAdd>
+                                            <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
                                             <p className='text-xs -mt-1'>WatchList</p>
                                         </div>
                                         <div>
@@ -167,7 +375,7 @@ const ClickedVideo = () => {
                                             movies={movies}></Recommended>
                                     )
                                 }
-                            </div>
+                                src/Components/ClickedVideo/History                            </div>
                         </div>
                     </div>
 

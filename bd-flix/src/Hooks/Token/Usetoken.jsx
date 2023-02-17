@@ -5,7 +5,7 @@ const useToken = email => {
     console.log(email, 'access')
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/jwt?email=${email}`)
+            fetch(`http://localhost:5000/user/${email}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.ACCESS_TOKEN) {

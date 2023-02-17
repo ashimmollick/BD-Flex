@@ -38,7 +38,7 @@ const Profile = () => {
                         <div className="flex flex-col space-y-6">
                             <Link to='/' rel="noopener noreferrer" >HomePage</Link>
                             <Link to='/profile' rel="noopener noreferrer" >Profile</Link>
-                            <Link to='/Mywatchlist' rel="noopener noreferrer" >My Watchlist</Link>
+                            <Link to='/watchlist' rel="noopener noreferrer" >My Watchlist</Link>
                             <Link to='/History' rel="noopener noreferrer" >History</Link>
                         </div>
                     </div>

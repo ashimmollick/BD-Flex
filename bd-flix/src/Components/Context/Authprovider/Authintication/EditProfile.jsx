@@ -35,7 +35,7 @@ const EditProfile = () => {
             genre: genre
         }
 
-        console.log(editProfile)
+        // console.log(editProfile)
 
         fetch('http://localhost:5000/userProfile', {
             method: 'POST',
@@ -59,6 +59,11 @@ const EditProfile = () => {
 
 
     }
+
+
+
+
+
 
     return (
 

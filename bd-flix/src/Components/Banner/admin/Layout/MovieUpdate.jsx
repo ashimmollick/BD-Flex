@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -8,7 +8,20 @@ const MovieUpdate = (singleMovie) => {
 
   const updateData = state.singleMovie
 
+  const [newCategories, setNewCategories] = useState([])
 
+
+
+  useEffect(() => {
+
+    fetch('http://localhost:5000/category')
+      .then(res => res.json())
+      .then(data => {
+        setNewCategories(data)
+
+      })
+
+  }, [])
 
   const navigate = useNavigate()
 
@@ -28,10 +41,11 @@ const MovieUpdate = (singleMovie) => {
     const overview = event.target.overview.value
     const poster_path = event.target.poster_path.value
     const vote_average = ""
+    const video = event.target.video.files[0]
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
 
- 
+
 
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
@@ -40,6 +54,9 @@ const MovieUpdate = (singleMovie) => {
 
     const formData = new FormData()
     formData.append('image', image)
+
+    const formvideo = new FormData();
+    formvideo.append('filename', video);
 
     const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
 
@@ -51,7 +68,7 @@ const MovieUpdate = (singleMovie) => {
       .then(ImageData => {
 
 
-console.log(ImageData)
+
 
         const updateMovie = {
           image: ImageData.data.url,
@@ -60,13 +77,12 @@ console.log(ImageData)
           overview,
           poster_path,
           vote_average,
-          // video
+          video
         }
 
-        console.log(updateMovie)
 
 
-        fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/updateMovie/${updateMovie}`, {
+        fetch(`http://localhost:5000/updateMovie/${updateMovie}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json"
@@ -129,14 +145,14 @@ console.log(ImageData)
 
 
                 <div className="form-control">
-                <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-xl font-bold">Banner</span>
-                </label>
-                <img className='w-[200px] h-[200px]' src={updateData.poster_path} alt=" Banner"/>
-  
-                {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
-              </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text text-xl font-bold">Banner</span>
+                    </label>
+                    <img className='w-[200px] h-[200px]' src={updateData.poster_path} alt=" Banner" />
+
+                    {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
+                  </div>
                   <label className="label">
                     <span className="label-text">Image Upload</span>
                   </label>
@@ -151,9 +167,9 @@ console.log(ImageData)
                   <label className="label">
                     <span className="label-text">Video Upload</span>
                   </label>
-               { /*  <div className="flex">
+                  <div className="flex">
                     <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
-                  </div>*/}
+                  </div>
                   {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
                 </div>
 
@@ -162,21 +178,27 @@ console.log(ImageData)
                     <span className="label-text">Catagories: {updateData.category} </span>
                   </label>
                   <select name='productCatagories' className="input rounded-md bg-transparent input-bordered" >
-                    <option className='bg-slate-900'>Most Popular Movie</option>
+
+                    {
+                      newCategories.map(category =>
+                        <option className='bg-slate-900'>{category.categoryName}</option>
+                      )
+                    }
 
 
 
+                    {/* 
                    <option className='bg-slate-900'>Movies For You</option>
-                    <option className='bg-slate-900'>Post Popular Movie</option>
+                    <option className='bg-slate-900'>Post Popular Movie</option> */}
 
 
-                    
+
                   </select>
                 </div>
               </div>
-                <div className="form-control mt-6">
-                  <button className=" font-bold p-3 rounded-lg bg-green-700">{loading ? "Loading..." : "Update"}</button>
-                </div>
+              <div className="form-control mt-6">
+                <button className=" font-bold p-3 rounded-lg bg-green-700">{loading ? "Loading..." : "Update"}</button>
+              </div>
             </div>
           </form>
         </div>

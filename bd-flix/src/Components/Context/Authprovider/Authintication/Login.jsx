@@ -7,6 +7,9 @@ import { toast } from 'react-toastify';
 import useTitle from '../../../../Hooks/UseTitle/UseTitle';
 import { setAuthToken } from '../../../../Token/AuthToken';
 
+import useToken from '../../../../Hooks/Token/Usetoken'
+
+
 
 
 
@@ -16,6 +19,8 @@ import { setAuthToken } from '../../../../Token/AuthToken';
 const Login = () => {
     const [error, setError] = useState('')
     const [loading, setloading] = useState(false)
+
+
 
     useTitle('Login')
 
@@ -36,17 +41,27 @@ const Login = () => {
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
+
         signIn(email, password).then(result => {
             const user = result.user;
 
 
 
+
+
             form.reset();
-            setError('')
+
             getUserToken(email)
-            navigate(form, { replace: true })
+
+
+
+
+
+            setError('')
+
+
         }).catch(error => {
-            console.log(error)
+            console.error(error)
             setError(error.message)
             if (error === 'Firebase: Error (auth/user-not-found).') {
                 toast.error('WRONG EMAIL')
@@ -74,6 +89,7 @@ const Login = () => {
         providerLogin(googleProvider)
             .then(result => {
                 const user = result?.user;
+
                 saveUser(user?.displayName, user?.photoURL, user?.email)
 
 
@@ -97,7 +113,7 @@ const Login = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('saveuser', data)
+
                 getUserToken(email)
 
 
@@ -105,7 +121,7 @@ const Login = () => {
     }
 
     const getUserToken = email => {
-        console.log(email, 'getuser')
+
         fetch(`http://localhost:5000/jwt?email=${email}`)
             .then(res => res.json())
             .then(data => {

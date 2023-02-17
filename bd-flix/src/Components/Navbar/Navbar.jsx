@@ -12,7 +12,7 @@ const Navbar = () => {
     const [AllMoviesSearch, setData] = useState([]);
     const [searchApiData, setSearchApiData] = useState([])
     const [filterVal, setFilterVal] = useState('');
-    const { user, logout, mode, Togglebutton } = useContext(AuthContext)
+    const { user, userInfo, logout, mode, Togglebutton } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const Navbar = () => {
             setData(searchApiData)
         } else {
 
-            const filterSearch = searchApiData.filter(it => it?.title?.toLowerCase().includes(e.target.value.toLowerCase()));
+            const filterSearch = searchApiData.filter(it => it?.original_title?.toLowerCase().includes(e.target.value.toLowerCase()));
             setData(filterSearch)
         }
         setFilterVal(e.target.value)

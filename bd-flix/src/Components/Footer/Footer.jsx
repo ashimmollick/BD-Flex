@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../../images/brand.png';
 const Footer = () => {
     return (
-        <footer className="bg-[#2c2642] footer p-10 text-neutral-content absolute">
+        <footer className="bg-[#2c2642] footer p-10 text-neutral-content absolute mt-36">
             <div>
                 <div className='btn rounded font-mono uppercase bg-none shadow-inner text-xl font-bold text-white'><img src={logo} alt=''></img>-FLIX</div>
                 <p>Code Warriors Bangladesh Ltd.<br /> Bangladesh Web Development Company since 2023</p>

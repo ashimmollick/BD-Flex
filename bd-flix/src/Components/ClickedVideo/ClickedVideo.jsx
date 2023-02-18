@@ -24,10 +24,6 @@ const ClickedVideo = () => {
 
     const { user } = useContext(AuthContext)
 
-   
-    
-
-
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
@@ -35,11 +31,16 @@ const ClickedVideo = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [doFetch, setDoFetch] = useState(false);
     const [newData, setNewData] = useState(data);
-
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetch(`http://localhost:5000/recommend/${data.original_title}`)
+        setLoading(true);
+        fetch(`https://recomended-movie.onrender.com/recommend/${data.original_title}`)
             .then(res => res.json())
-            .then(result => setRecomended(result))
+            .then(result => {
+                console.log("result", result);
+                setRecomended(result)
+                setLoading(false)
+            })
     }, [])
 
 
@@ -48,7 +49,7 @@ const ClickedVideo = () => {
 
 
 
-    console.log(data);
+
 
 
     const PopularMovies = [
@@ -95,18 +96,18 @@ const ClickedVideo = () => {
                     setIsLiked(true)
                 }
             })
-    }, [ user?.email, data._id])
+    }, [user?.email, data._id])
 
 
 
-    const showLike = ()=> {
+    const showLike = () => {
 
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/numoflike/?postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
                 setNewData(data)
             })
-            .catch(er => console.error("notun error",er));
+            .catch(er => console.error("notun error", er));
 
     }
 
@@ -183,8 +184,8 @@ const ClickedVideo = () => {
 
     ///watchlist
 
-    
-    
+
+
 
     const [watchlist, setwatchlists] = useState([])
 
@@ -305,10 +306,6 @@ const ClickedVideo = () => {
         const posterimg = data.poster_path;
         const route = `${location?.pathname}`
         const now = new Date();
-        // const defaulttime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
-        // console.log(defaulttime)
-
-
 
         const defaultTime = new Date(date.format(now, 'YYYY/MM/DD HH:mm:ss'))
 
@@ -514,7 +511,7 @@ const ClickedVideo = () => {
                                         </div>
                                         <Download data={data}>
 
-</Download>
+                                        </Download>
                                     </div>
                                 </div>
                             </div>
@@ -538,15 +535,17 @@ const ClickedVideo = () => {
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
                             <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
+
                                 {
                                     recomended?.slice(0, 6).map(movies =>
                                         <Recommended
+                                            loading={loading}
                                             video={video}
                                             setVideo={setVideo}
                                             movies={movies}></Recommended>
                                     )
                                 }
-                                                            </div>
+                            </div>
                         </div>
                     </div>
 

@@ -97,8 +97,6 @@ async function run() {
         const likeCollection = client.db("bdFlix").collection("like");
         const usersCollections = client.db("bdFlix").collection("userProfile");
 
-<<<<<<< HEAD
-=======
         //Category collection
         const categoryCollection = client.db("bdFlix").collection("category");
 
@@ -117,7 +115,6 @@ async function run() {
 
 
 
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
         app.get('/mostPopularMovies', async (req, res) => {
             const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
@@ -719,11 +716,8 @@ async function run() {
                 .then(() => {
                     // console.log("file uploaded");
                     getDownloadURL(storageRef).then(url => {
-<<<<<<< HEAD
                         // console.log(`Download URL: ${url}`);
-=======
                         console.log(`Download URL: ${url}`);
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
 
                         res.send({ url });
                     });
@@ -733,7 +727,6 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
-<<<<<<< HEAD
 
         // Movie recomended system end*******************************************
 
@@ -828,7 +821,6 @@ async function run() {
                 return [];
             }
         }
-=======
         //   get device ip user--------------------------------------------
         app.get('/check-user', async (req, res) => {
             const { email, deviceId } = req.query;
@@ -931,7 +923,6 @@ async function run() {
         // }
 
         
->>>>>>> 6ffc755a12e49034e7ec62141af2654bb4928700
         // Movie recomended system end*******************************************
 
 

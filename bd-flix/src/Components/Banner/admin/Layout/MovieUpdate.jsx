@@ -19,25 +19,10 @@ const MovieUpdate = (singleMovie) => {
 
   }, [])
 
-
-  useEffect(() => {
-    fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
-      .then(res => res.json())
-      .then(data => {
-        setNewCategories(data)
-      })
-
-  }, [])
-
   const navigate = useNavigate();
   const handleSubmit = event => {
     event.preventDefault()
-
-
-
     const image = event.target.poster_path.files[0]
-
-
     const catagories = event.target.productCatagories.value
     const overview = event.target.overview.value
     const poster_path = event.target.poster_path.value
@@ -46,22 +31,14 @@ const MovieUpdate = (singleMovie) => {
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
 
-
-
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
 
-
-
     const formData = new FormData()
     formData.append('image', image)
-
     const formvideo = new FormData();
     formvideo.append('filename', video);
-
     const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
-
-
     fetch(url, {
       method: 'POST',
       body: formData
@@ -77,8 +54,6 @@ const MovieUpdate = (singleMovie) => {
           vote_average,
           video
         }
-
-
 
         fetch(`http://localhost:5000/updateMovie/${updateMovie}`, {
           method: "PUT",
@@ -105,13 +80,6 @@ const MovieUpdate = (singleMovie) => {
 
 
   }
-
-
-
-
-
-
-
 
   return (
 

@@ -17,6 +17,7 @@ const UploadMovies = () => {
 
         .then(res => res.json())
         .then(data => {
+          console.log(data);
             setCategories(data)
            
         })
@@ -172,9 +173,10 @@ const UploadMovies = () => {
                     <span className="label-text">Catagories </span>
                   </label>
                   <select name='productCatagories' className="input rounded-md bg-transparent input-bordered" >
-                    <option className='bg-slate-900'>Most Popular Movie</option>
-                    <option className='bg-slate-900'>Movies For You</option>
-                    <option className='bg-slate-900'>Post Popular Movie</option>
+                    {
+                      categories?.map(cate=><option className='bg-slate-900'>{cate.categoryName}</option>)
+                    }
+                  
                   </select>
                 </div>
               </div>

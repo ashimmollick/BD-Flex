@@ -6,14 +6,12 @@ import Daiyer from './Layout/Daiyer';
 
 const Admin = () => {
     return (
-        <div>
+       
             <div className='lg:flex md:flex md:m-20'>
                 <Daiyer />
                 <Outlet />
             </div>
-
-            <Footer />
-        </div>
+        
     );
 };
 

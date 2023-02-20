@@ -7,7 +7,9 @@ import GridTheme from '../LogInScreen/GridTheme';
 import DownloadNow from '../LogInScreen/DownloadNow';
 import Advertise from '../LogInScreen/Advertise';
 import Devices from '../LogInScreen/Devices';
+import useTitle from '../../Hooks/UseTitle/UseTitle';
 const LogInScreen = () => {
+    useTitle('BD-Flix')
     return (
         <>
             <Banner/>

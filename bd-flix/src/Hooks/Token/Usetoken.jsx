@@ -8,20 +8,6 @@ const useToken = email => {
     useEffect(() => {
         if (email) {
             fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
-
-
-            useEffect(() => {
-                if (email) {
-
-
-                    useEffect(() => {
-                        if (email) {
-
-                            fetch(`https://bd-flix-server-emonkumardas.vercel.app/user/${email}`)
-
-
-                            fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
-
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.ACCESS_TOKEN) {

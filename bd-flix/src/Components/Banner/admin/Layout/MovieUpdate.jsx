@@ -8,18 +8,6 @@ const MovieUpdate = ({singleMovie}) => {
   const updateData = state.singleMovie
   const [newCategories, setNewCategories] = useState([])
 
-
-  // useEffect(() => {
-  //   fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setNewCategories(data)
-
-  //     })
-
-  // }, [])
-
-
   useEffect(() => {
     fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
       .then(res => res.json())

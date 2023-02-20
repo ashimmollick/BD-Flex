@@ -18,7 +18,11 @@ const Slider = () => {
     }, [currentSlide]);
 
     return (
+  
+        
         < >
+        <div className='' style={{}}>
+    
             <div className='relative'>
                 <div className=' inset-0'>
                     <div className='border-b-4 border-indigo-500'>
@@ -34,11 +38,16 @@ const Slider = () => {
                         <div
                             key={index}
                             className={`w-14 h-[3px] rounded-md m-2 ${currentSlide === index ? 'bg-green-700' : 'bg-gray-300'}`}
+    
                         />
                     ))}
                 </div>
             </div>
+  
+        </div>
+   
         </>
+    
     );
 };
 

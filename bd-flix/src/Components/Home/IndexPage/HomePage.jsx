@@ -13,9 +13,12 @@ const HomePage = () => {
         <div>
             <Slider></Slider>
             <Filter></Filter>
+            {/* <SeriesIndex></SeriesIndex> */}
+
             <Brand></Brand>
             <MostPopular></MostPopular>
             <MoviesForYou></MoviesForYou><br /><br />
+    
         </div>
     );
 };

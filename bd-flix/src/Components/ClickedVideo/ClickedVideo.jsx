@@ -47,11 +47,6 @@ const ClickedVideo = () => {
     const location = useLocation()
     const form = location?.state?.from?.pathname
 
-
-
-
-
-
     const PopularMovies = [
 
         {
@@ -162,30 +157,6 @@ const ClickedVideo = () => {
 
 
     }
-
-
-
-
-
-    const [watchlists, setwatchlistss] = useState([])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ///watchlist
-
-
-
 
     const [watchlist, setwatchlists] = useState([])
 
@@ -535,11 +506,9 @@ const ClickedVideo = () => {
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
                             <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
-
                                 {
-                                    recomended?.slice(0, 6).map(movies =>
+                                    loading ? "Loading..." : recomended?.slice(0, 6).map(movies =>
                                         <Recommended
-                                            loading={loading}
                                             video={video}
                                             setVideo={setVideo}
                                             movies={movies}></Recommended>

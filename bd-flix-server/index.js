@@ -66,10 +66,7 @@ function verifyfyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
         if (err) {
-
             return res.status(403).send({ message: 'forbidden access' })
-
-            return res.status(403).send({ message: 'forbidden accessssssss' })
 
         }
         req.decoded = decoded;
@@ -91,30 +88,15 @@ async function run() {
         const allUsers = client.db("bdFlix").collection("user");
         //user collection
         const usersCollection = client.db("bdFlix").collection("user");
-
         //Reviw collection
         const reviewCollection = client.db("bdFlix").collection("review");
-        const likeCollection = client.db("bdFlix").collection("like");
         const usersCollections = client.db("bdFlix").collection("userProfile");
-
         //Category collection
         const categoryCollection = client.db("bdFlix").collection("category");
-
-
-
         const Watchlist = client.db("bdFlix").collection("watchlist");
         const Historys = client.db("bdFlix").collection("History");
-
-
-
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
-
-
-
-
-
-
 
         app.get('/mostPopularMovies', async (req, res) => {
             const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
@@ -161,18 +143,13 @@ async function run() {
 
         //   all users get 
 
-
-
-
-        //   all users get 
-
         app.get('/allUsers', async (req, res) => {
 
             const result = await allUsers.find({}).toArray();
             res.send(result);
         })
-        // normal log in save data
 
+        // normal log in save data
         app.post('/allUsers', async (req, res) => {
             const users = req.body;
             const result = await allUsers.insertOne(users)
@@ -187,13 +164,7 @@ async function run() {
             res.send(result);
         })
 
-
-
-
-
-
         //delete user
-
         app.delete('/allUsers/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -201,20 +172,10 @@ async function run() {
             res.send(result);
         })
 
-
-
         // provider log in save data
-
         app.put('/allUsers/:id', async (req, res) => {
             const email = req.params.id;
             const query = { email: email };
-
-
-            console.log(email)
-
-
-
-
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
@@ -242,27 +203,12 @@ async function run() {
                 const token = jwt.sign({ email }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
                 return res.send({ ACCESS_TOKEN: token })
             }
-
-
             console.log(user);
-
-
-
-
-
-            res.status(403).send({ ACCESS_TOKEN: '' })
-
-        })
-
-
-
-
-
+            res.status(403).send({ ACCESS_TOKEN: '' })})
 
 
         // app.get('/users/:email', async (req, res) => {
         //     const query = {};
-        //     console.log(query)
         //     const users = await usersCollection.find(query);
         //     const newusers = await users.toArray();
         //     const user = newusers.find(newuser => newuser.email === req.params.email)
@@ -376,7 +322,7 @@ async function run() {
         // subscribe---------------------------------
         app.put('/subscribe/:id', async (req, res) => {
             const email = req.params.id;
-            const filter = { email: email  }
+            const filter = { email: email }
             const options = { upsert: true };
             const updatedDoc = {
                 $set: {
@@ -388,6 +334,24 @@ async function run() {
         })
 
 
+        // update user
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const UserUpdate = req.body;
+            const option = { upset: true }
+            const updateUser = {
+                $set: {
+                    name: UserUpdate.name,
+                    address: UserUpdate.address,
+                    gender: UserUpdate.gender,
+                    genre: UserUpdate.genre
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateUser, option)
+            res.send(result)
+        })
+
 
         // all movies get 
         app.get('/allMovie', async (req, res) => {
@@ -397,38 +361,30 @@ async function run() {
 
 
         // delete button  
-
         app.delete('/allMovie/:id', async (req, res) => {
             const { id } = req.params;
-
             const deleteId = { _id: ObjectId(id) };
-
             const result = await allMoviesCollection.deleteOne(deleteId);
-
             res.send(result);
         });
-        //   update movie ---------------------
 
+        //   update movie ---------------------
         app.put('/updateMovie/:updateId', async (req, res) => {
             const id = req.params.updateId;
-
-
             const filter = { _id: ObjectId(id) };
             const user = req.body;
-
             const option = { upsert: true };
             const updatedMovie = {
                 $set: user,
             }
-
             const result = await allMoviesCollection.updateOne(filter, updatedMovie, option);
-
             res.send(result);
         })
 
         app.get('/MoviesForYou', async (req, res) => {
             const result = await MoviesForYouCategoriCollection.find({}).toArray();
         })
+
         app.get('/movies', async (req, res) => {
             const result = await allMoviesCollection.find({}).toArray();
             res.send(result);
@@ -454,17 +410,12 @@ async function run() {
             res.send(result);
         })
 
-
-
-
-
         app.get('/comedies', async (req, res) => {
             const comedies = await ComediesCollection.find({}).toArray();
             res.send(comedies);
         })
 
         //watchlist
-
         app.post('/watchlist', async (req, res) => {
             const item = req.body;
             const result = await Watchlist.insertOne(item);
@@ -474,9 +425,6 @@ async function run() {
         })
         //getting watchlist
         app.get('/watchlist', async (req, res) => {
-
-
-
             const watchlist = await Watchlist.find({}).toArray()
             res.send(watchlist)
         })
@@ -488,7 +436,6 @@ async function run() {
             const { id } = req.params;
             const deleteId = { _id: ObjectId(id) };
             const result = await Watchlist.deleteOne(deleteId);
-
             res.send(result);
         })
 
@@ -496,23 +443,14 @@ async function run() {
         //cheacking history
         app.post('/history', async (req, res) => {
             const item = req.body;
-
-
             const result = await Historys.insertOne(item);
             res.send(result)
 
 
         })
 
-
-
-
-
-
-
         //getting history
         app.get('/history', async (req, res) => {
-
             const result = await Historys.find({}).toArray()
             res.send(result)
         })
@@ -523,42 +461,26 @@ async function run() {
             const MovieID = {
                 email: id
             };
-
-            console.log(MovieID)
             const result = await Historys.deleteMany(MovieID);
             res.send(result);
         })
 
         app.get('/watchlists', async (req, res) => {
-
             const email = req.query.email;
             const MovieID = req.query.movieid;
-
             const query = { email: email, MovieID: MovieID }
-            console.log(query)
-
-
             const sourob = await Watchlist.findOne(query)
-            console.log(sourob)
             // res.send(sourob)
             res.send(sourob)
         })
-
-
-
 
         //----------- check isLiked or not-----
 
         app.get('/isLiked', async (req, res) => {
             const email = req.query.email;
             const postId = req.query.postId;
-
             const query = { userEmail: email, videoId: postId }
-
-
             const cursor = await likesCollection.findOne(query);
-
-            // console.log(cursor);
             res.send(cursor);
         })
 
@@ -612,8 +534,6 @@ async function run() {
 
 
             const cursor = await likesCollection.findOne(query);
-
-            // console.log(cursor);
             res.send(cursor);
         })
 
@@ -681,11 +601,8 @@ async function run() {
                 $set: user,
             }
             const result = await usersCollection.updateOne(filter, updateDoc, options)
-            console.log(result)
-
             const token = jwt.sign(user, process.env.ACCESS_TOKEN,
                 { expiresIn: '1d' })
-            console.log(token);
             res.send({ result, token })
         })
 
@@ -696,10 +613,7 @@ async function run() {
             };
             uploadBytes(storageRef, req.file.buffer, metadata)
                 .then(() => {
-                    // console.log("file uploaded");
                     getDownloadURL(storageRef).then(url => {
-                        console.log(`Download URL: ${url}`);
-
                         res.send({ url });
                     });
                 })
@@ -708,6 +622,7 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
+
         //   get device ip user--------------------------------------------
         app.get('/check-user', async (req, res) => {
             const { email, deviceId } = req.query;
@@ -718,99 +633,7 @@ async function run() {
         //   get device ip user-------------------------------------
 
 
-        // Movie recomended system end*******************************************
-        // const Natural = require('natural');
-        // const fs = require('fs');
-        // const csv = require('csv-parser');
-        // let newData = [];
-        // fs.createReadStream('./new.csv')
-        //     .pipe(csv())
-        //     .on('data', (row) => {
-        //         newData.push(row);
-        //     })
-        //     .on('end', () => {
-        //         console.log('CSV file successfully processed');
-        //     });
 
-        // app.get('/recommend/:movie', async (req, res) => {
-        //     try {
-        //         let movie = req.params.movie;
-        //         let index;
-        //         for (let i = 0; i < newData.length; i++) {
-        //             const lowercaseMovie = newData[i].title.toLowerCase();
-
-        //             if (newData[i].title === movie || lowercaseMovie == movie) {
-        //                 index = i;
-        //                 break;
-        //             }
-        //         }
-        //         let allTags = newData.map(data => data.tags);
-        //         let TfIdf = new Natural.TfIdf();
-        //         TfIdf.addDocument(allTags);
-        //         let similarity = [];
-        //         for (let i = 0; i < allTags.length; i++) {
-        //             similarity.push(TfIdf.tfidf(allTags[i], index));
-        //         }
-        //         let distances = [];
-        //         for (let i = 0; i < allTags.length; i++) {
-        //             if (i === index) {
-        //                 continue;
-        //             }
-        //             distances.push({ index: i, distance: similarity[i] });
-        //         }
-        //         distances.sort((a, b) => b.distance - a.distance);
-        //         let recommendedMovies = [];
-        //         for (let i = 0; i < 10; i++) {
-        //             recommendedMovies.push(newData[distances[i].index].title);
-        //         }
-        //         const words = [];
-        //         for (const movie of recommendedMovies) {
-        //             const movieWords = movie.replace(/[^\w\s]/gi, '').split(" ");
-        //             for (const word of movieWords) {
-        //                 words.push(word);
-        //             }
-        //             words.push(req.params.movie);
-        //         }
-
-        //         let wordsLowerCase = words.map(word => word.toLowerCase());
-        //         allMoviesCollection.createIndex({ original_title: "text" });
-
-        //         allMoviesCollection.find({ $text: { $search: wordsLowerCase.join(" ").toString() } }).toArray((error, result) => {
-        //             if (error) {
-        //                 return console.log(error);
-        //             }
-        //             res.send(result);
-        //         });
-        //     } catch (error) {
-        //         if (error instanceof TypeError || Object.keys(result).length === 0) {
-        //             res.send(await generateRandomData());
-        //         }
-        //     }
-        // });
-        // const axios = require('axios');
-        // async function generateRandomData() {
-        //     try {
-        //         const response = await axios.get('https://bd-flix-server-emonkumardas.vercel.app/allMovie');
-        //         const data = response.data;
-
-        //         const randomData = [];
-        //         while (randomData.length < 6) {
-        //             const randomIndex = Math.floor(Math.random() * data.length);
-        //             const randomItem = data[randomIndex];
-        //             if (!randomData.includes(randomItem)) {
-        //                 randomData.push(randomItem);
-        //             }
-        //         }
-
-        //         return randomData;
-        //     } catch (error) {
-        //         console.error(error);
-        //         return [];
-        //     }
-        // }
-
-        
-        // Movie recomended system end*******************************************
 
 
 

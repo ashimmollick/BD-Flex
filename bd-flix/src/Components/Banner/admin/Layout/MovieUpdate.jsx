@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const MovieUpdate = (singleMovie) => {
+const MovieUpdate = ({singleMovie}) => {
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const updateData = state.singleMovie
   const [newCategories, setNewCategories] = useState([])
-
 
   useEffect(() => {
     fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
       .then(res => res.json())
       .then(data => {
         setNewCategories(data)
-
       })
 
   }, [])
@@ -22,40 +20,73 @@ const MovieUpdate = (singleMovie) => {
   const navigate = useNavigate();
   const handleSubmit = event => {
     event.preventDefault()
-    const image = event.target.poster_path.files[0]
+
+
+
+    const poster_path = event.target.poster_path.files[0]
+
+
     const catagories = event.target.productCatagories.value
     const overview = event.target.overview.value
-    const poster_path = event.target.poster_path.value
+    // const poster_path = event.target.poster_path.value
     const vote_average = ""
     const video = event.target.video.files[0]
     // const video = event.target.video.value
     const original_title = event.target.original_title.value
 
+
+
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
 
+
+
     const formData = new FormData()
-    formData.append('image', image)
+    formData.append('imageFile', poster_path)
+
     const formvideo = new FormData();
     formvideo.append('filename', video);
-    const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
-    fetch(url, {
+    setLoading(true)
+
+    // const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
+
+
+    const url = "http://localhost:5000/uploadPhoto"
+
+    fetch('http://localhost:5000/uploadVideo', {
       method: 'POST',
-      body: formData
-    }).then(res => res.json())
-      .then(ImageData => {
+      body: formvideo,
 
-        const updateMovie = {
-          image: ImageData.data.url,
-          category: movieWithoutSpaces,
-          original_title,
-          overview,
-          poster_path,
-          vote_average,
-          video
-        }
+    })
+    .then(res => res.json())
+    .then(result =>{
+      
 
-        fetch(`http://localhost:5000/updateMovie/${updateMovie}`, {
+
+      fetch(url, {
+        method: 'POST',
+        body: formData
+      }).then(res => res.json())
+        .then(ImageData => {
+  
+
+  
+  const poster_path  = ImageData.url
+
+          const updateMovie = {
+  
+            category: movieWithoutSpaces,
+            original_title,
+            overview,
+            poster_path,
+            vote_average,
+            video:result.url
+          }
+       
+
+   
+
+        fetch(`http://localhost:5000/updateMovie/${updateData._id}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json"
@@ -64,6 +95,8 @@ const MovieUpdate = (singleMovie) => {
         })
           .then(res => res.json())
           .then(data => {
+
+            console.log(data)
 
             if (data.success) {
               toast.success(data.message);
@@ -76,10 +109,22 @@ const MovieUpdate = (singleMovie) => {
 
           }).catch(err => toast.error(err.message))
 
+        })
+      .then(res => res.json())
+      .then(data => {
+        setNewCategories(data)
+
       })
 
 
-  }
+      }, [])
+    
+
+
+    }
+
+
+
 
   return (
 
@@ -95,18 +140,18 @@ const MovieUpdate = (singleMovie) => {
               <div className="card-body grid lg:grid-cols-2 grid-cols-1">
 
                 <div className="form-control">
-                  <label className="label">
+                  {/* <label className="label">
                     <span className="label-text font-bold text-xl">Title: {updateData.original_title}</span>
-                  </label>
-                  <input type="text" required name='original_title' placeholder="Change Title Type Here" className="input bg-transparent rounded-md input-bordered" />
+                  </label> */}
+                  <input type="text" required name='original_title' defaultValue={updateData.original_title} className="input bg-transparent rounded-md input-bordered" />
                 </div>
 
 
                 <div className="form-control">
-                  <label className="label">
+                  {/* <label className="label">
                     <span className="label-text font-bold text-xl">Overview: {updateData.overview.slice(0, 30) + "..."}</span>
-                  </label>
-                  <input type="text" required name='overview' placeholder=" Change overview type here" className="input bg-transparent rounded-md input-bordered" />
+                  </label> */}
+                  <input type="text" required name='overview' defaultValue={updateData.overview.slice(0, 30) + "..."} className="input bg-transparent rounded-md input-bordered" />
                 </div>
 
 

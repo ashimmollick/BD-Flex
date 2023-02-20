@@ -369,10 +369,18 @@ async function run() {
         });
 
         //   update movie ---------------------
-        app.put('/updateMovie/:updateId', async (req, res) => {
-            const id = req.params.updateId;
+        app.put('/updateMovie/:id', async (req, res) => {
+
+
+            const id = req.params.id;
+
+            console.log(id)
+
             const filter = { _id: ObjectId(id) };
             const user = req.body;
+
+            console.log(user)
+
             const option = { upsert: true };
             const updatedMovie = {
                 $set: user,

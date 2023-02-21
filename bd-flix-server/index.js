@@ -176,15 +176,26 @@ async function run() {
         app.put('/allUsers/:id', async (req, res) => {
             const email = req.params.id;
             const query = { email: email };
+            //checking isSubscribe true or false in mongodb
+            let isSubscribe;
+            const result = await allUsers.findOne(query);
+            if(result?.isSubscribe){
+                isSubscribe = true ;
+            }
+            else{
+                isSubscribe = false ;
+            }
+
+            //update google login user
             const user = req.body;
             const options = { upsert: true }
             const updatedUser = {
                 $set: {
                     name: user.name,
                     email: user.email,
-                    photoURL: user.photoURL
+                    photoURL: user.photoURL,
+                    isSubscribe: isSubscribe
                 }
-
 
             }
             if (user.email) {

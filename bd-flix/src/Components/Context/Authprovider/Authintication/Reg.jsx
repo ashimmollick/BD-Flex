@@ -114,7 +114,7 @@ const Reg = () => {
   }
 
   const saveUser = (name, email, photoURL) => {
-    const user = { name, email, photoURL, deviceId };
+    const user = { name, email, photoURL, deviceId, isSubscribe:false };
     fetch('https://bd-flix-server-emonkumardas.vercel.app/allUsers', {
 
       method: "POST",

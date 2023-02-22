@@ -117,10 +117,10 @@ const Login = () => {
 
   return (
     <div className="hero min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${jugle})` }}>
-      <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse">
+      <div className="hero-content md:grid-cols-2 flex-col lg:flex-row-reverse ">
         <div className="hidden lg:block w-1/2 h-full bg-black opacity-25"></div>
         <div className="card flex-shrink-0 w-full max-w-sm">
-          <form onSubmit={handlelogin} className="card-body bg-[#040714] p-12">
+          <form  style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}  onSubmit={handlelogin} className="card-body  p-12 rounded-md bg-opacity-10 sticky top-0 z-10 shadow  backdrop-filter backdrop-blur-sm ">
             <h2 className="text-3xl font-bold mb-6">Login to BDFLIX</h2>
             <div className="form-control">
               <label className="label">

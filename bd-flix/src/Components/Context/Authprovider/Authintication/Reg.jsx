@@ -151,7 +151,7 @@ const Reg = () => {
     <div className="hero min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${jugle})` }}>
       <div className="hero-content md:grid-cols-2 lg:flex-row-reverse p-10">
         <div className="card shadow-lg rounded-lg w-full max-w-sm mx-auto">
-          <form onSubmit={handlesignup} className="bg-[#060815] p-10">
+          <form  onSubmit={handlesignup}  style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}  className="card-body  p-12 rounded-md bg-opacity-10 sticky top-0 z-10 shadow  backdrop-filter backdrop-blur-sm ">
             <h2 className="text-2xl font-bold mb-6 text-center">Sign up for BDFLIX</h2>
             <div className="form-control">
               <label htmlFor="name" className="label">Name</label>

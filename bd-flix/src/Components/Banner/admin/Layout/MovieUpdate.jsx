@@ -2,127 +2,111 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const MovieUpdate = ({singleMovie}) => {
+const MovieUpdate = ({ singleMovie }) => {
   const [loading, setLoading] = useState(false);
   const { state } = useLocation();
   const updateData = state.singleMovie
   const [newCategories, setNewCategories] = useState([])
-
   useEffect(() => {
     fetch('https://bd-flix-server-emonkumardas.vercel.app/category')
       .then(res => res.json())
       .then(data => {
         setNewCategories(data)
       })
-
   }, [])
 
   const navigate = useNavigate();
   const handleSubmit = event => {
     event.preventDefault()
-
-
-
     const poster_path = event.target.poster_path.files[0]
-
-
     const catagories = event.target.productCatagories.value
     const overview = event.target.overview.value
-    // const poster_path = event.target.poster_path.value
     const vote_average = ""
     const video = event.target.video.files[0]
-    // const video = event.target.video.value
     const original_title = event.target.original_title.value
-
-
-
     let catagoriesWithOutSpace = catagories
     let movieWithoutSpaces = catagoriesWithOutSpace.replace(/ /g, "");
-
-
-
     const formData = new FormData()
     formData.append('imageFile', poster_path)
-
+  
+  
     const formvideo = new FormData();
     formvideo.append('filename', video);
+
+  console.log(formvideo);
     setLoading(true)
-
-    // const url = "https://api.imgbb.com/1/upload?key=455300bd4645b3d5f212e2ce5e751d05"
-
-
-    const url = "http://localhost:5000/uploadPhoto"
-
-    fetch('http://localhost:5000/uploadVideo', {
+    const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
+    fetch('https://bd-flix-server-emonkumardas.vercel.app/uploadVideo', {
       method: 'POST',
-      body: formvideo,
-
+      body:formvideo,
     })
-    .then(res => res.json())
-    .then(result =>{
-      
-
-
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.text();
+    })
+    .then(videoData => {
+      if (videoData === 'No file uploaded.') {
+        throw new Error('No video uploaded.');
+      }
+      return JSON.parse(videoData);
+    })
+    .then(result => {
       fetch(url, {
         method: 'POST',
         body: formData
-      }).then(res => res.json())
-        .then(ImageData => {
+      })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.text();
+      })
+      .then(ImageData => {
+        if (ImageData === 'No file uploaded.') {
+          throw new Error('No image uploaded.');
+        }
+        const poster_path = JSON.parse(ImageData).url
+        const updateMovie = {
+          category: movieWithoutSpaces,
+          original_title,
+          overview,
+          poster_path,
+          vote_average,
+          video: result.url
+        }
   
-
-  
-  const poster_path  = ImageData.url
-
-          const updateMovie = {
-  
-            category: movieWithoutSpaces,
-            original_title,
-            overview,
-            poster_path,
-            vote_average,
-            video:result.url
-          }
-       
-
-   
-
-        fetch(`http://localhost:5000/updateMovie/${updateData._id}`, {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/updateMovie/${updateData._id}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json"
           },
           body: JSON.stringify(updateMovie)
         })
-          .then(res => res.json())
-          .then(data => {
-
-            console.log(data)
-
-            if (data.success) {
-              toast.success(data.message);
-            } else {
-              toast.error(data.error);
-            }
-
-            navigate('/admin/allmovies')
-
-
-          }).catch(err => toast.error(err.message))
-
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
         })
-      .then(res => res.json())
-      .then(data => {
-        setNewCategories(data)
-
+        .then(data => {
+          toast(data)
+          if (data.success) {
+            toast.success(data.message);
+          } else {
+            toast(data.error);
+          }
+          navigate('/admin/allmovies')
+        })
+        .catch(err => toast(err.message))
       })
-
-
-      }, [])
-    
-
-
-    }
-
+      .catch(err => toast(err.message))
+    })
+    .catch(err => toast(err.message))
+  }
+  
+  
 
 
 
@@ -151,7 +135,7 @@ const MovieUpdate = ({singleMovie}) => {
                   {/* <label className="label">
                     <span className="label-text font-bold text-xl">Overview: {updateData.overview.slice(0, 30) + "..."}</span>
                   </label> */}
-                  <input type="text" required name='overview' defaultValue={updateData.overview.slice(0, 30) + "..."} className="input bg-transparent rounded-md input-bordered" />
+                  <input type="text" name='overview' defaultValue={updateData.overview.slice(0, 30) + "..."} className="input bg-transparent rounded-md input-bordered" />
                 </div>
 
 
@@ -168,7 +152,7 @@ const MovieUpdate = ({singleMovie}) => {
                     <span className="label-text">Image Upload</span>
                   </label>
                   <div className="flex">
-                    <input type="file" required name="poster_path" accept='image/*' id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
+                    <input type="file" name="poster_path" accept='image/*' id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
                   </div>
                   {/* <input type="file" required name='poster_path' accept='image/*' placeholder="Image Upload" className="input input-bordered" /> */}
                 </div>
@@ -180,7 +164,7 @@ const MovieUpdate = ({singleMovie}) => {
                   </label>
 
                   <div className="flex">
-                    <input type="file" required name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
+                    <input type="file" name="video" id="files" className="px-8 py-12 border-2 border-dashed rounded-md dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800" />
                   </div>
 
                   {/* <input type="file" name='video' required placeholder="Image Upload" className="input input-bordered" /> */}
@@ -199,38 +183,11 @@ const MovieUpdate = ({singleMovie}) => {
                       )
                     }
 
-
-
-                    {/* 
-   
-
                     {
                       newCategories.map(category =>
                         <option className='bg-slate-900'>{category.categoryName}</option>
                       )
                     }
-
-
-
-                    {/* 
-  
-                   <option className='bg-slate-900'>Movies For You</option>
-                    <option className='bg-slate-900'>Post Popular Movie</option> */}
-
-
-                    {
-                      newCategories.map(category =>
-                        <option className='bg-slate-900'>{category.categoryName}</option>
-                      )
-                    }
-
-
-
-                    {/* 
-                   <option className='bg-slate-900'>Movies For You</option>
-                    <option className='bg-slate-900'>Post Popular Movie</option> */}
-
-
 
                   </select>
                 </div>

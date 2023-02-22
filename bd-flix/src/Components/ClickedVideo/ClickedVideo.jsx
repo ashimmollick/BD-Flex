@@ -87,7 +87,7 @@ const ClickedVideo = () => {
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
-                if (user?.email === data.userEmail) {
+                if (user?.email === data?.userEmail) {
                     setIsLiked(true)
                 }
             })
@@ -198,8 +198,8 @@ const ClickedVideo = () => {
 
 
         const route = `${location?.pathname}`
-        const getuser = (!!watchlist.find(watch => watch.email))
-        const newe = watchlist.map(watch => watch.email)
+        const getuser = (!!watchlist.find(watch => watch?.email))
+        const newe = watchlist.map(watch => watch?.email)
         // const a = [...newe]
         // console.log(a)
 

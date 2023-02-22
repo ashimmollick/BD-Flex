@@ -9,12 +9,7 @@ const PrivateAdmin = ({ children }) => {
     const location = useLocation()
     const { user, loading } = useContext(AuthContext);
     const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-
-
-    console.log(user.email, isAdmin, 'from private route')
-
-
-
+    console.log(user?.email, isAdmin, 'from private route')
 
     if (loading || isAdminLoading) {
         return <button type="button" class="" disabled>

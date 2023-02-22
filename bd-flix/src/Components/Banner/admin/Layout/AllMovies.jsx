@@ -33,7 +33,7 @@ const AllMovies = () => {
 
     const handleDelete = (id) => {
 
-        fetch(`http://localhost:5000/allMovie/${id}`, {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/allMovie/${id}`, {
             method: "DELETE",
         })
             .then(res => res.json())

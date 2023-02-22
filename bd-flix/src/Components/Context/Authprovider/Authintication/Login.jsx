@@ -5,6 +5,7 @@ import { AuthContext } from '../Authprovider';
 import { toast } from 'react-toastify';
 import useTitle from '../../../../Hooks/UseTitle/UseTitle';
 import jugle from '../../../../images/jugle.jpg';
+
 const Login = () => {
   const [error, setError] = useState('')
   const [loading, setloading] = useState(false)
@@ -43,6 +44,8 @@ const Login = () => {
           console.log(result.userExists)
           if (!result.userExists) {
             logout()
+            toast("You can not login from multiple devices. One email per device")
+            setloading(false)
               .then(() => {
                 window.location.replace('/signup')
               }).catch(error => console.error(error))

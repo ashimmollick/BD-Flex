@@ -139,7 +139,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/admin/updatemovie',
-                element: <PrivateAdmin> <MovieUpdate /></PrivateAdmin>
+                element: <PrivateAdmin><MovieUpdate /></PrivateAdmin>
 
             },
             {

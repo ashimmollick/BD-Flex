@@ -35,6 +35,11 @@ const upload = multer({ storage: multer.memoryStorage() });
 // upload image------------------------------------------------------------------------
 
 app.post('/uploadPhoto', upload.single("imageFile"), (req, res) => {
+    if (!req.file) {
+        // No file was uploaded with the request
+        res.status(400).send("No file uploaded.");
+        return;
+    }
     const storageRef = ref(storage, req.file.originalname);
     const metadata = {
         contentType: 'image/jpeg'
@@ -50,6 +55,7 @@ app.post('/uploadPhoto', upload.single("imageFile"), (req, res) => {
             res.status(500).send(error);
         });
 });
+
 
 //firebase**********************************************************************
 
@@ -204,7 +210,8 @@ async function run() {
                 return res.send({ ACCESS_TOKEN: token })
             }
             console.log(user);
-            res.status(403).send({ ACCESS_TOKEN: '' })})
+            res.status(403).send({ ACCESS_TOKEN: '' })
+        })
 
 
         // app.get('/users/:email', async (req, res) => {
@@ -615,6 +622,11 @@ async function run() {
         })
 
         app.post('/uploadVideo', upload.single("filename"), (req, res) => {
+            if (!req.file) {
+                // No file was uploaded with the request
+                res.status(400).send("No file uploaded.");
+                return;
+            }
             const storageRef = ref(storage, req.file.originalname);
             const metadata = {
                 contentType: 'video/mp4'
@@ -630,6 +642,7 @@ async function run() {
                     res.status(500).send(error);
                 });
         });
+
 
         //   get device ip user--------------------------------------------
         app.get('/check-user', async (req, res) => {

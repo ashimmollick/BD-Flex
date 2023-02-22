@@ -57,14 +57,7 @@ const UploadMovies = () => {
     formvideo.append('filename', video);
     setLoading(true)
 
-    const url = "https://student-management-server-emonkumardas.vercel.app/uploadPhoto"
-
-
-    // video upload firebase-------------------------
-    // fetch('https://student-management-server-emonkumardas.vercel.app/uploadVideo', {
-
-
-
+    const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
     // video upload firebase-------------------------
     fetch('https://bd-flix-server-emonkumardas.vercel.app/uploadVideo', {

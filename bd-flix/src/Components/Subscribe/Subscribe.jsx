@@ -30,7 +30,7 @@ const Subscribe = () => {
 
     return (
         <div>
-            <section className="py-20 bg-gray-800 text-gray-100">
+            <section className="py-20 text-gray-100">
                 <div className="container px-4 mx-auto">
                     <div className="max-w-2xl mx-auto mb-16 text-center">
                         <span className="font-bold tracking-wider uppercase text-violet-400">Pricing</span>

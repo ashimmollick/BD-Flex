@@ -3,9 +3,15 @@ import useTitle from '../../../Hooks/UseTitle/UseTitle';
 import Brand from '../Brand';
 import Slider from '../IndexSlider/Slider';
 import MostPopular from '../MostPopular/MostPopular';
-import MoviesForYou from '../MoviesForYou/MoviesForYou';
+import MoviesForYou from '../MostPopular/MoviesForYou';
+import SiFi from '../MostPopular/SiFi';
+import Thriller from '../MostPopular/Thriller';
+import Adventure from '../MostPopular/Adventure';
+import Action from '../MostPopular/Action';
+import Romantic from '../MostPopular/Romantic';
+import Comedy from '../MostPopular/Comedy';
 import Filter from './Filter/Filter';
-// import SeriesIndex from '../Series/SeriesIndex/SeriesIndex';
+
 
 const HomePage = () => {
     useTitle('Home')
@@ -13,12 +19,15 @@ const HomePage = () => {
         <div>
             <Slider></Slider>
             <Filter></Filter>
-            {/* <SeriesIndex></SeriesIndex> */}
-
             <Brand></Brand>
             <MostPopular></MostPopular>
-            <MoviesForYou></MoviesForYou><br /><br />
-    
+            <SiFi></SiFi>
+            <Thriller></Thriller>
+            <Adventure></Adventure>
+            <Action></Action>
+            <Romantic></Romantic>
+            <MoviesForYou></MoviesForYou>
+    <Comedy></Comedy>
         </div>
     );
 };

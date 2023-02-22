@@ -106,12 +106,6 @@ const ClickedVideo = () => {
 
     }
 
-
-    // fetch like information /\
-
-
-
-
     // Start Like and dislike post---------------------------------------->
 
     const handleLike = () => {
@@ -377,26 +371,6 @@ const ClickedVideo = () => {
 
     }
 
-
-
-    // handle dislike /\
-
-
-
-
-    // const [like, setLike] = useState(0);
-    // const [isLike, setIsLike] = useState(false);
-
-
-    // const onLikeButtonClick = () => {
-
-    //     setIsLike(!isLike);
-    //     setLike(like + (isLike ? -1 : 1));
-
-    // }
-
-
-
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
 
@@ -461,9 +435,7 @@ const ClickedVideo = () => {
                                                 </div>
                                         }
 
-                                        {/* <label htmlFor="reviewButton">
-                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
-                                        </label> */}
+                                      
 
                                         <div className=''>
                                             <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
@@ -505,7 +477,7 @@ const ClickedVideo = () => {
                     <div className=''>
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
-                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
+                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-3">
                                 {
                                     loading ? "Loading..." : recomended?.slice(0, 6).map(movies =>
                                         <Recommended

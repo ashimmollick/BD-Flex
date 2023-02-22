@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Recommended = ({ movies, video, setVideo }) => {
+const Recommended = ({ movies, setVideo }) => {
     const handleVideo = (newVideo) => {
         setVideo(newVideo);
 

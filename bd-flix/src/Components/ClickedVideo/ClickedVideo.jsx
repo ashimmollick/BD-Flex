@@ -438,7 +438,7 @@ const ClickedVideo = () => {
 
                             <div className='my-5 lg:flex justify-between'>
 
-                                <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
+                                <p className='text-2xl font-bold mt-2'>{data.title ? data.title : data.original_title}</p>
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
@@ -489,7 +489,7 @@ const ClickedVideo = () => {
 
 
                             <div className='bg-[#0c0620] my-5 p-5 rounded'>
-                                <p className='font-bold'>{data.title ? data.title : data.original_title}</p>
+                                <p className='font-bold'>{data.release_date} </p>
                                 <p className='text-xl my-2 font-bold'>Description</p>
                                 <p className='text-md'>{data.overview}</p>
                             </div>

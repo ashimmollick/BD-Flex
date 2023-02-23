@@ -28,7 +28,7 @@ const Navbar = () => {
     const handlelogout = () => {
         logout()
             .then(() => {
-                window.location.replace("http://localhost:3000/Welcome")
+                window.location.replace("https://bd-flix-e2343.web.app/Welcome")
             }).catch(error => console.error(error))
     }
 

@@ -82,6 +82,13 @@ function verifyfyJWT(req, res, next) {
 
 
 }
+// ssl comerce--------------++++++++++++++++++------------------------------
+const SSLCommerzPayment = require('sslcommerz-lts')
+const store_id = process.env.STORE_ID
+const store_passwd = process.env.STORE_PASSWORD
+const is_live = false
+
+// ssl comerce--------------++++++++++++++++++------------------------------
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ac1kfa5.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -185,11 +192,11 @@ async function run() {
             //checking isSubscribe true or false in mongodb
             let isSubscribe;
             const result = await allUsers.findOne(query);
-            if(result?.isSubscribe){
-                isSubscribe = true ;
+            if (result?.isSubscribe) {
+                isSubscribe = true;
             }
-            else{
-                isSubscribe = false ;
+            else {
+                isSubscribe = false;
             }
 
             //update google login user
@@ -337,19 +344,73 @@ async function run() {
             res.send(result)
         })
 
-        // subscribe---------------------------------
-        app.put('/subscribe/:id', async (req, res) => {
-            const email = req.params.id;
-            const filter = { email: email }
-            const options = { upsert: true };
-            const updatedDoc = {
-                $set: {
-                    isSubscribe: true
-                }
+        // ssl after success----------------------------------
+        app.post('/subscribe/:id', async (req, res) => {
+            try {
+                const email = req.params.id;
+                const data = {
+                    total_amount: 100,
+                    currency: 'BDT',
+                    tran_id: new ObjectId().toString(), // use unique tran_id for each api call
+                    success_url: `https://bd-flix-server-emonkumardas.vercel.app/payment/success?email=${email}`,
+                    fail_url: 'https://bd-flix-server-emonkumardas.vercel.app/payment/fail',
+                    cancel_url: 'https://bd-flix-server-emonkumardas.vercel.app/payment/cancel',
+                    ipn_url: 'http://localhost:3030/ipn',
+                    shipping_method: 'Courier',
+                    product_name: 'Computer.',
+                    product_category: 'Electronic',
+                    product_profile: 'general',
+                    cus_name: 'Customer Name',
+                    cus_email: email,
+                    cus_add1: 'Dhaka',
+                    cus_add2: 'Dhaka',
+                    cus_city: 'Dhaka',
+                    cus_state: 'Dhaka',
+                    cus_postcode: '1000',
+                    cus_country: 'Bangladesh',
+                    cus_phone: '01711111111',
+                    cus_fax: '01711111111',
+                    ship_name: 'Customer Name',
+                    ship_add1: 'Dhaka',
+                    ship_add2: 'Dhaka',
+                    ship_city: 'Dhaka',
+                    ship_state: 'Dhaka',
+                    ship_postcode: 1000,
+                    ship_country: 'Bangladesh',
+                };
+
+                const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+                const apiResponse = await sslcz.init(data);
+                // Redirect the user to payment gateway
+                let GatewayPageURL = apiResponse.GatewayPageURL
+                res.send({ url: GatewayPageURL })
+            } catch (error) {
+                console.log(error);
+                res.status(500).send('Something went wrong')
             }
-            const result = await allUsers.updateOne(filter, updatedDoc, options);
-            res.send(result);
-        })
+        });
+
+
+        app.post('/payment/success', async (req, res) => {
+            try {
+                const email = req.query.email;
+                console.log(email);
+                const result = await allUsers.updateOne({ email }, {
+                    $set: {
+                        isSubscribe: true
+                    }
+                });
+                if (result.modifiedCount > 0) {
+                    res.redirect(`https://bd-flix-e2343.web.app/payment/success?email=${email}`)
+                }
+                console.log("payment successful");
+            } catch (error) {
+                console.log(error);
+                res.status(500).send('Something went wrong')
+            }
+        });
+
+        // ssl after success----------------------------------
 
 
         // update user

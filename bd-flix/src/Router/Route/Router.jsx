@@ -26,6 +26,7 @@ import Main from "../../Main/Main";
 import Private from "../Private";
 import PrivateAdmin from "../PrivateAdmin";
 import OnlyForSubscriber from "../OnlyForSubscriber";
+import PaymentSuccess from "../../Components/PaymentInfo/PaymentSuccess";
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Private><HomePage></HomePage></Private>
             },
+            {
+                path: '/payment/success',
+                element: <Private><PaymentSuccess></PaymentSuccess></Private>
+            },
+            
             {
                 path: '/clickedvideo/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),

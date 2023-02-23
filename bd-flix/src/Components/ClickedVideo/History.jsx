@@ -10,7 +10,7 @@ const History = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/history')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/history')
             .then(res => res.json())
             .then(data => {
                 sethistory(data)

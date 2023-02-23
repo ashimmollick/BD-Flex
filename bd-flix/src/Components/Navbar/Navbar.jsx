@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { FaHome, FaVideo, FaToggleOn, FaToggleOff, FaUserAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaHome, FaVideo, FaUserAlt } from 'react-icons/fa';
 import { FaEnvelope } from 'react-icons/fa';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
 import logo from '../../images/brand.png'
@@ -12,7 +12,7 @@ const Navbar = () => {
     const [AllMoviesSearch, setData] = useState([]);
     const [searchApiData, setSearchApiData] = useState([])
     const [filterVal, setFilterVal] = useState('');
-    const { user, logout, mode, Togglebutton } = useContext(AuthContext)
+    const { user, logout } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
 
     useEffect(() => {
@@ -28,22 +28,14 @@ const Navbar = () => {
     const handlelogout = () => {
         logout()
             .then(() => {
-
-                // Navigate('/Welcome')
                 window.location.replace("http://localhost:3000/Welcome")
             }).catch(error => console.error(error))
     }
 
     const nav = <>
         <li><Link to='/' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">Home</Link></li>
-        <li><Link to='/premium' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Premium</Link></li>
         <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li>
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
-
-
-
-        {/* <button className={`text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline`} onClick={Togglebutton}>{mode === "light" ? <FaToggleOn></FaToggleOn> : <FaToggleOff></FaToggleOff>}</button> */}
-
     </>
 
     const bottomNav = <>
@@ -97,8 +89,6 @@ const Navbar = () => {
     }
     return (
         <>
-
-
             <div
                 className="navbar bg-transparent absolute" style={{ zIndex: 1 }}>
                 <div className="navbar-start">
@@ -158,13 +148,10 @@ const Navbar = () => {
                         <>
                             {
                                 isAdmin && <>
-                                   <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
+                                    <Link to="/admin" className="text-white font-bold mr-10 hover:text-green-400 focus:outline-none focus:shadow-outline">  Admin</Link>
 
                                 </>
                             }
-
-
-
                             <div className="dropdown dropdown-end">
                                 <label tabIndex={0}
                                     className="hidden lg:block btn btn-ghost btn-circle avatar">
@@ -187,9 +174,6 @@ const Navbar = () => {
                     }
                 </div>
             </div>
-
-
-
             <div className="lg:hidden md:hidden fixed bottom-0 z-50 w-full">
                 <div className="bg-black shadow-lg px-6">
                     <div className="flex items-center justify-between">

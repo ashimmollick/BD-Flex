@@ -12,7 +12,7 @@ const AllMovies = () => {
     const [refresh, setRefresh] = useState(true)
 
     useEffect(() => {
-        fetch("http://localhost:5000/allMovie")
+        fetch("https://bd-flix-server-emonkumardas.vercel.app/allMovie")
             .then(res => res.json())
             .then(data => {
                 setAllMovie(data)
@@ -33,7 +33,7 @@ const AllMovies = () => {
 
     const handleDelete = (id) => {
 
-        fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allMovie/${id}`, {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/allMovie/${id}`, {
             method: "DELETE",
         })
             .then(res => res.json())

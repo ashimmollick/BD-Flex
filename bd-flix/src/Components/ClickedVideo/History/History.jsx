@@ -15,7 +15,7 @@ const History = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/history')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/history')
             .then(res => res.json())
             .then(data => {
                 sethistory(data)
@@ -44,7 +44,7 @@ const History = () => {
     const DeleteHis = (id) => {
 
 
-        fetch(`http://localhost:5000/history/${id}`, {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/history/${id}`, {
             method: 'DELETE',
             authorization: `bearer ${localStorage.getItem('accessToken')}`
 

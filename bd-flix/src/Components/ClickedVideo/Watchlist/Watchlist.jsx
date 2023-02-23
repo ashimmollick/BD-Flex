@@ -16,7 +16,7 @@ const Watchlist = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/watchlist')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/watchlist')
             .then(res => res.json())
             .then(data => {
 
@@ -52,7 +52,7 @@ const Watchlist = () => {
     // const [fetch, doFetch] = useState(false)
     // useEffect(
     //     () => {
-    //         fetch(`http://localhost:5000/watchlists/?email=${user.email}&&movieid=${singleMovie.MovieID}`)
+    //         fetch(`https://bd-flix-server-emonkumardas.vercel.app/watchlists/?email=${user.email}&&movieid=${singleMovie.MovieID}`)
     //             .then(res => res.json())
     //             .then(data => {
 
@@ -77,7 +77,7 @@ const Watchlist = () => {
     // )
 
     const DeleteWatchlist = id => {
-        fetch(`http://localhost:5000/watchlist/${id}`, {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/watchlist/${id}`, {
             method: 'DELETE',
             authorization: `bearer ${localStorage.getItem('accessToken')}`
 

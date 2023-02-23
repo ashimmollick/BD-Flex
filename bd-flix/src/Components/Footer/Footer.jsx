@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../../images/brand.png';
 const Footer = () => {
     return (
-        <footer className="bg-[#2c2642] footer p-10 text-neutral-content absolute mt-10">
+        <footer className="bg-[#2c264271] footer p-10 text-neutral-content absolute mt-36">
             <div>
                 <div className='btn rounded font-mono uppercase bg-none shadow-inner text-xl font-bold text-white'><img src={logo} alt=''></img>-FLIX</div>
                 <p>Code Warriors Bangladesh Ltd.<br /> Bangladesh Web Development Company since 2023</p>
@@ -15,12 +15,16 @@ const Footer = () => {
                 <a className="link link-hover">Marketing</a>
                 <a className="link link-hover">Advertisement</a>
             </div>
+  
+           
+   
             <div>
                 <span className="footer-title">Company</span>
                 <a className="link link-hover">About us</a>
                 <a className="link link-hover">Contact</a>
                 <a className="link link-hover">Career</a>
                 <a className="link link-hover">Press kit</a>
+    
             </div>
             <div>
                 <span className="footer-title">Legal</span>

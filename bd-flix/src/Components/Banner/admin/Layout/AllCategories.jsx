@@ -42,7 +42,7 @@ const AllCategories = () => {
 
 
 
-                // fetch('http://localhost:5000/category', {
+                // fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {
 
 
                     fetch('https://bd-flix-server-emonkumardas.vercel.app/category', {

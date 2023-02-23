@@ -24,10 +24,6 @@ const ClickedVideo = () => {
 
     const { user } = useContext(AuthContext)
 
-   
-    
-
-
     const data = useLoaderData();
     const [recomended, setRecomended] = useState([]);
     const [video, setVideo] = useState(data?.video);
@@ -35,21 +31,21 @@ const ClickedVideo = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [doFetch, setDoFetch] = useState(false);
     const [newData, setNewData] = useState(data);
-
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
-        fetch(`https://bd-flix-server-emonkumardas.vercel.app/recommend/${data.original_title}`)
+        setLoading(true);
+        fetch(`https://recomended-movie.onrender.com/recommend/${data.original_title}`)
             .then(res => res.json())
-            .then(result => setRecomended(result))
+            .then(result => {
+                console.log("result", result);
+                setRecomended(result)
+                setLoading(false)
+            })
     }, [])
 
 
     const location = useLocation()
     const form = location?.state?.from?.pathname
-
-
-
-    console.log(data);
-
 
     const PopularMovies = [
 
@@ -91,30 +87,24 @@ const ClickedVideo = () => {
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
-                if (user?.email === data.userEmail) {
+                if (user?.email === data?.userEmail) {
                     setIsLiked(true)
                 }
             })
-    }, [ user?.email, data._id])
+    }, [user?.email, data._id])
 
 
 
-    const showLike = ()=> {
+    const showLike = () => {
 
-        fetch(`http://localhost:5000/numoflike/?postId=${data._id}`)
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/numoflike/?postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
                 setNewData(data)
             })
-            .catch(er => console.error("notun error",er));
+            .catch(er => console.error("notun error", er));
 
     }
-
-
-    // fetch like information /\
-
-
-
 
     // Start Like and dislike post---------------------------------------->
 
@@ -162,35 +152,11 @@ const ClickedVideo = () => {
 
     }
 
-
-
-
-
-    const [watchlists, setwatchlistss] = useState([])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ///watchlist
-
-    
-    
-
     const [watchlist, setwatchlists] = useState([])
 
     useEffect(() => {
 
-        fetch('http://localhost:5000/watchlist')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/watchlist')
             .then(res => res.json())
             .then(data => {
                 setwatchlists(data)
@@ -226,8 +192,8 @@ const ClickedVideo = () => {
 
 
         const route = `${location?.pathname}`
-        const getuser = (!!watchlist.find(watch => watch.email))
-        const newe = watchlist.map(watch => watch.email)
+        const getuser = (!!watchlist.find(watch => watch?.email))
+        const newe = watchlist.map(watch => watch?.email)
         // const a = [...newe]
         // console.log(a)
 
@@ -254,7 +220,7 @@ const ClickedVideo = () => {
                 }
                 // console.log(watchlists)
 
-                fetch('http://localhost:5000/watchlist', {
+                fetch('https://bd-flix-server-emonkumardas.vercel.app/watchlist', {
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json'
@@ -305,10 +271,6 @@ const ClickedVideo = () => {
         const posterimg = data.poster_path;
         const route = `${location?.pathname}`
         const now = new Date();
-        // const defaulttime = date.format(now, 'YYYY/MM/DD HH:mm:ss');
-        // console.log(defaulttime)
-
-
 
         const defaultTime = new Date(date.format(now, 'YYYY/MM/DD HH:mm:ss'))
 
@@ -331,7 +293,7 @@ const ClickedVideo = () => {
 
 
         if (user.uid && user.email) {
-            fetch('http://localhost:5000/history', {
+            fetch('https://bd-flix-server-emonkumardas.vercel.app/history', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -409,26 +371,6 @@ const ClickedVideo = () => {
 
     }
 
-
-
-    // handle dislike /\
-
-
-
-
-    // const [like, setLike] = useState(0);
-    // const [isLike, setIsLike] = useState(false);
-
-
-    // const onLikeButtonClick = () => {
-
-    //     setIsLike(!isLike);
-    //     setLike(like + (isLike ? -1 : 1));
-
-    // }
-
-
-
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
 
@@ -470,7 +412,7 @@ const ClickedVideo = () => {
 
                             <div className='my-5 lg:flex justify-between'>
 
-                                <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
+                                <p className='text-2xl font-bold mt-2'>{data.title ? data.title : data.original_title}</p>
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
@@ -484,18 +426,16 @@ const ClickedVideo = () => {
                                             isLiked ?
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleDisLike} className='' > <RiThumbUpFill className='text-xl text-green-500 -mb-1'></RiThumbUpFill> </button>
-                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
                                                 </div>
                                                 :
                                                 <div className='flex flex-col justify-center items-center mt-2'>
                                                     <button onClick={handleLike} className='' > <RiThumbUpLine className='text-xl  -mb-1'></RiThumbUpLine> </button>
-                                                    <p className='text-[13px]'>{newData.likeCount}</p>
+                                                    <p className='text-[13px]'>{newData.likeCount} Like</p>
                                                 </div>
                                         }
 
-                                        {/* <label htmlFor="reviewButton">
-                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
-                                        </label> */}
+                                      
 
                                         <div className=''>
                                             <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
@@ -514,14 +454,14 @@ const ClickedVideo = () => {
                                         </div>
                                         <Download data={data}>
 
-</Download>
+                                        </Download>
                                     </div>
                                 </div>
                             </div>
 
 
                             <div className='bg-[#0c0620] my-5 p-5 rounded'>
-                                <p className='font-bold'>{data.title ? data.title : data.original_title}</p>
+                                <p className='font-bold'>{data.release_date} </p>
                                 <p className='text-xl my-2 font-bold'>Description</p>
                                 <p className='text-md'>{data.overview}</p>
                             </div>
@@ -537,16 +477,16 @@ const ClickedVideo = () => {
                     <div className=''>
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
-                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
+                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-3">
                                 {
-                                    recomended?.slice(0, 6).map(movies =>
+                                    loading ? "Loading..." : recomended?.slice(0, 6).map(movies =>
                                         <Recommended
                                             video={video}
                                             setVideo={setVideo}
                                             movies={movies}></Recommended>
                                     )
                                 }
-                                src/Components/ClickedVideo/History                            </div>
+                            </div>
                         </div>
                     </div>
 

@@ -41,7 +41,7 @@ const EditProfile = () => {
 
             // console.log(editProfile)
 
-            // fetch('http://localhost:5000/userProfile', {
+            // fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
 
                 // fetch('https://bd-flix-server-emonkumardas.vercel.app/userProfile', {
 

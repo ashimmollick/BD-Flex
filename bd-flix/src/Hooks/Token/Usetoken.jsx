@@ -7,21 +7,7 @@ const useToken = email => {
     console.log(email, 'access')
     useEffect(() => {
         if (email) {
-            fetch(`http://localhost:5000/jwt?email=${email}`)
-
-
-            useEffect(() => {
-                if (email) {
-
-
-                    useEffect(() => {
-                        if (email) {
-
-                            fetch(`http://localhost:5000/user/${email}`)
-
-
-                            fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
-
+            fetch(`https://bd-flix-server-emonkumardas.vercel.app/jwt?email=${email}`)
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.ACCESS_TOKEN) {

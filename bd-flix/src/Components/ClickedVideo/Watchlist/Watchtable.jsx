@@ -11,7 +11,7 @@ const Watchtable = ({ singleMovie }) => {
     // const [fetch, doFetch] = useState(false)
     // useEffect(
     //     () => {
-    //         fetch(`http://localhost:5000/watchlists/?email=${user.email}&&movieid=${singleMovie.MovieID}`)
+    //         fetch(`https://bd-flix-server-emonkumardas.vercel.app/watchlists/?email=${user.email}&&movieid=${singleMovie.MovieID}`)
     //             .then(res => res.json())
     //             .then(data => {
 

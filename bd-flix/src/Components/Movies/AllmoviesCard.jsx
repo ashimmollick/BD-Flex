@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const AllmoviesCard = ({ loading, allMovies }) => {
+
     return (
         <>
             {loading ? "Loading..." : <Link to={`/allmovie/${allMovies.id}`} className="w-[100%] cursor-pointer p-1 rounded-md shadow-md dark:text-gray-50">

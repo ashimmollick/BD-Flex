@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../../Context/Authprovider/Authprovider';
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-const Filter = ({ Filters, filterVal, setShow, show, }) => {
+const Filter = ({ Filters, filterVal, setShow, show, buttonvalue }) => {
     const navigate = useNavigate()
 
 
@@ -28,23 +28,10 @@ const Filter = ({ Filters, filterVal, setShow, show, }) => {
     }, [])
 
 
-    console.log(filterVal)
-
-    const [searchApiData, setSearchApiData] = useState([])
-
-    useEffect(() => {
-        fetch('https://bd-flix-server-emonkumardas.vercel.app/allsearch')
-            .then(res => res.json())
-            .then(res => {
-
-                setSearchApiData(res)
-
-            });
-    }, [])
-
-    console.log(searchApiData)
 
 
+
+    console.log(filterVal, Filters)
 
 
 
@@ -54,15 +41,7 @@ const Filter = ({ Filters, filterVal, setShow, show, }) => {
                 <div className='my-6 flex flex-wrap justify-center gap-5'>
 
                     {/* --------------------------- */}
-                    {/* <div className="form-control">
-                        <div className="input-group">
-                            <select className="select select-bordered bg-white text-black">
-                                <option disabled selected>Pick category</option>
-                                <option>T-shirts</option>
-                                <option>Mugs</option>
-                            </select>
-                        </div>
-                    </div>
+
                     {/* --------------------------- */}
 
                     {/* --------------------------- */}
@@ -72,7 +51,7 @@ const Filter = ({ Filters, filterVal, setShow, show, }) => {
                                 <option disabled selected>Pick category</option>
 
                                 {
-                                    categories?.map(cate => <option >{cate.categoryName}</option>)
+                                    categories?.map(cate => <option name='option'>{cate.categoryName}</option>)
                                 }
 
                             </select>

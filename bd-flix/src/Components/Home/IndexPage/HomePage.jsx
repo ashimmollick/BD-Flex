@@ -3,7 +3,11 @@ import useTitle from '../../../Hooks/UseTitle/UseTitle';
 import Brand from '../Brand';
 import Slider from '../IndexSlider/Slider';
 import MostPopular from '../MostPopular/MostPopular';
+<<<<<<< HEAD
 import MoviesForYou from '../MoviesForYou/MoviesForYou';
+=======
+import MoviesForYou from '../MostPopular/MoviesForYou';
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
 import SiFi from '../MostPopular/SiFi';
 import Thriller from '../MostPopular/Thriller';
 import Adventure from '../MostPopular/Adventure';
@@ -11,8 +15,11 @@ import Action from '../MostPopular/Action';
 import Romantic from '../MostPopular/Romantic';
 import Comedy from '../MostPopular/Comedy';
 import Filter from './Filter/Filter';
+<<<<<<< HEAD
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineArrowRight } from "react-icons/ai"
+=======
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
 
 
 const HomePage = () => {
@@ -63,6 +70,7 @@ const HomePage = () => {
     return (
         <div>
             <Slider></Slider>
+<<<<<<< HEAD
             <Filter filterVal={filterVal} Filters={Filters} show={show} setShow={setShow} buttonvalue={buttonvalue}></Filter>
 
             {show && <>
@@ -109,6 +117,9 @@ const HomePage = () => {
 
 
 
+=======
+            <Filter></Filter>
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
             <Brand></Brand>
             <MostPopular></MostPopular>
             <SiFi></SiFi>
@@ -116,10 +127,16 @@ const HomePage = () => {
             <Adventure></Adventure>
             <Action></Action>
             <Romantic></Romantic>
+<<<<<<< HEAD
             <MoviesForYou filterVal={filterVal}></MoviesForYou>
 
             <Comedy></Comedy>
         </div >
+=======
+            {/* <MoviesForYou></MoviesForYou> */}
+            <Comedy></Comedy>
+        </div>
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
     );
 };
 

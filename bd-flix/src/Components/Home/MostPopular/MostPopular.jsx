@@ -11,7 +11,7 @@ const MostPopular = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch('https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allmovie/MostPopularMovie')
+        fetch('http://localhost:5000/mostPopularMovies')
             .then(res => res.json())
             .then(res => {
                 setMostPopular(res)
@@ -24,7 +24,11 @@ const MostPopular = () => {
         <>
             <div className='lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
+<<<<<<< HEAD
                     <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
+=======
+                    <h1 className='text-md font-bold text-current text-white'>Most Popular </h1>
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
 
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>
@@ -46,10 +50,14 @@ const MostPopular = () => {
                                                 <div className=' relative transition-transform duration-300 ease-in-out transform hover-zoom items'>
 
                                                     <img
-                                                        className='object-cover rounded-sm lg:h-full h-[300px] w-full'
+                                                        className='object-cover rounded-sm lg:h-full h-[200px] w-full'
                                                         src={images.poster_path} alt=''
                                                     ></img>
+<<<<<<< HEAD
                                                     <div className="most-popular-gradient absolute bottom-0 left-0 w-full h-2/6"></div>
+=======
+                                                    <div className=" absolute bottom-0 left-0 w-full h-2/6"></div>
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
                                                 </div>
 
                                             </Link>

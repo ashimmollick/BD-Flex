@@ -15,6 +15,12 @@ import Login from "../../Components/Context/Authprovider/Authintication/Login";
 import Profile from "../../Components/Context/Authprovider/Authintication/Profile";
 import Reg from "../../Components/Context/Authprovider/Authintication/Reg";
 import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
 import Error from "../../Components/Error/Error";
 import HomePage from "../../Components/Home/IndexPage/HomePage";
 import LogInScreen from "../../Components/LogInScreen/LogInScreen";
@@ -26,7 +32,11 @@ import Main from "../../Main/Main";
 import Private from "../Private";
 import PrivateAdmin from "../PrivateAdmin";
 import OnlyForSubscriber from "../OnlyForSubscriber";
+<<<<<<< HEAD
 import MoviesForYou from "../../Components/Home/MoviesForYou/MoviesForYou";
+=======
+import PaymentSuccess from "../../Components/PaymentInfo/PaymentSuccess";
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
 
 
 const router = createBrowserRouter([
@@ -38,6 +48,11 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Private><HomePage></HomePage></Private>
             },
+            {
+                path: '/payment/success',
+                element: <Private><PaymentSuccess></PaymentSuccess></Private>
+            },
+            
             {
                 path: '/clickedvideo/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
@@ -57,7 +72,11 @@ const router = createBrowserRouter([
                 path: '/subscribe',
                 element: <Private><Subscribe></Subscribe></Private>
             },
+<<<<<<< HEAD
 
+=======
+           
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
             {
                 path: '/forget',
                 element: <Forget></Forget>

@@ -90,7 +90,7 @@ const Navbar = () => {
             setData(searchApiData)
         } else {
 
-            const filterSearch = searchApiData.filter(it => it?.title?.toLowerCase().includes(e.target.value.toLowerCase()));
+            const filterSearch = searchApiData.filter(it => it?.original_title?.toLowerCase().includes(e.target.value.toLowerCase()));
             setData(filterSearch)
         }
         setFilterVal(e.target.value)
@@ -135,7 +135,6 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-
                     <div className="dropdown mx-8">
                         <label tabIndex={0} >
                             <input type='text' placeholder='Search' value={filterVal} onInput={(e) => handleFilter(e)} className="input hidden lg:block w-40 lg:w-full h-10 rounded-lg border-white bg-transparent" /></label>

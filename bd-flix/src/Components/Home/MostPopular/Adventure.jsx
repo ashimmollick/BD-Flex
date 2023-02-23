@@ -46,17 +46,10 @@ const MostPopular = () => {
                                                 <div className=' relative transition-transform duration-300 ease-in-out transform hover-zoom items'>
 
                                                     <img
-<<<<<<< HEAD
-                                                        className='object-cover rounded-sm lg:h-full h-[300px] w-full'
-                                                        src={images.poster_path} alt=''
-                                                    ></img>
-                                                    <div className="most-popular-gradient absolute bottom-0 left-0 w-full h-2/6"></div>
-=======
                                                         className='object-cover rounded-sm lg:h-full h-[200px] w-full'
                                                         src={images.poster_path} alt=''
                                                     ></img>
                                                     <div className=" absolute bottom-0 left-0 w-full h-2/6"></div>
->>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
                                                 </div>
 
                                             </Link>

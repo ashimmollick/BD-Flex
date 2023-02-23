@@ -90,7 +90,7 @@ const Login = () => {
 
   const saveUser = (name, photoURL, email) => {
     const user = { name, photoURL, email };
-    fetch(`http://localhost:5000/allUsers/${email}`, {
+    fetch(`https://bd-flix-server-emonkumardas.vercel.app/allUsers/${email}`, {
       method: "PUT",
       headers: {
         'content-type': 'application/json'

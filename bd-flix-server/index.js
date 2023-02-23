@@ -105,8 +105,12 @@ async function run() {
         const likesCollection = client.db("bdFlix").collection('likes');
 
         app.get('/mostPopularMovies', async (req, res) => {
-            const result = await MostPopularMoviesCategoriCollection.find({}).toArray();
-            res.send(result);
+            const query = {};
+            const sort = { "likeCount": -1 };
+            const cursor = await allMoviesCollection.find(query).sort(sort).limit(10);
+            const popularMovies = await cursor.toArray();
+
+            res.send(popularMovies);
         })
 
         app.post('/allmovies', async (req, res) => {
@@ -185,11 +189,11 @@ async function run() {
             //checking isSubscribe true or false in mongodb
             let isSubscribe;
             const result = await allUsers.findOne(query);
-            if(result?.isSubscribe){
-                isSubscribe = true ;
+            if (result?.isSubscribe) {
+                isSubscribe = true;
             }
-            else{
-                isSubscribe = false ;
+            else {
+                isSubscribe = false;
             }
 
             //update google login user

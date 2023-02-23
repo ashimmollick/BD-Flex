@@ -196,11 +196,19 @@ async function run() {
             //checking isSubscribe true or false in mongodb
             let isSubscribe;
             const result = await allUsers.findOne(query);
+<<<<<<< HEAD
+            if(result?.isSubscribe){
+                isSubscribe = true ;
+            }
+            else{
+                isSubscribe = false ;
+=======
             if (result?.isSubscribe) {
                 isSubscribe = true;
             }
             else {
                 isSubscribe = false;
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
             }
 
             //update google login user
@@ -348,6 +356,17 @@ async function run() {
             res.send(result)
         })
 
+<<<<<<< HEAD
+        // subscribe---------------------------------
+        app.put('/subscribe/:id', async (req, res) => {
+            const email = req.params.id;
+            const filter = { email: email }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: {
+                    isSubscribe: true
+                }
+=======
         // ssl after success----------------------------------
         app.post('/subscribe/:id', async (req, res) => {
             try {
@@ -391,6 +410,7 @@ async function run() {
             } catch (error) {
                 console.log(error);
                 res.status(500).send('Something went wrong')
+>>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
             }
         });
 

@@ -25,6 +25,7 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
+
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setuser(currentUser);
 
@@ -85,9 +86,12 @@ const AuthProvider = ({ children }) => {
         setMode(mode === "dark" ? "dark" : "dark")
 
     }
+
+
+
     const authInfo = {
         user,
-        loading, createUser, signIn, providerLogin, logout, updateUserProfile, Resetpass, mode, Togglebutton, verifyEmail
+        loading, createUser, signIn, providerLogin, logout, updateUserProfile, Resetpass, mode, Togglebutton, verifyEmail,
 
     }
 

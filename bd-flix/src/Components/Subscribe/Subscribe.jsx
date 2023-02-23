@@ -10,11 +10,7 @@ const Subscribe = () => {
 
     const handleSubscribe = () => {
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/subscribe/${userInfo?.email}`, {
-<<<<<<< HEAD
-            method: "PUT",
-=======
             method: "POST",
->>>>>>> 82acbb87897da27b9701ec70020feaab3a10de00
         })
             .then(res => res.json())
             .then(data => {

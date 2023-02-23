@@ -8,7 +8,6 @@ import MovieUpdate from "../../Components/Banner/admin/Layout/MovieUpdate";
 import UploadMovies from "../../Components/Banner/admin/Layout/UploadMovies";
 import ClickedVideo from "../../Components/ClickedVideo/ClickedVideo";
 import History from "../../Components/ClickedVideo/History/History";
-
 import Watchlist from "../../Components/ClickedVideo/Watchlist/Watchlist";
 import EditProfile from "../../Components/Context/Authprovider/Authintication/EditProfile";
 import Forget from "../../Components/Context/Authprovider/Authintication/Forget";
@@ -16,7 +15,6 @@ import Login from "../../Components/Context/Authprovider/Authintication/Login";
 import Profile from "../../Components/Context/Authprovider/Authintication/Profile";
 import Reg from "../../Components/Context/Authprovider/Authintication/Reg";
 import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
-import Signup from "../../Components/Context/Authprovider/Authintication/Signup";
 import Error from "../../Components/Error/Error";
 import HomePage from "../../Components/Home/IndexPage/HomePage";
 import LogInScreen from "../../Components/LogInScreen/LogInScreen";
@@ -28,6 +26,7 @@ import Main from "../../Main/Main";
 import Private from "../Private";
 import PrivateAdmin from "../PrivateAdmin";
 import OnlyForSubscriber from "../OnlyForSubscriber";
+import MoviesForYou from "../../Components/Home/MoviesForYou/MoviesForYou";
 
 
 const router = createBrowserRouter([
@@ -58,28 +57,7 @@ const router = createBrowserRouter([
                 path: '/subscribe',
                 element: <Private><Subscribe></Subscribe></Private>
             },
-            {
-                path: '/login',
-                element: <Login></Login>
-            },
-            {
-                path: '/signup',
-                element: <Reg></Reg>,
 
-               
-
-   
-              
-
-            },
-            // {
-            //     path: '/login',
-            //     element: <Login></Login>
-            // },
-            // {
-            //     path: '/signup',
-            //     element: <Reg></Reg>
-            // },
             {
                 path: '/forget',
                 element: <Forget></Forget>
@@ -87,6 +65,11 @@ const router = createBrowserRouter([
             {
                 path: '/resetform',
                 element: <Reset></Reset>
+
+            },
+            {
+                path: '/filter',
+                element: <MoviesForYou></MoviesForYou>
 
             },
 
@@ -128,8 +111,6 @@ const router = createBrowserRouter([
                 element: <Error></Error>
             },
 
-
-
         ]
     },
     {
@@ -164,7 +145,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/admin/updatemovie',
-                element: <PrivateAdmin> <MovieUpdate /></PrivateAdmin>
+                element: <PrivateAdmin><MovieUpdate /></PrivateAdmin>
 
             },
             {

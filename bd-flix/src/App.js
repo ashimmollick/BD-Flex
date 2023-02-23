@@ -5,8 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect, useState } from 'react';
 import SplashScreen from './SplashScreen/SplashScreen';
-import { AuthContext } from './Components/Context/Authprovider/Authprovider';
-import { useContext } from 'react';
 
 function App() {
   const [showFlash, setShowFlash] = useState(true);

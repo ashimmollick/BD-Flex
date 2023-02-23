@@ -11,7 +11,7 @@ const MostPopular = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch('https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allmovie/MostPopularMovie')
+        fetch('https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allmovie/adventure')
             .then(res => res.json())
             .then(res => {
                 setMostPopular(res)
@@ -24,7 +24,7 @@ const MostPopular = () => {
         <>
             <div className='lg:my-2 p-4'>
                 <div className='flex justify-between mb-3'>
-                    <h1 className='text-md font-bold text-current text-white'>Most Popular</h1>
+                    <h1 className='text-md font-bold text-current text-white'>Adventure</h1>
 
                     <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
                 </div>

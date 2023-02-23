@@ -47,11 +47,6 @@ const ClickedVideo = () => {
     const location = useLocation()
     const form = location?.state?.from?.pathname
 
-
-
-
-
-
     const PopularMovies = [
 
         {
@@ -92,7 +87,7 @@ const ClickedVideo = () => {
         fetch(`https://bd-flix-server-emonkumardas.vercel.app/isLiked/?email=${user?.email}&postId=${data._id}`)
             .then(res => res.json())
             .then(data => {
-                if (user?.email === data.userEmail) {
+                if (user?.email === data?.userEmail) {
                     setIsLiked(true)
                 }
             })
@@ -110,12 +105,6 @@ const ClickedVideo = () => {
             .catch(er => console.error("notun error", er));
 
     }
-
-
-    // fetch like information /\
-
-
-
 
     // Start Like and dislike post---------------------------------------->
 
@@ -163,30 +152,6 @@ const ClickedVideo = () => {
 
     }
 
-
-
-
-
-    const [watchlists, setwatchlistss] = useState([])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    ///watchlist
-
-
-
-
     const [watchlist, setwatchlists] = useState([])
 
     useEffect(() => {
@@ -227,8 +192,8 @@ const ClickedVideo = () => {
 
 
         const route = `${location?.pathname}`
-        const getuser = (!!watchlist.find(watch => watch.email))
-        const newe = watchlist.map(watch => watch.email)
+        const getuser = (!!watchlist.find(watch => watch?.email))
+        const newe = watchlist.map(watch => watch?.email)
         // const a = [...newe]
         // console.log(a)
 
@@ -406,26 +371,6 @@ const ClickedVideo = () => {
 
     }
 
-
-
-    // handle dislike /\
-
-
-
-
-    // const [like, setLike] = useState(0);
-    // const [isLike, setIsLike] = useState(false);
-
-
-    // const onLikeButtonClick = () => {
-
-    //     setIsLike(!isLike);
-    //     setLike(like + (isLike ? -1 : 1));
-
-    // }
-
-
-
     const [play, setPlay] = useState(false);
     //End of Like and Dislike-------------------------------------->
 
@@ -467,7 +412,7 @@ const ClickedVideo = () => {
 
                             <div className='my-5 lg:flex justify-between'>
 
-                                <p className='text-2xl font-bold mt-2'>{data.release_date}</p>
+                                <p className='text-2xl font-bold mt-2'>{data.title ? data.title : data.original_title}</p>
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
@@ -490,9 +435,7 @@ const ClickedVideo = () => {
                                                 </div>
                                         }
 
-                                        {/* <label htmlFor="reviewButton">
-                                            <FaCommentAlt className="text-xl mx-auto cursor-pointer" />
-                                        </label> */}
+                                      
 
                                         <div className=''>
                                             <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
@@ -518,7 +461,7 @@ const ClickedVideo = () => {
 
 
                             <div className='bg-[#0c0620] my-5 p-5 rounded'>
-                                <p className='font-bold'>{data.title ? data.title : data.original_title}</p>
+                                <p className='font-bold'>{data.release_date} </p>
                                 <p className='text-xl my-2 font-bold'>Description</p>
                                 <p className='text-md'>{data.overview}</p>
                             </div>
@@ -534,12 +477,10 @@ const ClickedVideo = () => {
                     <div className=''>
                         <p className='text-md font-bold mb-3'>Recommended</p>
                         <div className='mx-auto'>
-                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-5">
-
+                            <div className="grid lg:grid-cols-7 grid-cols-2 gap-3">
                                 {
-                                    recomended?.slice(0, 6).map(movies =>
+                                    loading ? "Loading..." : recomended?.slice(0, 6).map(movies =>
                                         <Recommended
-                                            loading={loading}
                                             video={video}
                                             setVideo={setVideo}
                                             movies={movies}></Recommended>

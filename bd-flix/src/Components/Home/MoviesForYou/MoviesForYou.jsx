@@ -32,7 +32,7 @@ const MoviesForYou = () => {
 
     // let image = 'https://image.tmdb.org/t/p/w500/';
 
-   
+
 
     const [arrowButtonVisibility, setArrowButtonVisibility] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);

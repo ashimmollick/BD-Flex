@@ -9,15 +9,10 @@ const PrivateAdmin = ({ children }) => {
     const location = useLocation()
     const { user, loading } = useContext(AuthContext);
     const [isAdmin, isAdminLoading] = useAdmin(user?.email);
-
-
-    console.log(user.email, isAdmin, 'from private route')
-
-
-
+    console.log(user?.email, isAdmin, 'from private route')
 
     if (loading || isAdminLoading) {
-        return <button type="button" class="bg-indigo-500 ..." disabled>
+        return <button type="button" class="" disabled>
             <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
 
             </svg>

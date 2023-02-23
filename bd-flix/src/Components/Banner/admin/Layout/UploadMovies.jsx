@@ -17,6 +17,7 @@ const UploadMovies = () => {
 
         .then(res => res.json())
         .then(data => {
+          console.log(data);
             setCategories(data)
            
         })
@@ -56,14 +57,7 @@ const UploadMovies = () => {
     formvideo.append('filename', video);
     setLoading(true)
 
-    const url = "https://student-management-server-emonkumardas.vercel.app/uploadPhoto"
-
-
-    // video upload firebase-------------------------
-    // fetch('https://student-management-server-emonkumardas.vercel.app/uploadVideo', {
-
-
-
+    const url = "https://bd-flix-server-emonkumardas.vercel.app/uploadPhoto"
 
     // video upload firebase-------------------------
     fetch('https://bd-flix-server-emonkumardas.vercel.app/uploadVideo', {
@@ -172,9 +166,10 @@ const UploadMovies = () => {
                     <span className="label-text">Catagories </span>
                   </label>
                   <select name='productCatagories' className="input rounded-md bg-transparent input-bordered" >
-                    <option className='bg-slate-900'>Most Popular Movie</option>
-                    <option className='bg-slate-900'>Movies For You</option>
-                    <option className='bg-slate-900'>Post Popular Movie</option>
+                    {
+                      categories?.map(cate=><option className='bg-slate-900'>{cate.categoryName}</option>)
+                    }
+                  
                   </select>
                 </div>
               </div>

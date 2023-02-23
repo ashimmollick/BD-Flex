@@ -8,18 +8,17 @@ const Subscribe = () => {
     const { userInfo, setMakeFetch } = useContext(AuthContext)
     const navigate = useNavigate();
 
-    const handleSubscribe = async () => {
-        try {
-            const response = await fetch(`https://bd-flix-server-emonkumardas.vercel.app/subscribe/${userInfo?.email}`, {
-                method: "POST",
+    const handleSubscribe = () => {
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/subscribe/${userInfo?.email}`, {
+            method: "POST",
+        })
+            .then(res => res.json())
+            .then(data => {
+                window.location.replace(data.url);
+                // toast(" Subscribe Successfully")
+                // navigate('/');
+                // setMakeFetch("true")
             });
-            const data = await response.json();
-            window.location.replace(data.url);
-        }
-        catch (error) {
-            // Handle error
-            console.error(error);
-        }
     }
 
     return (

@@ -26,8 +26,8 @@ const HomePage = () => {
             <Adventure></Adventure>
             <Action></Action>
             <Romantic></Romantic>
-            <MoviesForYou></MoviesForYou>
-    <Comedy></Comedy>
+            {/* <MoviesForYou></MoviesForYou> */}
+            <Comedy></Comedy>
         </div>
     );
 };

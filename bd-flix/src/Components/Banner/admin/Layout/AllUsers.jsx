@@ -1,7 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import Daiyer from './Daiyer';
+
 import { FaPlusCircle, FaMinusCircle } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';

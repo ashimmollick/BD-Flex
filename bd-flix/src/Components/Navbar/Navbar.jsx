@@ -82,7 +82,7 @@ const Navbar = () => {
             setData(searchApiData)
         } else {
 
-            const filterSearch = searchApiData.filter(it => it?.title?.toLowerCase().includes(e.target.value.toLowerCase()));
+            const filterSearch = searchApiData.filter(it => it?.original_title?.toLowerCase().includes(e.target.value.toLowerCase()));
             setData(filterSearch)
         }
         setFilterVal(e.target.value)

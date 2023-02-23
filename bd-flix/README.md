@@ -18,6 +18,7 @@
 #### e. git commit -m “create a branch and push request to the developer branch”
 #### f. git push -u origin avi/home
 
+
 #### Project Manager merge the request
 #### Go to the github and press Pull request
 #### base: developer   <=    compare: avi/home

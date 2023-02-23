@@ -22,7 +22,7 @@ const Share = ({ data }) => {
                 <FacebookShareButton
                     url={shareUrl}
                     quote={`${data.backdrop_path}`}
-                    hashtag={`${data.title}`}
+                    title={`${data.title}`}
 
 
                 >

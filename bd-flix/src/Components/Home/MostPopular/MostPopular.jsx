@@ -11,7 +11,7 @@ const MostPopular = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch('http://localhost:5000/mostPopularMovies')
+        fetch('https://bd-flix-server-emonkumardas.vercel.app/mostPopularMovies')
             .then(res => res.json())
             .then(res => {
                 setMostPopular(res)

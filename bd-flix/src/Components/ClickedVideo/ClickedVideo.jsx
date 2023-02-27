@@ -1,9 +1,8 @@
 import React, { useContext, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { BiShareAlt } from 'react-icons/bi';
-import { FiDownload } from 'react-icons/fi';
 import { MdPlaylistAdd } from 'react-icons/md';
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { AiFillPlayCircle } from 'react-icons/ai';
 import Recommended from '../Recommended/Recommended';
 import MoreFromThisCategory from '../MoreFromThisCategory/MoreFromThisCategory';
@@ -45,7 +44,6 @@ const ClickedVideo = () => {
 
 
     const location = useLocation()
-    const form = location?.state?.from?.pathname
 
     const PopularMovies = [
 
@@ -416,11 +414,7 @@ const ClickedVideo = () => {
                                 <div className='flex justify-center items-center gap-16 font-bold'>
                                     <div className='flex justify-center items-center gap-10'>
 
-                                        {/* <div className={"" + (isLike ? "text-blue-500" : "")}>
-                                            <FaThumbsUp onClick={onLikeButtonClick}
-                                                className="text-xl cursor-pointer" />
-                                            <p className='text-xs -mt-1'>{like}</p>
-                                        </div> */}
+    
 
                                         {
                                             isLiked ?
@@ -435,7 +429,7 @@ const ClickedVideo = () => {
                                                 </div>
                                         }
 
-                                      
+
 
                                         <div className=''>
                                             <MdPlaylistAdd onClick={onWatchlistButtonclick} className='text-xl mx-auto'></MdPlaylistAdd>
@@ -453,7 +447,6 @@ const ClickedVideo = () => {
                                             </div>
                                         </div>
                                         <Download data={data}>
-
                                         </Download>
                                     </div>
                                 </div>
@@ -481,8 +474,7 @@ const ClickedVideo = () => {
                                 {
                                     loading ? "Loading..." : recomended?.slice(0, 6).map(movies =>
                                         <Recommended
-                                            video={video}
-                                            setVideo={setVideo}
+
                                             movies={movies}></Recommended>
                                     )
                                 }
@@ -498,7 +490,9 @@ const ClickedVideo = () => {
                         <div className="grid lg:grid-cols-7 md:grid-cols-4 grid-cols-2 gap-5">
                             {
                                 PopularMovies?.map(movies =>
-                                    <MoreFromThisCategory movies={movies}></MoreFromThisCategory>
+                                    <MoreFromThisCategory
+                                
+                                     movies={movies}></MoreFromThisCategory>
                                 )}
                         </div>
                     </div>

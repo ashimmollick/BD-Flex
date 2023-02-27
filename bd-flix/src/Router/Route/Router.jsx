@@ -15,9 +15,6 @@ import Login from "../../Components/Context/Authprovider/Authintication/Login";
 import Profile from "../../Components/Context/Authprovider/Authintication/Profile";
 import Reg from "../../Components/Context/Authprovider/Authintication/Reg";
 import Reset from "../../Components/Context/Authprovider/Authintication/Reset";
-
-
-
 import Error from "../../Components/Error/Error";
 import HomePage from "../../Components/Home/IndexPage/HomePage";
 import LogInScreen from "../../Components/LogInScreen/LogInScreen";

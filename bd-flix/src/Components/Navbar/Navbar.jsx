@@ -34,7 +34,7 @@ const Navbar = () => {
 
     const nav = <>
         <li><Link to='/' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">Home</Link></li>
-        <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li>
+        {/* <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li> */}
         <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
     </>
 
@@ -102,10 +102,6 @@ const Navbar = () => {
                             {
                                 user?.uid ?
                                     <>
-
-
-
-
                                         <li className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline" onClick={handlelogout}><Link to='/login'>Logout</Link></li>
                                     </>
                                     :

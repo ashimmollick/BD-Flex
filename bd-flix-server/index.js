@@ -357,8 +357,8 @@ async function run() {
                     currency: 'BDT',
                     tran_id: new ObjectId().toString(), // use unique tran_id for each api call
                     success_url: `https://bd-flix-server-emonkumardas.vercel.app/payment/success?email=${email}`,
-                    fail_url: 'https://bd-flix-server-emonkumardas.vercel.app/payment/fail',
-                    cancel_url: 'https://bd-flix-server-emonkumardas.vercel.app/payment/cancel',
+                    fail_url: 'https://bd-flix-e2343.web.app/',
+                    cancel_url: 'https://bd-flix-e2343.web.app/',
                     ipn_url: 'http://localhost:3030/ipn',
                     shipping_method: 'Courier',
                     product_name: 'Computer.',

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaVideo, FaUserAlt } from 'react-icons/fa';
 import { FaEnvelope } from 'react-icons/fa';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
@@ -14,6 +14,7 @@ const Navbar = () => {
     const [filterVal, setFilterVal] = useState('');
     const { user, logout } = useContext(AuthContext)
     const [isAdmin] = useAdmin(user?.email)
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('https://bd-flix-server-emonkumardas.vercel.app/allsearch')
@@ -32,10 +33,22 @@ const Navbar = () => {
             }).catch(error => console.error(error))
     }
 
+    // const handleNavigate = (route) => {
+    //     console.log(route);
+    //     navigate(`/category/${route}`)
+    // }
+    const handleNavigate = (route) => {
+        navigate('/categoryVideo',  { state:  route  } )
+    }
+
     const nav = <>
         <li><Link to='/' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">Home</Link></li>
         {/* <li><Link to='/tvshows' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Tv Shows</Link></li> */}
-        <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline">  Movies</Link></li>
+        <li><Link to='/movies' className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline"> All Movies</Link></li>
+        <li><button onClick={() => handleNavigate('action')} className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline"> Action</button></li>
+        <li><button onClick={() => handleNavigate('comedy')} className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline"> Comedy</button></li>
+        <li><button onClick={() => handleNavigate('thriller')} className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline"> Thriller</button></li>
+        <li><button onClick={() => handleNavigate('romantic')} className="text-white font-bold hover:text-green-400 focus:outline-none focus:shadow-outline"> Romantic</button></li>
     </>
 
     const bottomNav = <>

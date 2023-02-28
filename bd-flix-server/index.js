@@ -111,7 +111,7 @@ async function run() {
         // Like collection
         const likesCollection = client.db("bdFlix").collection('likes');
 
-        app.get('/allmovie/mostPopularMovies', async (req, res) => {
+        app.get('/mostPopularMovies', async (req, res) => {
             const query = {};
             const sort = { "likeCount": -1 };
             const cursor = await allMoviesCollection.find(query).sort(sort).limit(10);

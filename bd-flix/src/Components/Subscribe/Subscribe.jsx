@@ -1,6 +1,4 @@
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { AuthContext } from '../Context/Authprovider/Authprovider';
 import jugle from '../../images/jugle.jpg';
 
@@ -32,8 +30,8 @@ const Subscribe = () => {
                                     <div className="flex w-full mb-8 sm:px-4 md:w-1/2 lg:w-1/3 lg:mb-0">
                                         <div style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} className="flex flex-col p-6 space-y-6 rounded shadow sm:p-8 border">
                                             <div className="space-y-2">
-                                                <h4 className="text-2xl font-bold">Entry</h4>
-                                                <span className="text-6xl font-bold">Free</span>
+                                                <h4 className="text-2xl font-bold">Standard</h4>
+                                                <span className="text-6xl font-bold">100$</span>
                                             </div>
                                             <p className="mt-3 leading-relaxed text-gray-400">Etiam ac convallis enim, eget euismod dolor.</p>
                                             <ul className="flex-1 mb-6 text-gray-400">

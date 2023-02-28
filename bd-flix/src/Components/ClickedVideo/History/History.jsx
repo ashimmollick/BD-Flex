@@ -69,17 +69,17 @@ const History = () => {
         <div className=''>
 
 
-            <div className='bg-[#3a3b3c] w-full rounded-lg '>
+            <div className='w-full rounded-lg '>
 
 
 
                 <div>
                     <div className="overflow-x-auto">
 
-                        <table className="table w-full mt-20">
+                        <table className="table w-[90%] m-auto mt-32">
 
 
-                            <thead>
+                            <thead className='bg-green-700'>
 
 
 
@@ -90,7 +90,7 @@ const History = () => {
                                     <th>Movie title</th>
                                     <th>Viewing time</th>
 
-                                    <th onClick={() => DeleteHis(user.email)}>
+                                    <th className='bg-red-600 text-white rounded-sm px-3 py-3 w-16' onClick={() => DeleteHis(user.email)}>
                                         delete all
 
                                     </th>

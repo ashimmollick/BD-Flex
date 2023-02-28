@@ -36,7 +36,6 @@ const ClickedVideo = () => {
         fetch(`https://recomended-movie.onrender.com/recommend/${data.original_title}`)
             .then(res => res.json())
             .then(result => {
-                console.log("result", result);
                 setRecomended(result)
                 setLoading(false)
             })

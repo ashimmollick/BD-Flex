@@ -27,6 +27,7 @@ import Private from "../Private";
 import PrivateAdmin from "../PrivateAdmin";
 import OnlyForSubscriber from "../OnlyForSubscriber";
 import PaymentSuccess from "../../Components/PaymentInfo/PaymentSuccess";
+import CategoryVideo from "../../Components/CategoryVideo/CategoryVideo";
 
 
 const router = createBrowserRouter([
@@ -57,6 +58,15 @@ const router = createBrowserRouter([
                 path: '/allmovie/:id',
                 loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/movie/${params.id}`),
                 element: <Private><OnlyForSubscriber><ClickedVideo></ClickedVideo></OnlyForSubscriber></Private>
+            },
+            // {
+            //     path: '/category/:id',
+            //     loader: ({ params }) => fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allmovie/${params.id}`),
+            //     element: <Private><CategoryVideo></CategoryVideo></Private>
+            // }, 
+            {
+                path: '/categoryVideo',
+                element: <Private><CategoryVideo></CategoryVideo></Private>
             },
             {
                 path: '/subscribe',

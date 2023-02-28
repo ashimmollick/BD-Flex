@@ -16,7 +16,7 @@ const CategoryVideo = () => {
 
     useEffect(() => {
         setLoading(true);
-        fetch(`https://bd-flix-server-i4wbktqxf-mohammad0076.vercel.app/allmovie/${category}`)
+        fetch(`https://bd-flix-server-emonkumardas.vercel.app/allmovie/${category}`)
             .then(res => res.json())
             .then(res => {
                 setAllMovies(res)
@@ -24,11 +24,8 @@ const CategoryVideo = () => {
             });
     }, [category])
 
+    
 
-
-
-
-    // console.log(allMovies);
     return (
         <div className='relative top-16' style={{clear:"both"}}>
             <h2 className='p-3 font-semibold text-white'> {category.toUpperCase()} </h2>

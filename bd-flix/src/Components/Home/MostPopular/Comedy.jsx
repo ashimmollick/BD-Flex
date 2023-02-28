@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import './poster.css';
 import { AiOutlineArrowRight } from "react-icons/ai"
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate,  } from 'react-router-dom';
+
 
 const MostPopular = () => {
     const [loading, setLoading] = useState(false);
     const [MostPopular, setMostPopular] = useState([]);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -19,6 +21,10 @@ const MostPopular = () => {
             })
     }, [])
 
+    const handleNavigate = (route) => {
+        navigate('/categoryVideo',  { state:  route  } )
+    }
+
 
     return (
         <>
@@ -26,7 +32,7 @@ const MostPopular = () => {
                 <div className='flex justify-between mb-3'>
                     <h1 className='text-md font-bold text-current text-white'>Comedy</h1>
 
-                    <p className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></p>
+                    <button  onClick={() => handleNavigate('comedy')}  className='text-white inline'>See all <AiOutlineArrowRight className='inline text-red-500'></AiOutlineArrowRight></button >
                 </div>
 
                 <>
